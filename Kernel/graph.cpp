@@ -15,6 +15,7 @@ diganaGraphObjectIdentifier::operator = (const diganaGraphObjectIdentifier & ope
     identifier = operand.identifier;
  }
 
+//Graph manager API to create a grpah, given the object identifier.
 int
 diganaGraphMgr::create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGraphType type)
  {
@@ -41,7 +42,7 @@ diganaGraphMgr::create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGrap
 
      Graph_Count++;
 
-     return graph->getID ();
+     return graph->getId ();
  }
 
 //Finds out if the graph exists or not already with the graph manager
