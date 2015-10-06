@@ -20,8 +20,7 @@ int
 diganaGraphMgr::create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGraphType type)
  {
      try {
-       if (graph_exists (graph_Id))
-         throw 1; 
+       if (graph_exists (graph_Id)) throw 1; 
      } catch (int) {
        std::cout << "ERROR : Graph with name " << graph_Id.getName () << " already exists." << std::endl;  
      } 
@@ -55,3 +54,60 @@ diganaGraphMgr::graph_exists (diganaGraphObjectIdentifier & graph_Id)
 
    return false;
  }
+
+//Addvertex for Undirected Graph
+int
+diganaUndirectedGraph::add_vertex (std::string name) {
+
+   boost::graph_traits <diganaUndirectedGraphType>::vertex_descriptor v =
+	                                           boost::add_vertex (graph);
+   property_map<diganaUndirectedGraphType, vertex_name_t>::type VertexName =
+	                                                    get(vertex_name, graph);
+   property_map<diganaUndirectedGraphType, vertex_index2_t>::type VertexIdx2 =
+	                                                    get(vertex_index2, graph);
+   VertexIdx2[v] = getVCount();
+   VertexName[v] = name;
+   incVCount ();
+   return VertexIdx2[v];
+}
+
+//Addedge for Undirected Graph
+void
+diganaUndirectedGraph::add_edge (int source, int sink) {
+   boost::graph_traits <diganaUndirectedGraphType>::vertex_descriptor u =
+	                                               boost::vertex(source, graph);
+
+   boost::graph_traits <diganaUndirectedGraphType>::vertex_descriptor v = 
+	                                               boost::vertex(sink, graph);
+
+   boost::add_edge (u, v, graph);
+}
+
+//Addvertex for Directed Graph
+int
+diganaDirectedGraph::add_vertex (std::string name) {
+
+   boost::graph_traits <diganaDirectedGraphType>::vertex_descriptor v =
+	                                           boost::add_vertex (graph);
+   property_map<diganaDirectedGraphType, vertex_name_t>::type VertexName =
+	                                                    get(vertex_name, graph);
+   property_map<diganaDirectedGraphType, vertex_index2_t>::type VertexIdx2 =
+	                                                    get(vertex_index2, graph);
+   VertexIdx2[v] = getVCount();
+   VertexName[v] = name;
+   incVCount ();
+   return VertexIdx2[v];
+}
+
+//Addedge for Directed Graph
+void
+diganaDirectedGraph::add_edge (int source, int sink) {
+   boost::graph_traits <diganaDirectedGraphType>::vertex_descriptor u =
+	                                               boost::vertex(source, graph);
+
+   boost::graph_traits <diganaDirectedGraphType>::vertex_descriptor v = 
+	                                               boost::vertex(sink, graph);
+
+   boost::add_edge (u, v, graph);
+}
+

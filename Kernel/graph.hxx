@@ -12,6 +12,7 @@ enum diganaGraphType {
                        diganaDirectedGraphS, 
                        diganaNoGraphS
                      };
+
 class diganaGraphObjectIdentifier;
 class diganaGraphProperty;
 class diganaGraph;
@@ -19,11 +20,32 @@ class diganaUndirectedGraph;
 class diganaDirectedGraph;
 class diganaGraphMgr; 
 
+//Vertex Properties
+typedef property<vertex_name_t, std::string, 
+        property<vertex_index2_t, int> > diganaVertexProperties; 
+
+//Edge Properties
+typedef property<graph_name_t, std::string> diganaGraphProperties; 
+
 //The undirected graph class
-typedef boost::adjacency_list<listS, listS, undirectedS, no_property, no_property, listS> diganaUndirectedGraphType;
+typedef boost::adjacency_list< listS, 
+	                       listS,
+			       undirectedS, 
+	                       diganaVertexProperties, 
+			       no_property, 
+			       diganaGraphProperties, 
+			       listS > 
+			       diganaUndirectedGraphType;
 
 //The directed graph class
-typedef boost::adjacency_list<listS, listS, directedS, no_property, no_property, listS> diganaDirectedGraphType;
+typedef boost::adjacency_list< listS, 
+	                       listS, 
+			       directedS, 
+			       diganaVertexProperties, 
+			       no_property, 
+			       diganaGraphProperties, 
+			       listS > 
+			       diganaDirectedGraphType;
 
 //ID to Graph Map
 typedef std::map< std::pair<int, std::string>, diganaGraph *> mapIdToGraph;
@@ -77,7 +99,10 @@ class diganaGraph {
   public:
    //Default constructor
    diganaGraph (diganaGraphObjectIdentifier objId, 
-                diganaGraphType t) : identifier(objId) , type (t) { }
+                diganaGraphType t) : identifier(objId) , type (t) { 
+     vertexCount = 0;
+     edgeCount = 0;
+   }
 
    //Copy constructor
    diganaGraph (const diganaGraph & object) {
@@ -88,11 +113,17 @@ class diganaGraph {
    std::string getName () const { return identifier.getName (); } 
    int         getId   () const { return identifier.getId (); }
    void        setId   (int id) { identifier.setId (id); } 
-   
+   int         getVCount () const { return vertexCount; }
+   void	       incVCount () { vertexCount++; }
+
+   virtual int add_vertex (std::string);
+   virtual void add_edge (int, int);
+
   private:
    diganaGraphProperty properties;
    diganaGraphObjectIdentifier identifier;
    diganaGraphType type;
+   int vertexCount, edgeCount;
 };
 
 
@@ -101,6 +132,8 @@ class diganaUndirectedGraph : public diganaGraph {
    diganaUndirectedGraph (diganaGraphObjectIdentifier objId,
                           diganaGraphType t) :
    diganaGraph (objId, t) { }
+   int add_vertex (std::string);
+   void add_edge (int, int);
       
   private:
    diganaUndirectedGraphType graph;
@@ -111,7 +144,8 @@ class diganaDirectedGraph : public diganaGraph {
    diganaDirectedGraph (diganaGraphObjectIdentifier objId,
                           diganaGraphType t) :
    diganaGraph (objId, t) { }
-      
+   int add_vertex (std::string);
+   void add_edge (int, int);
 
   private:
    diganaDirectedGraphType graph;
