@@ -1,5 +1,7 @@
 //This is the graph header file for modelling the graph classes
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/property_map/property_map.hpp>
+#include <boost/property_map/dynamic_property_map.hpp>
 #include <string>
 #include <fstream>
 #include <map>
@@ -52,7 +54,18 @@ typedef std::map< std::pair<int, std::string>, diganaGraph *> mapIdToGraph;
 
 //The graph property manager class
 class diganaGraphProperty {
+  public:
+   template <typename Key, typename Value> 
+      void Register_Vertex_Property (std::string name); 
+   template <typename Key, typename Value> 
+      void Register_Edge_Property (std::string name); 
+   template <typename Key, typename Value> 
+      void Register_Graph_Property (std::string name); 
 
+  private:
+   boost::dynamic_properties vertex_properties;
+   boost::dynamic_properties edge_properties;
+   boost::dynamic_properties graph_properties;
 };
 
 //class object identifier to identify an object. Objects in our
@@ -150,5 +163,3 @@ class diganaDirectedGraph : public diganaGraph {
   private:
    diganaDirectedGraphType graph;
 };
-
-

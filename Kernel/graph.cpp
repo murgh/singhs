@@ -111,3 +111,23 @@ diganaDirectedGraph::add_edge (int source, int sink) {
    boost::add_edge (u, v, graph);
 }
 
+template <typename Key, typename Value>
+void diganaGraphProperty::Register_Vertex_Property (std::string name) {
+  std::map<Key, Value> kvmap;
+  boost::associative_property_map< std::map<Key, Value> > assomap (kvmap);
+  vertex_properties.property (name, assomap);
+}
+
+template <typename Key, typename Value>
+void diganaGraphProperty::Register_Edge_Property (std::string name) {
+  std::map<Key, Value> kvmap;
+  boost::associative_property_map< std::map<Key, Value> > assomap (kvmap);
+  edge_properties.property (name, assomap);
+}
+
+template <typename Key, typename Value>
+void diganaGraphProperty::Register_Graph_Property (std::string name) {
+  std::map<Key, Value> kvmap;
+  boost::associative_property_map< std::map<Key, Value> > assomap (kvmap);
+  graph_properties.property (name, assomap);
+}
