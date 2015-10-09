@@ -36,6 +36,8 @@ diganaGraphMgr::create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGrap
 
      Id_Graph_Map.insert (pair);
 
+     string graph_name = graph_Id.getName();
+     Name_Graph_Map.insert(std::pair<std::string,diganaGraph*>(graph_name , graph ) );     
 
      graph->setId (Graph_Count);
 
@@ -43,6 +45,48 @@ diganaGraphMgr::create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGrap
 
      return graph->getId ();
  }
+void diganaGraphMgr::setId(std::string name , int id) {
+  
+    mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(name);
+    graph_itr_obj->second->setId(id);
+    return;
+
+
+  }
+int diganaGraphMgr::getId(std::string name) {
+  
+  mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(name);
+  return graph_itr_obj->second->getId();
+
+  }
+int diganaGraphMgr::add_vertex(std::string name  , std::string vertex_name){
+
+   mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(name);
+   return graph_itr_obj->second->add_vertex(vertex_name);
+
+}
+
+
+void diganaGraphMgr::add_edge(std::string name , int source , int sink ){
+  
+  
+   mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(name);
+   return graph_itr_obj->second->add_edge( source , sink);
+
+
+
+  }
+
+
+int diganaGraphMgr::getVCount(std::string graph_name){
+
+  mapNameToGraph::iterator name_itr = get_graph_through_name(graph_name);
+  return name_itr->second->getVCount();
+  
+  }
+
+    
+
 
 //Finds out if the graph exists or not already with the graph manager
 bool
@@ -54,6 +98,23 @@ diganaGraphMgr::graph_exists (diganaGraphObjectIdentifier & graph_Id)
 
    return false;
  }
+
+
+mapNameToGraph::iterator  diganaGraphMgr::get_graph_through_name(std::string graph_name)
+  {
+      mapNameToGraph::iterator name_itr = Name_Graph_Map.find(graph_name) ;
+  
+
+   try {
+       if (name_itr == Name_Graph_Map.end() )
+         throw 1;
+     } catch (int) {
+       std::cout << "ERROR : Graph with name " << graph_name << "does not exist " << std::endl;
+     }
+
+
+	return name_itr;
+  }
 
 //Addvertex for Undirected Graph
 int
