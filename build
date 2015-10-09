@@ -1,7 +1,7 @@
 #! /bin/bash
-BOOST="/home/pooja/boost/boost_1_54_0"
-TCL="/usr/include/tcl8.5"
-LIBTCL="/usr/lib/x86_64-linux-gnu/libtcl8.5.so"
+BOOST="/home/singhs/work/Boost/boost_1_59_0"
+TCL="/usr/include/tcl"
+LIBTCL="/usr/lib/libtcl8.5.so"
 PARTITION_SOURCES="Partitioner/partition.cpp"
 DISTRIBUTOR_SOURCES="Distributor/distributor.cpp"
 KERNEL_SOURCES="Kernel/kernel.cpp"
@@ -9,12 +9,13 @@ TCL_SOURCES="TCL_Shell/cpptcl.cc TCL_Shell/diGAnaTCL.cpp"
 GRAPH_SOURCES="Kernel/graph.cpp"
 SOURCES="$PARTITION_SOURCES $DISTRIBUTOR_SOURCES $KERNEL_SOURCES $TCL_SOURCES $GRAPH_SOURCES"
 
-rm -rf mymodule.so
+rm -rf part.o distro.o kernel.o graph.o mymodule.so
+touch $SOURCES
 #echo "g++ -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall $SOURCES -o mymodule.so"
 g++ $PARTITION_SOURCES -c -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -o part.o
 g++ $DISTRIBUTOR_SOURCES -c -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -o distro.o
 g++ $KERNEL_SOURCES -c -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -o kernel.o
 g++ $GRAPH_SOURCES -c -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -o graph.o
-g++ $TCL_SOURCES part.o distro.o kernel.o graph.o -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -Wno-write-strings  -shared -o mymodule.so
+g++ $TCL_SOURCES part.o distro.o kernel.o -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -Wno-write-strings  -shared  -o mymodule.so
 #echo "g++ $SOURCES -shared -o mymodule.so -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL" 
 #g++ $SOURCES -shared -o mymodule.so -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL 

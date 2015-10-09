@@ -84,8 +84,8 @@ class diganaGraphObjectIdentifier {
    void operator = (const diganaGraphObjectIdentifier &);
    std::string getName () const { return identifier.second;}
    int         getId   () const { return identifier.first; }  
-   std::string setName (std::string name) { identifier.second = name;}
-   int         setId   (int id) { identifier.first = id; }  
+   void        setName (std::string name) { identifier.second = name;}
+   void        setId   (int id) { identifier.first = id; }  
    const std::pair<int, std::string> & get_identifier () const { return identifier; }
 
   private:
@@ -136,8 +136,8 @@ class diganaGraph {
    int         getVCount () const { return vertexCount; }
    void	       incVCount () { vertexCount++; }
 
-   virtual int add_vertex (std::string);
-   virtual void add_edge (int, int);
+   virtual int add_vertex (std::string) { return 0;}
+   virtual void add_edge (int, int) { }
 
   private:
    diganaGraphProperty properties;

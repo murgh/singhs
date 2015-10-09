@@ -195,3 +195,5 @@ void diganaGraphProperty::Register_Graph_Property (std::string name) {
   boost::associative_property_map< std::map<Key, Value> > assomap (kvmap);
   graph_properties.property (name, assomap);
 }
+
+//int main () { return 1; }
