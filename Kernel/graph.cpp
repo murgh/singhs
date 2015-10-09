@@ -22,7 +22,10 @@ diganaGraphMgr::create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGrap
      try {
        if (graph_exists (graph_Id)) throw 1; 
      } catch (int) {
-       std::cout << "ERROR : Graph with name " << graph_Id.getName () << " already exists." << std::endl;  
+       std::cout << "ERROR : Graph with name " 
+	         << graph_Id.getName () 
+		 << " already exists." 
+		 << std::endl;  
      } 
 
      diganaGraph * graph = NULL;
