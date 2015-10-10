@@ -55,13 +55,7 @@ typedef std::map< std::string , diganaGraph *>  mapNameToGraph;
 //The graph property manager class
 class diganaGraphProperty {
   public:
-   template <typename Key, typename Value> 
-      void Register_Vertex_Property (std::string name); 
-   template <typename Key, typename Value> 
-      void Register_Edge_Property (std::string name); 
-   template <typename Key, typename Value> 
-      void Register_Graph_Property (std::string name); 
-
+   diganaGraphProperty () { } 
   private:
    boost::dynamic_properties vertex_properties;
    boost::dynamic_properties edge_properties;
@@ -104,6 +98,8 @@ class diganaGraphMgr {
    int getId (std::string );
    void setId ( std::string , int  ); 
    int getVCount (std::string name); 
+   template<typename Value> void register_vertex_property (std::string, std::string); 
+   template<typename Value> void register_edge_property (std::string, std::string); 
 /*   int insert_vertex (diganaGraphObjectIdentifier graph_Id, std::string name);
    void insert_edge (std::string graph,   
 */
@@ -140,7 +136,6 @@ class diganaGraph {
    virtual void add_edge (int, int) { }
 
   private:
-   diganaGraphProperty properties;
    diganaGraphObjectIdentifier identifier;
    diganaGraphType type;
    int vertexCount, edgeCount;
@@ -151,22 +146,32 @@ class diganaUndirectedGraph : public diganaGraph {
   public:
    diganaUndirectedGraph (diganaGraphObjectIdentifier objId,
                           diganaGraphType t) :
-   diganaGraph (objId, t) { }
+   diganaGraph (objId, t) { 
+     properties = NULL;
+   }
    int add_vertex (std::string);
    void add_edge (int, int);
+   template<typename Value> void register_vertex_property (std::string); 
+   template<typename Value> void register_edge_property (std::string); 
       
   private:
    diganaUndirectedGraphType graph;
+   diganaGraphProperty * properties;
 };
 
 class diganaDirectedGraph : public diganaGraph {
   public:
    diganaDirectedGraph (diganaGraphObjectIdentifier objId,
                           diganaGraphType t) :
-   diganaGraph (objId, t) { }
+   diganaGraph (objId, t) { 
+     properties = NULL;
+   }
    int add_vertex (std::string);
    void add_edge (int, int);
+   template<typename Value> void register_vertex_property (std::string); 
+   template<typename Value> void register_edge_property (std::string); 
 
   private:
    diganaDirectedGraphType graph;
+   diganaGraphProperty * properties;
 };
