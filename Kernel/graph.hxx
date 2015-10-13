@@ -52,6 +52,8 @@ typedef boost::adjacency_list< listS,
 //ID to Graph Map
 typedef std::map< std::pair<int, std::string>, diganaGraph *> mapIdToGraph;
 typedef std::map< std::string , diganaGraph *>  mapNameToGraph;
+typedef std::map< int , diganaGraph *>  mapNumIdToGraph; 
+
 //The graph property manager class
 class diganaGraphProperty {
   public:
@@ -93,6 +95,9 @@ class diganaGraphMgr {
    int create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGraphType type);
    bool graph_exists (diganaGraphObjectIdentifier & graph_Id);
    mapNameToGraph::iterator get_graph_through_name(std::string graph_name);
+   mapNumIdToGraph::iterator  get_graph_through_num_id(int id);
+
+//following are signatures for graph api that can be accessed from manager class
    int add_vertex(std::string , std::string);
    void add_edge(std::string , int , int );  
    int getId (std::string );
@@ -106,6 +111,7 @@ class diganaGraphMgr {
   private:
    mapIdToGraph Id_Graph_Map;
    mapNameToGraph Name_Graph_Map;
+   mapNumIdToGraph Num_Id_Graph_Map;
    int Graph_Count;
 };
 

@@ -43,38 +43,66 @@ diganaGraphMgr::create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGrap
      Name_Graph_Map.insert(std::pair<std::string,diganaGraph*>(graph_name , graph ) );     
 
      graph->setId (Graph_Count);
-
+     Num_Id_Graph_Map.insert(std::pair<int,diganaGraph*>(graph->getId() , graph)) ;
      Graph_Count++;
 
      return graph->getId ();
  }
 void diganaGraphMgr::setId(std::string name , int id) {
-  
+    //graph id must be positive
+    if(id > 0)
+    {
     mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(name);
-    graph_itr_obj->second->setId(id);
+    mapNumIdToGraph::iterator id_itr =  get_graph_through_num_id(id)  ; 
+    if(id_itr == Num_Id_Graph_Map.end() )
+    	{
+	cout << "Set graph id for " << name << " to " << id << endl;
+    	graph_itr_obj->second->setId(id);
+        }
     return;
-
-
+    }
+  
+    else 
+    cout << "Invalid id : Enter value greater than 1" << endl ;
+    
   }
 int diganaGraphMgr::getId(std::string name) {
+  
   mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(name);
+//if invalid name is provided : return -1
+  if (graph_itr_obj == Name_Graph_Map.end() )
+  return -1;
+  else 
   return graph_itr_obj->second->getId();
 
-}
+  }
 
 int diganaGraphMgr::add_vertex(std::string name  , std::string vertex_name){
    mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(name);
+  //if invalid name is provided return -1
+   if (graph_itr_obj == Name_Graph_Map.end() )
+   return -1;
+   else
    return graph_itr_obj->second->add_vertex(vertex_name);
 }
 
 void diganaGraphMgr::add_edge(std::string name , int source , int sink ){
    mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(name);
+//check for invalid graph name
+   if (graph_itr_obj == Name_Graph_Map.end())
+   return ;
+   else 
+   
    return graph_itr_obj->second->add_edge( source , sink);
 }
 
 
 int diganaGraphMgr::getVCount(std::string graph_name){
+
   mapNameToGraph::iterator name_itr = get_graph_through_name(graph_name);
+  if (name_itr == Name_Graph_Map.end() )
+   return -1;
+   else
   return name_itr->second->getVCount();
   
 }
@@ -90,7 +118,7 @@ diganaGraphMgr::graph_exists (diganaGraphObjectIdentifier & graph_Id)
    return false;
  }
 
-
+//given graph name extract graph from graph - name map
 mapNameToGraph::iterator  diganaGraphMgr::get_graph_through_name(std::string graph_name)
   {
       mapNameToGraph::iterator name_itr = Name_Graph_Map.find(graph_name) ;
@@ -106,6 +134,26 @@ mapNameToGraph::iterator  diganaGraphMgr::get_graph_through_name(std::string gra
 
 	return name_itr;
   }
+//given graph id extract graph from id - graph map 
+mapNumIdToGraph::iterator  diganaGraphMgr::get_graph_through_num_id(int id)
+  {
+      mapNumIdToGraph::iterator id_itr = Num_Id_Graph_Map.find(id) ;
+
+
+   try {
+       if (id_itr == Num_Id_Graph_Map.end() )
+         throw 1;
+     } catch (int) {
+       std::cout << " Graph with id " << id  << " does not exist " << std::endl;
+     }
+
+
+        return id_itr;
+  }
+
+
+
+
 
 //Addvertex for Undirected Graph
 int
