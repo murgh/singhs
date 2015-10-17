@@ -10,7 +10,7 @@
 using namespace std;
 
 diganaPartitionMgr pMgr;
-diganaKernelMgr kMgr;
+
 diganaDistributionMgr dMgr;
 
 
@@ -29,7 +29,7 @@ void hello(string option, int times)
 void run_diGAna ()
 {
    pMgr.print ();  	
-   kMgr.print ();  	
+   diganaKernelMgr::diganaGetKernel().print ();  	
    dMgr.print ();
      cout << "This is the code that I have added in run_diGAna " << endl;
 }

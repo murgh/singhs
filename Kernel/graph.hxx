@@ -14,6 +14,7 @@ enum diganaGraphType {
                        diganaDirectedGraphS, 
                        diganaNoGraphS
                      };
+const int Null_Identifier_ID = -1;
 
 class diganaGraphObjectIdentifier;
 class diganaGraphProperty;
@@ -50,7 +51,7 @@ typedef boost::adjacency_list< listS,
 			       diganaDirectedGraphType;
 
 //ID to Graph Map
-typedef std::map< std::pair<int, std::string>, diganaGraph *> mapIdToGraph;
+typedef std::map< int, diganaGraph *> mapIdToGraph;
 typedef std::map< std::string , diganaGraph *>  mapNameToGraph;
 typedef std::map< int , diganaGraph *>  mapNumIdToGraph; 
 
@@ -64,7 +65,7 @@ class diganaGraphProperty {
    boost::dynamic_properties graph_properties;
 };
 
-//class object identifier to identify an object. Objects in our
+//Class object identifier to identify an object. Objects in our
 //graph library are graph, vertices and edges. They can be 
 //identified by either the names that they contain or their integer Ids
 class diganaGraphObjectIdentifier {
@@ -74,7 +75,8 @@ class diganaGraphObjectIdentifier {
    diganaGraphObjectIdentifier (const diganaGraphObjectIdentifier & object) {
      identifier = object.identifier;
    }
-   diganaGraphObjectIdentifier () { }
+   diganaGraphObjectIdentifier () :
+	identifier (std::pair<int, std::string> (Null_Identifier_ID, std::string())) { }
 
    bool operator == (const diganaGraphObjectIdentifier &) const;
    void operator = (const diganaGraphObjectIdentifier &);
@@ -93,34 +95,40 @@ class diganaGraphObjectIdentifier {
 class diganaGraphMgr {
   public:
    static diganaGraphMgr & getGraphMgr () {
-	     static diganaGraphMgr graphMgrInst;
-	       return graphMgrInst; 
-   }   
+     static diganaGraphMgr graphMgrInst;
+     return graphMgrInst; 
+   }
    int create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGraphType type);
    bool graph_exists (diganaGraphObjectIdentifier & graph_Id);
    mapNameToGraph::iterator get_graph_through_name(std::string graph_name);
    mapIdToGraph::iterator get_graph_through_id(int graph_id);
-
-   //Following are signatures for graph api that can be accessed from manager class
    int add_vertex(std::string , std::string);
    void add_edge(std::string , int , int );  
-   int getId (std::string );
-   void setId ( std::string , int  ); 
+   int getId (std::string);
+   void setId (std::string , int); 
    int getVCount (std::string name); 
+   bool check_graph_identifier (diganaGraphObjectIdentifier &);
+   bool check_vertex_id (diganaGraphObjectIdentifier &, int);
    template<typename Value> void register_vertex_property (std::string, std::string); 
    template<typename Value> void register_edge_property (std::string, std::string); 
+
+
 /*   int insert_vertex (diganaGraphObjectIdentifier graph_Id, std::string name);
    void insert_edge (std::string graph,   
 */
+
   private:
+   //Private constructor to not let the object being created
+   //for this class
    diganaGraphMgr () {
-	     Graph_Count = 0;
-	     }
+     Graph_Count = 0;
+   }
    diganaGraphMgr (diganaGraphMgr const &);
    void operator = (diganaGraphMgr const &);
 
    mapIdToGraph Id_Graph_Map;
    mapNameToGraph Name_Graph_Map;
+   mapNumIdToGraph Num_Id_Graph_Map;
    int Graph_Count;
 };
 
