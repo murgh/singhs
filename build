@@ -16,6 +16,6 @@ g++ $PARTITION_SOURCES -c -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor 
 g++ $DISTRIBUTOR_SOURCES -c -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -o distro.o
 g++ $KERNEL_SOURCES -c -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -o kernel.o
 g++ $GRAPH_SOURCES -c -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -o graph.o
-g++ $TCL_SOURCES part.o distro.o kernel.o -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -Wno-write-strings  -shared  -o mymodule.so
+g++ $TCL_SOURCES part.o distro.o kernel.o graph.o -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -Wno-write-strings  -shared  -o mymodule.so
 #echo "g++ $SOURCES -shared -o mymodule.so -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL" 
 #g++ $SOURCES -shared -o mymodule.so -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL 

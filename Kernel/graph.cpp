@@ -35,15 +35,14 @@ diganaGraphMgr::create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGrap
      else
        graph = new diganaDirectedGraph (graph_Id, type);
      
-     std::pair<std::pair<int, std::string>, diganaGraph *> pair (graph_Id.get_identifier (), graph);
-
-     Id_Graph_Map.insert (pair);
-
      string graph_name = graph_Id.getName();
+
      Name_Graph_Map.insert(std::pair<std::string,diganaGraph*>(graph_name , graph ) );     
 
      graph->setId (Graph_Count);
-     Num_Id_Graph_Map.insert(std::pair<int,diganaGraph*>(graph->getId() , graph)) ;
+
+     Id_Graph_Map.insert(std::pair<int,diganaGraph*>(graph->getId() , graph)) ;
+
      Graph_Count++;
 
      return graph->getId ();
@@ -53,8 +52,8 @@ void diganaGraphMgr::setId(std::string name , int id) {
     if(id > 0)
     {
     mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(name);
-    mapNumIdToGraph::iterator id_itr =  get_graph_through_num_id(id)  ; 
-    if(id_itr == Num_Id_Graph_Map.end() )
+    mapNumIdToGraph::iterator id_itr =  get_graph_through_id(id)  ; 
+    if(id_itr == Id_Graph_Map.end() )
     	{
 	cout << "Set graph id for " << name << " to " << id << endl;
     	graph_itr_obj->second->setId(id);
@@ -135,13 +134,13 @@ mapNameToGraph::iterator  diganaGraphMgr::get_graph_through_name(std::string gra
 	return name_itr;
   }
 //given graph id extract graph from id - graph map 
-mapNumIdToGraph::iterator  diganaGraphMgr::get_graph_through_num_id(int id)
+mapNumIdToGraph::iterator  diganaGraphMgr::get_graph_through_id(int id)
   {
-      mapNumIdToGraph::iterator id_itr = Num_Id_Graph_Map.find(id) ;
+      mapIdToGraph::iterator id_itr = Id_Graph_Map.find(id) ;
 
 
    try {
-       if (id_itr == Num_Id_Graph_Map.end() )
+       if (id_itr == Id_Graph_Map.end() )
          throw 1;
      } catch (int) {
        std::cout << " Graph with id " << id  << " does not exist " << std::endl;

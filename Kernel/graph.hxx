@@ -92,12 +92,16 @@ class diganaGraphObjectIdentifier {
 //graph manager information.
 class diganaGraphMgr {
   public:
+   static diganaGraphMgr & getGraphMgr () {
+	     static diganaGraphMgr graphMgrInst;
+	       return graphMgrInst; 
+   }   
    int create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGraphType type);
    bool graph_exists (diganaGraphObjectIdentifier & graph_Id);
    mapNameToGraph::iterator get_graph_through_name(std::string graph_name);
-   mapNumIdToGraph::iterator  get_graph_through_num_id(int id);
+   mapIdToGraph::iterator get_graph_through_id(int graph_id);
 
-//following are signatures for graph api that can be accessed from manager class
+   //Following are signatures for graph api that can be accessed from manager class
    int add_vertex(std::string , std::string);
    void add_edge(std::string , int , int );  
    int getId (std::string );
@@ -109,9 +113,14 @@ class diganaGraphMgr {
    void insert_edge (std::string graph,   
 */
   private:
+   diganaGraphMgr () {
+	     Graph_Count = 0;
+	     }
+   diganaGraphMgr (diganaGraphMgr const &);
+   void operator = (diganaGraphMgr const &);
+
    mapIdToGraph Id_Graph_Map;
    mapNameToGraph Name_Graph_Map;
-   mapNumIdToGraph Num_Id_Graph_Map;
    int Graph_Count;
 };
 
