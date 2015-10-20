@@ -17,8 +17,10 @@ int
 diganaKernelMgr::add_vertex (diganaGraphObjectIdentifier & graph_Id,
 		             diganaGraphObjectIdentifier & node_Id) {
   if (!diganaGraphMgr::getGraphMgr ().check_graph_identifier (graph_Id))
+    {
+    cout << "Invalid graph identifier" << std::endl;
     return Null_Identifier_ID; 
-
+    }
   return diganaGraphMgr::getGraphMgr ().add_vertex (graph_Id.getName (), 
 		                                    node_Id.getName ()); 
 }
@@ -26,11 +28,24 @@ diganaKernelMgr::add_vertex (diganaGraphObjectIdentifier & graph_Id,
 void
 diganaKernelMgr::add_edge (diganaGraphObjectIdentifier & graph_Id,
 		             int source_vertex, int sink_vertex) {
-  if (!diganaGraphMgr::getGraphMgr ().check_graph_identifier (graph_Id) ||
-      !diganaGraphMgr::getGraphMgr ().check_vertex_id (graph_Id, source_vertex) ||
-      !diganaGraphMgr::getGraphMgr ().check_vertex_id (graph_Id, sink_vertex))
-    return; 
+  if (!diganaGraphMgr::getGraphMgr ().check_graph_identifier (graph_Id))
+	{     cout << "Error: Invalid Graph id" << endl ;
+     	      return;
+	}
+  if(!diganaGraphMgr::getGraphMgr ().check_vertex_id (graph_Id, source_vertex))
+        {     cout << "Error: Invalid source vertex id "<< source_vertex << endl ;    
+     	      return;
+	}
+  if(!diganaGraphMgr::getGraphMgr ().check_vertex_id (graph_Id, sink_vertex))
+    	{     cout << "Error: Invalid sink vertex id " << sink_vertex  << endl ;
+              return; 
+        }
   
   return diganaGraphMgr::getGraphMgr ().add_edge (graph_Id.getName (),
 		                                  source_vertex, sink_vertex);
 }
+
+
+
+
+

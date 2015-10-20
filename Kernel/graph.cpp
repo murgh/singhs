@@ -39,7 +39,7 @@ diganaGraphMgr::create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGrap
      Name_Graph_Map.insert(std::pair<std::string,diganaGraph*>(graph_name , graph ) );     
 
      graph->setId (Graph_Count);
-
+     graph_Id.setId (Graph_Count);
      Id_Graph_Map.insert ( std::pair<int,diganaGraph*>(graph->getId () , graph ) );
 
      Graph_Count++;
@@ -87,9 +87,9 @@ void diganaGraphMgr::add_edge(std::string name , int source , int sink ){
    mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(name);
 //check for invalid graph name
    if (graph_itr_obj == Name_Graph_Map.end())
-   return ;
+   {cout << "Invalid graph name" << endl;
+   return ;}
    else 
-   
    return graph_itr_obj->second->add_edge( source , sink);
 }
 
@@ -159,7 +159,7 @@ diganaGraphMgr::check_vertex_id (diganaGraphObjectIdentifier & graph_Id, int ver
       vertex_id > get_graph_through_id (graph_Id.getId ())->second->getVCount ()) {
     std::cout << "Error : Vertex ID "
 	      << vertex_id
-	      << "is not correct ID." << std::endl;
+	      << " is not correct ID." << std::endl;
     return false;
   }
 
@@ -168,9 +168,9 @@ diganaGraphMgr::check_vertex_id (diganaGraphObjectIdentifier & graph_Id, int ver
 
 bool
 diganaGraphMgr::check_graph_identifier (diganaGraphObjectIdentifier & graph_Id) {
-  std::string graph_name;
+  std::string graph_name = graph_Id.getName() ;
   if (graph_Id.getId () != Null_Identifier_ID) {
-    if (!graph_Id.getName ().empty ()) {
+    if (!graph_name.empty()) {
       try {
        if (get_graph_through_name (graph_Id.getName ())->second !=
 	   get_graph_through_id (graph_Id.getId ())->second )                      
@@ -184,6 +184,10 @@ diganaGraphMgr::check_graph_identifier (diganaGraphObjectIdentifier & graph_Id) 
 		   << std::endl;
          return false;
        }
+    
+    if (get_graph_through_name (graph_Id.getName ())->second ==
+            get_graph_through_id (graph_Id.getId ())->second )
+    return true;
     } else { //Only graph integer id is provided 
       //Name of the graph must be found 
       graph_Id.setName ( get_graph_through_id (graph_Id.getId ())->second->getName () );
