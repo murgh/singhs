@@ -53,14 +53,24 @@ void diganaGraphMgr::setId(std::string name , int id) {
     {
       mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(name);
       mapIdToGraph::iterator id_itr =  get_graph_through_id(id)  ; 
-      if (id_itr == Id_Graph_Map.end() ) {
+      	if (id_itr == Id_Graph_Map.end() ) {
   	  cout << "Set graph id for " << name << " to " << id << endl;
     	  graph_itr_obj->second->setId(id);
-      }
-      return;
-    } else { 
-      cout << "Invalid id : Enter value greater than 1" << endl ;
-    }
+          id_itr->second->setId(id);
+          return;	  
+      	 }
+         else{
+	 std::cout << "Invalid id : Graph with given ID "
+                   << id
+                   << " alreay exists"	
+		   << std::endl;
+         return;
+         }
+     } 
+     else
+     { 
+      		std::cout << "Invalid id : Enter value greater than 1" 			<< std::endl ;
+     }
 }
 
 int diganaGraphMgr::getId(std::string name) {
@@ -314,3 +324,5 @@ void diganaGraphMgr::register_edge_property (std::string graph_name, std::string
    diganaUndirectedGraph * g = (diganaUndirectedGraph *) graph;
    g->register_edge_property<Value> (property_name);
 }
+
+
