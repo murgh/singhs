@@ -64,6 +64,11 @@ sub parse_options {
 }
 
 sub main {
+        
+	if ($local_repo_path eq "") {
+		print "Specify the path of your local repository\n";
+		exit;
+	}
 
 	switch($do) {
 
@@ -90,11 +95,7 @@ sub main {
 
 sub add_test_case {
 
-	if ($local_repo_path eq "") {
-		print "Specify the path of your local repository\n";
-		exit;
-	}
-	
+
 	if ($test_case_name eq "") {
 		print "Specify the name of test case\n";
 		exit;
@@ -157,7 +158,7 @@ sub run {
 		chomp($test_case);
 		system("mkdir -p $runDir/$test_case");
 		my $tcl = "$testDir/$test_case/$test_case.tcl";
-		system("tclsh $tcl");
+		system("tclsh $tcl > Output.txt");
                 
 		system("cp Output.txt $runDir/$test_case/Output.txt");
 		system("rm -rf Output.txt");

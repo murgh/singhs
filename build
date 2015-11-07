@@ -1,7 +1,7 @@
 #! /bin/bash
-BOOST="/home/singhs/work/Boost/boost_1_59_0"
-TCL="/usr/include/tcl"
-LIBTCL="/usr/lib/libtcl8.5.so"
+BOOST="/home/user/MP/boost_1_59_0"
+TCL="/usr/include/tcl8.4"
+LIBTCL="/usr/lib/libtcl8.4.so"
 PARTITION_SOURCES="Partitioner/partition.cpp"
 DISTRIBUTOR_SOURCES="Distributor/distributor.cpp"
 KERNEL_SOURCES="Kernel/kernel.cpp"
