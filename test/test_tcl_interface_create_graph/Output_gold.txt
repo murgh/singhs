@@ -1,0 +1,8 @@
+Command : create_graph
+name    : graph1
+type    : directional
+Command : create_graph
+name    : graph2
+type    : bidirectional
+Command Usage : create_graph -name <Name/ID of the graph> -type <type of the graph>
+Command Usage : create_graph -name <Name/ID of the graph> -type <type of the graph>

@@ -1,0 +1,3 @@
+Test Case Name : test_tcl_interface_create_graph
+Description : Checks option parsing of command "create_graph"
+	     
