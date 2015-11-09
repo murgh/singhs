@@ -1,5 +1,3 @@
-load /home/user/MP/bee/mymodule.so
-
 
 create_graph -name graph1 -type directional
 

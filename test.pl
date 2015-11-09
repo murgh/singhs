@@ -117,7 +117,6 @@ sub add_test_case {
 	print $DESCRIPTION_FILE "Description : \n";
 	
 	open ( my $TCL_FILE , ">>" , "$testDir/$test_case_name/$test_case_name.tcl" );
-	print $TCL_FILE "load $local_repo_path/mymodule.so\n";
 
 	open ( my $GOLD_FILE , ">" , "$testDir/$test_case_name/Output_gold.txt" );
 
@@ -158,7 +157,9 @@ sub run {
 		chomp($test_case);
 		system("mkdir -p $runDir/$test_case");
 		my $tcl = "$testDir/$test_case/$test_case.tcl";
+		`sed -i '1i\'"load $local_repo_path/mymodule.so" $tcl`;
 		system("tclsh $tcl > Output.txt");
+		`sed -i '1d' $tcl`;
                 
 		system("cp Output.txt $runDir/$test_case/Output.txt");
 		system("rm -rf Output.txt");
