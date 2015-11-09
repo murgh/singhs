@@ -1,2 +1,2 @@
 Test Case Name : test_tcl_interface_create_edge
-Description : 
+Description : Checks option parsing for command "create_edge"
