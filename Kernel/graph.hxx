@@ -7,7 +7,7 @@
 #include <map>
 
 using namespace boost;
-using namespace std;
+
 
 enum diganaGraphType { 
                        diganaUndirectedGraphS, 
@@ -56,14 +56,61 @@ typedef std::map< std::string , diganaGraph *>  mapNameToGraph;
 typedef std::map< int , diganaGraph *>  mapNumIdToGraph; 
 
 //The graph property manager class
+class diganaGraphPropertyMap { 
+  public:
+   virtual ~diganaGraphPropertyMap () { }
+};
+
+template<typename Key, typename Value>
+class diganaGraphPropertyMapData : public diganaGraphPropertyMap {
+  private:
+    std::map<Key, Value> kvmap;
+    boost::associative_property_map< std::map<Key, Value> > assomap;
+
+  public:
+    diganaGraphPropertyMapData () {
+      boost::associative_property_map< std::map<Key, Value> > temp (kvmap);
+      assomap = temp;
+    }        
+ 
+   ~diganaGraphPropertyMapData () {
+      kvmap.clear ();
+   } 
+
+   boost::associative_property_map< std::map<Key, Value> > & associative_map () { return assomap; }
+};
+
 class diganaGraphProperty {
   public:
    diganaGraphProperty () { } 
+   boost::dynamic_properties & vertex_properties () { return vertex_properties_; }
+   boost::dynamic_properties & edge_properties () { return edge_properties_; }
+   boost::dynamic_properties & graph_properties () { return graph_properties_; }
+
+   template<typename Key, typename Value> void register_vertex_property (std::string name) {
+     diganaGraphPropertyMapData<Key, Value> * propMapData = new diganaGraphPropertyMapData<Key, Value>;
+     vertex_propert_map_.insert ( std::pair<std::string, diganaGraphPropertyMap*> (name, propMapData));  
+     vertex_properties_.property (name, propMapData->associative_map ());
+   } 
+
+   template<typename Key, typename Value> void register_edge_property (std::string name) {
+     diganaGraphPropertyMapData<Key, Value> * propMapData = new diganaGraphPropertyMapData<Key, Value>;
+     edge_propert_map_.insert ( std::pair<std::string, diganaGraphPropertyMap*> (name, propMapData));  
+     edge_properties_.property (name, propMapData->associative_map ());
+   } 
+
   private:
-   boost::dynamic_properties vertex_properties;
-   boost::dynamic_properties edge_properties;
-   boost::dynamic_properties graph_properties;
+   boost::dynamic_properties vertex_properties_;
+   boost::dynamic_properties edge_properties_;
+   boost::dynamic_properties graph_properties_;
+   std::map<std::string, diganaGraphPropertyMap *> vertex_propert_map_;
+   std::map<std::string, diganaGraphPropertyMap *> edge_propert_map_;
 };
+
+//The base class for the dynamic property type if any application wants to
+//add a new property on the graph.
+class diganaDynamicGraphProperty : public std::string
+ { };
 
 //Class object identifier to identify an object. Objects in our
 //graph library are graph, vertices and edges. They can be 
@@ -111,6 +158,10 @@ class diganaGraphMgr {
    bool check_vertex_id (diganaGraphObjectIdentifier &, int);
    template<typename Value> void register_vertex_property (std::string, std::string); 
    template<typename Value> void register_edge_property (std::string, std::string); 
+   template<typename Value> const Value get_vertex_property (int, std::string, std::string); 
+   template<typename Value> void put_vertex_property (int, std::string, std::string, Value); 
+   template<typename Value> const Value get_edge_property (int, int, std::string, std::string); 
+   template<typename Value> void put_edge_property (int, int, std::string, std::string, Value); 
 
 
 /*   int insert_vertex (diganaGraphObjectIdentifier graph_Id, std::string name);
@@ -154,9 +205,11 @@ class diganaGraph {
    void        setId   (int id) { identifier.setId (id); } 
    int         getVCount () const { return vertexCount; }
    void	       incVCount () { vertexCount++; }
+   diganaGraphType getType () const { return type; }
 
    virtual int add_vertex (std::string) { return 0;}
    virtual void add_edge (int, int) { }
+   //virtual void print_vertex_prop(int){}
 
   private:
    diganaGraphObjectIdentifier identifier;
@@ -174,8 +227,14 @@ class diganaUndirectedGraph : public diganaGraph {
    }
    int add_vertex (std::string);
    void add_edge (int, int);
+   void init_property () { if (!properties) properties = new diganaGraphProperty; }
+   //void print_vertex_prop(int);
    template<typename Value> void register_vertex_property (std::string); 
    template<typename Value> void register_edge_property (std::string); 
+   template<typename Value> const Value get_vertex_property (int, std::string); 
+   template<typename Value> void put_vertex_property (int, std::string, Value); 
+   template<typename Value> const Value get_edge_property (int, int, std::string); 
+   template<typename Value> void put_edge_property (int, int, std::string, Value); 
       
   private:
    diganaUndirectedGraphType graph;
@@ -191,8 +250,14 @@ class diganaDirectedGraph : public diganaGraph {
    }
    int add_vertex (std::string);
    void add_edge (int, int);
+   void init_property () { if (!properties) properties = new diganaGraphProperty; }
+   //void print_vertex_prop(int);
    template<typename Value> void register_vertex_property (std::string); 
    template<typename Value> void register_edge_property (std::string); 
+   template<typename Value> const Value get_vertex_property (int, std::string); 
+   template<typename Value> void put_vertex_property (int, std::string, Value); 
+   template<typename Value> const Value get_edge_property (int, int, std::string); 
+   template<typename Value> void put_edge_property (int, int, std::string, Value); 
 
   private:
    diganaDirectedGraphType graph;
