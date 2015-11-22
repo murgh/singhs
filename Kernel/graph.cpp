@@ -428,4 +428,59 @@ const Value diganaGraphMgr::get_edge_property (int sink, int source, std::string
     return ((diganaDirectedGraph *) graph)->get_edge_property<Value> (sink, source, property_name);
   }
 }
+/*
+class node_property : public std::string
+ {
+   public:
 
+    node_property () :
+     its_parent_id (0),
+     its_weight (1.0) { }
+
+   node_property (int parent_id, float weight) :
+    its_parent_id (parent_id),
+    its_weight (weight) { }
+
+   node_property (const node_property & p) {
+    its_parent = p.its_parent;
+    its_weight = p.its_weight;
+   }
+
+   private:
+    int its_parent_id;
+    float its_weight;
+ };
+1
+
+ main () {
+
+  diganaGraph * graph 
+  node_property node_p (20, 23.34);
+  kernelMrg().register_vertex_property<node_property> ("graph", "node_property");
+  kernelMgr().put_vertex_property<node_property> ("graph1", 1, "node_property", node_p);
+  node_p = .get_vertex_property<node_property> (
+ }
+
+int main() {
+	cout << "hello" << endl;
+	
+	diganaGraphObjectIdentifier b ( 1 , "beenish");
+	int id = diganaGraphMgr::getGraphMgr().create_graph(b , diganaUndirectedGraphS);
+	cout << id << endl;
+
+	diganaGraphObjectIdentifier v (1,"cat");
+	id = diganaGraphMgr::getGraphMgr().create_graph(v , diganaUndirectedGraphS);
+	cout << id << endl;
+
+	diganaGraphObjectIdentifier c (6,"caty");
+	id = diganaGraphMgr::getGraphMgr().create_graph(c , diganaUndirectedGraphS);
+	cout << id << endl;
+
+	int ver = diganaGraphMgr::getGraphMgr().add_vertex("beenish","v");
+	cout << ver << endl;
+	diganaGraphMgr::getGraphMgr().register_vertex_property<int> ("beenish","weight");
+	diganaGraphMgr::getGraphMgr().put_vertex_property<int> (ver, "caty" , "weight" , 8);
+	int get = diganaGraphMgr::getGraphMgr().get_vertex_property<int> (ver,"cat","weight");
+	cout << get << endl;
+	
+}*/

@@ -163,7 +163,6 @@ class diganaGraphMgr {
    template<typename Value> const Value get_edge_property (int, int, std::string, std::string); 
    template<typename Value> void put_edge_property (int, int, std::string, std::string, Value); 
 
-
 /*   int insert_vertex (diganaGraphObjectIdentifier graph_Id, std::string name);
    void insert_edge (std::string graph,   
 */
