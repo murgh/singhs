@@ -1,4 +1,9 @@
 //This is the graph header file for modelling the graph classes
+
+#ifndef DIGANA_GRAPH
+#define DIGANA_GRAPH
+
+
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/property_map/dynamic_property_map.hpp>
@@ -23,6 +28,7 @@ class diganaUndirectedGraph;
 class diganaDirectedGraph;
 class diganaGraphMgr; 
 
+//
 //Vertex Properties
 typedef property<vertex_name_t, std::string, 
         property<vertex_index2_t, int> > diganaVertexProperties; 
@@ -262,3 +268,4 @@ class diganaDirectedGraph : public diganaGraph {
    diganaDirectedGraphType graph;
    diganaGraphProperty * properties;
 };
+#endif //DIGANA_GRAPH
