@@ -24,12 +24,12 @@ void print_create_graph_usage()
 }
 
 
-void create_graph ( string option1 , string value1 , string option2 , string value2 ) 
+int create_graph ( string option1 , string value1 , string option2 , string value2 ) 
 {
 	if(option1.empty() || value1.empty() || option2.empty() || value2.empty()) 
 	{
 		print_create_graph_usage();
-		return;
+		return -1;
 	}
 	
         string graph_type , graph_name;
@@ -47,7 +47,7 @@ void create_graph ( string option1 , string value1 , string option2 , string val
 		}
 		else {
 			print_create_graph_usage();
-			return;
+			return -1;
 		}
 	}
 
@@ -56,7 +56,7 @@ void create_graph ( string option1 , string value1 , string option2 , string val
 	cout << "type    : " << graph_type << endl;
 
 	
-	diganaGraphObjectIdentifier graph_identifier ( 1 , graph_name );
+	diganaGraphObjectIdentifier graph_identifier ( Null_Identifier_ID , graph_name );
 	diganaGraphType type;
 
 	if ( graph_type == "undirectional") {
@@ -67,11 +67,13 @@ void create_graph ( string option1 , string value1 , string option2 , string val
 	}
 	else {
 		cout << "Invalid Graph type" << endl;
-		return;
+		return -1;
 	}
 	
 	int returned_id = diganaKernelMgr::diganaGetKernel().create_graph ( graph_identifier , type );
 	cout << "Id provided to graph is " << returned_id << endl;
+
+	return returned_id;
 }
 
 void print_create_node_usage() 
@@ -79,11 +81,11 @@ void print_create_node_usage()
 	cout << "Command usage : create_node -name <name of the node> -graph <name of the graph>" << endl;
 }
 
-void create_node (string option1 , string value1 , string option2 , string value2 ) 
+int create_node (string option1 , string value1 , string option2 , string value2 ) 
 {
 	if (option1.empty() || value1.empty() || option2.empty() || value2.empty()) {
 		print_create_node_usage();
-		return;
+		return -1;
 	}
 	
 	string node_name , graph_name;
@@ -101,7 +103,7 @@ void create_node (string option1 , string value1 , string option2 , string value
 		}
 		else {
 			print_create_node_usage();
-			return;
+			return -1;
 		}
 	}
 	
@@ -110,10 +112,13 @@ void create_node (string option1 , string value1 , string option2 , string value
 	cout << "name       : " << node_name << endl;
 	cout << "graph      : " << graph_name << endl;
 
-	diganaGraphObjectIdentifier graph_Id (1 , graph_name);
-	diganaGraphObjectIdentifier node_Id ( 1 , node_name);
+	int id = diganaGraphMgr::getGraphMgr().getId(graph_name);	
+	diganaGraphObjectIdentifier graph_Id (id , graph_name);
+	diganaGraphObjectIdentifier node_Id ( Null_Identifier_ID , node_name);
 	int returned_id = diganaKernelMgr::diganaGetKernel().add_vertex ( graph_Id , node_Id );
 	cout << "Id provided to node is " << returned_id << endl;
+
+	return returned_id;
 }
 
 void print_create_edge_usage() 
@@ -156,7 +161,8 @@ void create_edge (string option1 , string value1 , string option2 , string value
 	cout << "source     : " << source_id << endl;
 	cout << "sink       : " << sink_id << endl;
 
-	diganaGraphObjectIdentifier graph_Id ( 1 , graph_name);
+	int id = diganaGraphMgr::getGraphMgr().getId(graph_name);
+	diganaGraphObjectIdentifier graph_Id ( id , graph_name);
 	int source = atoi(source_id.c_str());
 	int sink = atoi(sink_id.c_str());
 	diganaKernelMgr::diganaGetKernel().add_edge ( graph_Id , source , sink );
