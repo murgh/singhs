@@ -294,6 +294,38 @@ diganaDirectedGraph::add_vertex (std::string name) {
    incVCount ();
    return VertexIdx2[v];
 }
+void diganaGraphMgr::remove_vertex(std::string graph_name , int vertex_index ) {
+   mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(graph_name);
+   if (graph_itr_obj == Name_Graph_Map.end() )
+   { std::cout << "Invalid Graph Name" << std::endl;
+     return ;}
+
+   else
+   return graph_itr_obj->second->remove_vertex(vertex_index);
+
+   
+}
+void diganaDirectedGraph::remove_vertex( int vertex_index ) {
+   
+   boost::graph_traits <diganaDirectedGraphType>::vertex_descriptor v = boost::vertex(vertex_index , graph);
+   if(vertex_index > getVCount() ){
+   std::cout << "Invalid vertex index " << std::endl;
+    return;
+   }
+   boost::clear_vertex(v , graph);
+   boost::remove_vertex(v , graph);
+}
+
+void diganaUndirectedGraph::remove_vertex( int vertex_index ) {
+
+   boost::graph_traits <diganaUndirectedGraphType>::vertex_descriptor v = boost::vertex(vertex_index , graph);
+   if(vertex_index > getVCount() ){
+   std::cout << "Invalid vertex index " << std::endl;
+   }
+boost::clear_vertex(v , graph);
+   boost::remove_vertex(v , graph);
+}
+
 
 //Addedge for Directed Graph
 void

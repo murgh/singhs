@@ -156,6 +156,7 @@ class diganaGraphMgr {
    mapNameToGraph::iterator get_graph_through_name(std::string graph_name);
    mapIdToGraph::iterator get_graph_through_id(int graph_id);
    int add_vertex(std::string , std::string);
+   void remove_vertex(std::string , int);
    bool check_if_edge_exists(std::string , int , int  );
    void add_edge(std::string , int , int );  
    int getId (std::string);
@@ -215,6 +216,7 @@ class diganaGraph {
 
    virtual int add_vertex (std::string) { return 0;}
    virtual bool check_if_edge_exists( int , int ){ return 0; };
+   virtual void remove_vertex (int){}
    virtual void add_edge (int, int) { }
    //virtual void print_vertex_prop(int){}
 
@@ -234,6 +236,7 @@ class diganaUndirectedGraph : public diganaGraph {
    }
    int add_vertex (std::string);
    bool check_if_edge_exists( int , int );
+   void remove_vertex(int);
    void add_edge (int, int);
    void init_property () { if (!properties) properties = new diganaGraphProperty; }
    //void print_vertex_prop(int);
@@ -258,6 +261,7 @@ class diganaDirectedGraph : public diganaGraph {
    }
    int add_vertex (std::string);
    bool check_if_edge_exists( int , int );
+   void remove_vertex(int);
    void add_edge (int, int);
    void init_property () { if (!properties) properties = new diganaGraphProperty; }
    //void print_vertex_prop(int);
