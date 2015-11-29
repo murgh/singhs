@@ -93,6 +93,17 @@ int diganaGraphMgr::add_vertex(std::string name, std::string vertex_name){
    return graph_itr_obj->second->add_vertex(vertex_name);
 }
 
+bool diganaGraphMgr::check_if_edge_exists(std::string graph_name , int source , int sink){
+  mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(graph_name);
+  //if invalid name is provided return -1
+   if (graph_itr_obj == Name_Graph_Map.end() )
+    {std::cout << "Invalid Graph Name" << std::endl;
+     return 0;}
+   else
+   return graph_itr_obj->second->check_if_edge_exists(source , sink);
+
+ }
+
 void diganaGraphMgr::add_edge(std::string name , int source , int sink ){
    mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(name);
 //check for invalid graph name
@@ -230,6 +241,31 @@ diganaUndirectedGraph::add_vertex (std::string name) {
    incVCount ();
    return VertexIdx2[v];
 }
+
+bool diganaUndirectedGraph::check_if_edge_exists(int source , int sink) {
+  
+   if(source > getVCount() || sink > getVCount() ){
+   std::cout << "Invalid vertex index " << std::endl;
+    return 0;
+   }
+  boost::graph_traits <diganaUndirectedGraphType>::vertex_descriptor v = boost::vertex(source , graph);
+  boost::graph_traits <diganaUndirectedGraphType>::vertex_descriptor u = boost::vertex(sink , graph);
+  
+  return boost::edge( u , v , graph ).second;
+}
+
+bool diganaDirectedGraph::check_if_edge_exists(int source , int sink) {
+  
+   if(source > getVCount() || sink > getVCount() ){
+   std::cout << "Invalid vertex index " << std::endl;
+    return 0;
+   }
+  boost::graph_traits <diganaDirectedGraphType>::vertex_descriptor v = boost::vertex(source , graph);
+  boost::graph_traits <diganaDirectedGraphType>::vertex_descriptor u = boost::vertex(sink , graph);
+   
+  return boost::edge( u , v , graph ).second;
+}
+
 
 //Addedge for Undirected Graph
 void
