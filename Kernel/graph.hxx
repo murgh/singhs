@@ -380,236 +380,105 @@ class diganaEdge {
 };
 
 namespace diganaGraphIterator {
-   typedef 
-    boost::variant<
-     typename boost::graph_traits<diganaDirectedGraphType>::vertex_iterator,
-     typename boost::graph_traits<diganaDirectedGraphType>::edge_iterator,
-     typename boost::graph_traits<diganaDirectedGraphType>::in_edge_iterator,
-     typename boost::graph_traits<diganaDirectedGraphType>::out_edge_iterator,
-     typename boost::graph_traits<diganaUndirectedGraphType>::vertex_iterator,
-     typename boost::graph_traits<diganaUndirectedGraphType>::adjacency_iterator,
-     typename boost::graph_traits<diganaUndirectedGraphType>::edge_iterator,
-     typename boost::graph_traits<diganaUndirectedGraphType>::in_edge_iterator,
-     typename boost::graph_traits<diganaUndirectedGraphType>::out_edge_iterator,
-     typename boost::graph_traits<diganaDirectedGraphType>::adjacency_iterator
-    > iterators; 
-
-   typedef std::pair<iterators, iterators> Iter_Pair;
-
-   typedef boost::variant<
-     typename boost::graph_traits <diganaDirectedGraphType>::vertex_descriptor,
-     typename boost::graph_traits <diganaUndirectedGraphType>::vertex_descriptor
-   > vertex_descriptor;
-
-   typedef boost::variant<
-     typename boost::graph_traits <diganaDirectedGraphType>::edge_descriptor,
-     typename boost::graph_traits <diganaUndirectedGraphType>::edge_descriptor
-   > edge_descriptor;
-
-   typedef variant <diganaVertex, diganaEdge> GraphObject;
-
-  class iterator {
-
-   private:
-    iterators begin_, end_;
-    bool isAttached_;
+  class adjacency_iterator {
+   private :
+    typename boost::graph_traits<diganaDirectedGraphType>::adjacency_iterator dir_begin, dir_end;
+    typename boost::graph_traits<diganaUndirectedGraphType>::adjacency_iterator u_begin, u_end;
+    diganaVertex attached_vertex;
 
    public:
-    iterator () : isAttached_ (false) { }
+    adjacency_iterator () : attached_vertex (diganaVertex ()) 
+    {}
 
-    void check_attached () {
-       try {
-        if (isAttached_ == false)
-          throw 1;
-       } catch (int e) {
-         std::cout << "Iterator left unattached\n";
-         return;
-       } 
-     return;
-    }
-
-    template<typename Graph_Type, typename Iter_Type>
-    void attach (diganaGraph * graph) {
-      isAttached_ = true;
-      Graph_Type * uG = (Graph_Type *) graph;
-      Iter_Type i, i_end;   
-      begin_ = i;
-      end_ = i_end;
-    }
-
-    template<typename Graph_Type, typename Iter_Type> 
-    void attach (int vid, diganaGraph * graph) {
-      isAttached_ = true;
-      Graph_Type * uG = (Graph_Type *) graph;
-      vertex_descriptor v = boost::vertex(vid, uG->getGraph ());
-      Iter_Type i, i_end;
-      begin_ = i;
-      end_ = i_end;
-    }
-
-    template<typename Graph_Type, typename Iter_Type> 
-    void attach (int srcid, int sinkid, diganaGraph * graph) {
-      isAttached_ = true;
-      Graph_Type * uG = (Graph_Type *) graph;
-      edge_descriptor e = boost::edge(srcid, sinkid, uG->getGraph ());
-      Iter_Type i, i_end;
-      begin_ = i;
-      end_ = i_end;
-    }
-
-    template <typename Graph, typename GraphType> 
-    static Iter_Pair vertices (diganaGraph * graph) {
-      Graph * uG = (Graph *) graph;
-      return boost::vertices (uG->getGraph ()); 
-    }
-
-    template <typename Graph, typename GraphType> 
-    static Iter_Pair edges (diganaGraph * graph) {
-      Graph * uG = (Graph *) graph;
-      return boost::edges (uG->getGraph ()); 
-    }
-
-    template <typename Graph, typename GraphType> 
-    static Iter_Pair adjacent_vertices (int vertex, diganaGraph * graph) {
-      Graph * uG = (Graph *) graph;
-      typename GraphType::vertex_descriptor v = boost::vertex (vertex, uG->getGraph ());
-      return boost::adjacent_vertices (v, uG->getGraph ()); 
-    }
-
-    template <typename Graph, typename GraphType> 
-    static Iter_Pair in_edges (int vertex, diganaGraph * graph) {
-      Graph * uG = (Graph *) graph;
-      typename GraphType::vertex_descriptor v = boost::vertex (vertex, uG->getGraph ());
-      return boost::in_edges (v, uG->getGraph ()); 
-    }
-
-    template <typename Graph, typename GraphType> 
-    static Iter_Pair out_edges (int vertex, diganaGraph * graph) {
-      Graph * uG = (Graph *) graph;
-      typename GraphType::vertex_descriptor v = boost::vertex (vertex, uG->getGraph ());
-      return boost::out_edges (v, uG->getGraph ()); 
-    }
-
-    template <typename Graph, typename GraphType, typename Iter_Type> 
-    static diganaVertex get_vertex (iterators itr, diganaGraph * graph) {
-      Graph * uG = (Graph *) graph;
-      Iter_Type & i = boost::get<Iter_Type> (itr);
-      typename GraphType::vertex_descriptor v = *i;
-      typename property_map<GraphType, vertex_index2_t>::type VIdx2 = 
-	                                   boost::get(vertex_index2, uG->getGraph ());
-      return diganaVertex (VIdx2[v], graph); 
-    }
-
-    iterators & begin () { return begin_; }
-    iterators & end () { return end_; }
-    friend class adjacent_vertices_iterator; 
-  }; 
-
-  class adjacent_vertices_iterator {
-
-   private:
-    iterator itr;
-    diganaVertex attached_Vertex; 
-
-   public:
-    adjacent_vertices_iterator () : itr () { }
-  
-    //Attach API
     void attach (int vertex, diganaGraph * graph) {
-      try {
-        if (graph->getType () == diganaUndirectedGraphS) {         
-          itr.attach<diganaUndirectedGraph, 
-                 typename boost::graph_traits<diganaUndirectedGraphType>::adjacency_iterator> (vertex, graph);
-          boost::tie (itr.begin_, itr.end_) = iterator::adjacent_vertices<diganaUndirectedGraph, diganaUndirectedGraphType> (vertex, graph);
+     if (graph->getType () == diganaUndirectedGraphS) {
+       diganaUndirectedGraphType::vertex_descriptor v = boost::vertex (vertex, ((diganaUndirectedGraph *)graph)->getGraph ()); 
+       boost::tie (u_begin, u_end) = boost::adjacent_vertices (v, ((diganaUndirectedGraph *)graph)->getGraph ());
+     } else if (graph->getType () == diganaDirectedGraphS) {
+       diganaDirectedGraphType::vertex_descriptor v = boost::vertex (vertex, ((diganaDirectedGraph *)graph)->getGraph ()); 
+       boost::tie (dir_begin, dir_end) = boost::adjacent_vertices (v, ((diganaDirectedGraph *)graph)->getGraph ());
+     }
+     attached_vertex = diganaVertex (vertex, graph);
+    }	  
 
-        } else if (graph->getType () == diganaDirectedGraphS) {         
-          itr.attach<diganaDirectedGraph, 
-                 typename boost::graph_traits<diganaDirectedGraphType>::adjacency_iterator> (vertex, graph);
-          boost::tie (itr.begin_, itr.end_) = iterator::adjacent_vertices<diganaDirectedGraph, diganaDirectedGraphType> (vertex, graph);
-        } else {
-          throw 1;
-        }
-      } catch (int e) {
-        std::cout << "Ambiguous graph type, must be directed or undirected graph\n"; 
-        return;
-      } 
-      attached_Vertex = diganaVertex (vertex, graph);
-    }
-
-    //Increment Operator
-    diganaVertex operator ++ () {
-      itr.check_attached ();
-      if (itr.begin () == itr.end ()) return diganaVertex ();
-      diganaGraph * graph = attached_Vertex.getParentGraph ();
-      if (graph->getType () == diganaUndirectedGraphS) {
-        typename boost::graph_traits<diganaUndirectedGraphType>::adjacency_iterator & beg =
-          boost::get<typename boost::graph_traits<diganaUndirectedGraphType>::adjacency_iterator> (itr.begin_); 
-        ++beg;
-        return iterator::get_vertex<diganaUndirectedGraph, diganaUndirectedGraphType, 
-                                    typename boost::graph_traits<diganaUndirectedGraphType>::adjacency_iterator> (beg, graph); 
-      } else if (graph->getType () == diganaDirectedGraphS) {
-        typename boost::graph_traits<diganaDirectedGraphType>::adjacency_iterator & beg =
-          boost::get<typename boost::graph_traits<diganaDirectedGraphType>::adjacency_iterator> (itr.begin_); 
-        ++beg;
-        diganaDirectedGraphType::vertex_descriptor v = *beg;
-	diganaDirectedGraphType & g = ((diganaDirectedGraph *) graph)->getGraph ();
-        typename property_map<diganaDirectedGraphType, vertex_index2_t>::type VIdx2 =
-	                                            boost::get(vertex_index2, g);
-        return diganaVertex (VIdx2[v], graph); 
-      } 
-      return diganaVertex (); 
-    }
-
-    //Dereference operator
     diganaVertex operator * () {
-      itr.check_attached ();
-      if (itr.begin () == itr.end ()) return diganaVertex ();
-      diganaGraph * graph = attached_Vertex.getParentGraph ();
-      if (graph->getType () == diganaUndirectedGraphS) {
-        typename boost::graph_traits<diganaUndirectedGraphType>::adjacency_iterator & beg =
-          boost::get<typename boost::graph_traits<diganaUndirectedGraphType>::adjacency_iterator> (itr.begin ()); 
-        return iterator::get_vertex<diganaUndirectedGraph, diganaUndirectedGraphType, 
-                                    typename boost::graph_traits<diganaUndirectedGraphType>::adjacency_iterator> (beg, graph); 
-      } else if (graph->getType () == diganaDirectedGraphS) {
-        typename boost::graph_traits<diganaDirectedGraphType>::adjacency_iterator beg =
-          boost::get<typename boost::graph_traits<diganaDirectedGraphType>::adjacency_iterator> (itr.begin ()); 
-        diganaDirectedGraphType::vertex_descriptor v = *beg;
-	diganaDirectedGraphType & g = ((diganaDirectedGraph *) graph)->getGraph ();
-        typename property_map<diganaDirectedGraphType, vertex_index2_t>::type VIdx2 =
-	                                            boost::get(vertex_index2, g);
-        return diganaVertex (VIdx2[v], graph); 
-      }
-      return diganaVertex ();
-    }    
-    
-    bool operator != ( adjacent_vertices_iterator & other) {
-     diganaVertex this_vertex = *(*this);
-     diganaVertex other_vertex = *other;
-     return (this_vertex != other_vertex) ? true : false;
+     diganaVertex vertex;
+     diganaGraph * graph = attached_vertex.getParentGraph ();
+     if (graph->getType () == diganaUndirectedGraphS) {
+       diganaUndirectedGraphType::vertex_descriptor uv = *u_begin;
+       typename property_map<diganaUndirectedGraphType, vertex_index2_t>::type VIdx2 =
+             boost::get(vertex_index2, ((diganaUndirectedGraph *)(attached_vertex.getParentGraph ()))->getGraph ());
+       vertex = diganaVertex(VIdx2[uv], attached_vertex.getParentGraph ());   
+     } else if (graph->getType () == diganaDirectedGraphS) {
+       diganaDirectedGraphType::vertex_descriptor dv = *dir_begin;
+       typename property_map<diganaDirectedGraphType, vertex_index2_t>::type VIdx2 =
+             boost::get(vertex_index2, ((diganaDirectedGraph *)(attached_vertex.getParentGraph ()))->getGraph ());
+       vertex = diganaVertex(VIdx2[dv], attached_vertex.getParentGraph ());   
+     }
+     return vertex;
+    }
+
+    diganaVertex operator ++ () {
+     diganaGraph * graph = attached_vertex.getParentGraph ();
+     if (graph->getType () == diganaUndirectedGraphS) ++u_begin;
+     if (graph->getType () == diganaDirectedGraphS) ++dir_begin;
+     return *(*this);
+    }
+  
+    bool operator != (adjacency_iterator & other) {
+     diganaGraph * graph = attached_vertex.getParentGraph ();
+     if (graph->getType () == diganaUndirectedGraphS && u_begin != u_end) return true;
+     if (graph->getType () == diganaDirectedGraphS && dir_begin != dir_end) return true;
+     return false;
+    }
+  };
+
+  class vertex_iterator  {
+   private :
+    typename boost::graph_traits<diganaDirectedGraphType>::vertex_iterator dir_begin, dir_end;
+    typename boost::graph_traits<diganaUndirectedGraphType>::vertex_iterator u_begin, u_end;
+    diganaGraph * graph;
+
+   public:
+    vertex_iterator () : graph(NULL) 
+    {}
+
+    void attach (diganaGraph * g) {
+     graph = g;
+     if (graph->getType () == diganaUndirectedGraphS) {
+       boost::tie (u_begin, u_end) = boost::vertices (((diganaUndirectedGraph *)graph)->getGraph ());
+     } else if (graph->getType () == diganaDirectedGraphS) {
+       boost::tie (dir_begin, dir_end) = boost::vertices (((diganaDirectedGraph *)graph)->getGraph ());
+     }
+    }	  
+
+    diganaVertex operator * () {
+     diganaVertex vertex;
+     if (graph->getType () == diganaUndirectedGraphS) {
+       diganaUndirectedGraphType::vertex_descriptor uv = *u_begin;
+       typename property_map<diganaUndirectedGraphType, vertex_index2_t>::type VIdx2 =
+             boost::get(vertex_index2, ((diganaUndirectedGraph *)graph)->getGraph ());
+       vertex = diganaVertex(VIdx2[uv], graph);   
+     } else if (graph->getType () == diganaDirectedGraphS) {
+       diganaDirectedGraphType::vertex_descriptor dv = *dir_begin;
+       typename property_map<diganaDirectedGraphType, vertex_index2_t>::type VIdx2 =
+             boost::get(vertex_index2, ((diganaDirectedGraph *) graph)->getGraph ());
+       vertex = diganaVertex(VIdx2[dv], graph);   
+     }
+     return vertex;
+    }
+
+    diganaVertex operator ++ () {
+     if (graph->getType () == diganaUndirectedGraphS) ++u_begin;
+     if (graph->getType () == diganaDirectedGraphS) ++dir_begin;
+     return *(*this);
+    }
+  
+    bool operator != (vertex_iterator & other) {
+     if (graph->getType () == diganaUndirectedGraphS && u_begin != u_end) return true;
+     if (graph->getType () == diganaDirectedGraphS && dir_begin != dir_end) return true;
+     return false;
     }
   };
 }
-
-class adjacent_iterator_directed {
- private :
-  typename boost::graph_traits<diganaDirectedGraphType>::adjacency_iterator begin, end;
-  diganaVertex attached_vertex;
-
- public:
-  adjacent_iterator_directed () { }
-
-  void attach (int vertex, diganaDirectedGraph * graph) {
-   diganaDirectedGraphType::vertex_descriptor v = boost::vertex (vertex, graph->getGraph ()); 
-   boost::tie (begin, end) = boost::adjacent_vertices (v, graph->getGraph ());
-   attached_vertex = diganaVertex (vertex, graph);
-  }	  
-  diganaVertex operator ++ () {
-   begin++;
-   diganaDirectedGraphType::vertex_descriptor v = *begin;
-   typename property_map<diganaDirectedGraphType, vertex_index2_t>::type VIdx2 =
-	 boost::get(vertex_index2, ((diganaDirectedGraph *)(attached_vertex->getParentGraph ()))->getGraph ());
-   return diganaVertex (VIdx2[v], graph); 
-   
-  }
-};
 #endif //DIGANA_GRAPH
