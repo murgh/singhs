@@ -497,3 +497,32 @@ const Value diganaGraphMgr::get_edge_property (int sink, int source, std::string
   }
 }
 
+int main () {
+
+  diganaDirectedGraph * graph = new diganaDirectedGraph (diganaGraphObjectIdentifier(1,"myGraph"), 
+		                         diganaDirectedGraphS);
+  cout << graph->add_vertex ("a") << "\n";//1
+  cout << graph->add_vertex ("b") << "\n";//2
+  cout << graph->add_vertex ("c") << "\n";//3
+  cout << graph->add_vertex ("d") << "\n";//4
+  cout << graph->add_vertex ("e") << "\n";//5
+  cout << graph->add_vertex ("f") << "\n";//5
+
+  graph->add_edge (0,1);
+  graph->add_edge (0,5);
+  graph->add_edge (0,3);
+  graph->add_edge (1,2);
+  graph->add_edge (5,2);
+  graph->add_edge (4,2);
+  graph->add_edge (3,4);
+
+  //Iterating on all the adjacent edges of node 1 shall print b , f, e
+  diganaGraphIterator::adjacent_vertices_iterator itr, eItr;
+  itr.attach (1, graph);  
+  diganaVertex v;
+  for (; itr != eItr; ++itr) {
+    v = *itr;
+    cout << "Vertex --> " << v.getVertexId () << "\n";
+  } 
+  return 0;  
+}
