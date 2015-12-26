@@ -166,6 +166,7 @@ class diganaGraphMgr {
    int getVCount (std::string name); 
    bool check_graph_identifier (diganaGraphObjectIdentifier &);
    bool check_vertex_id (diganaGraphObjectIdentifier &, int);
+   void dfs(std::string , int );
    template<typename Value> void register_vertex_property (std::string, std::string); 
    template<typename Value> void register_edge_property (std::string, std::string); 
    template<typename Value> const Value get_vertex_property (int, std::string, std::string); 
@@ -220,6 +221,7 @@ class diganaGraph {
    virtual bool check_if_edge_exists( int , int ){ return 0; };
    virtual void remove_vertex (int){}
    virtual void add_edge (int, int) { }
+  // virtual void dfs(int ){}
    //virtual void print_vertex_prop(int){}
 
   private:
@@ -240,6 +242,7 @@ class diganaUndirectedGraph : public diganaGraph {
    bool check_if_edge_exists( int , int );
    void remove_vertex(int);
    void add_edge (int, int);
+  // void dfs(int);
    void init_property () { if (!properties) properties = new diganaGraphProperty; }
    diganaUndirectedGraphType & getGraph () { return graph; }
    //void print_vertex_prop(int);
@@ -266,6 +269,7 @@ class diganaDirectedGraph : public diganaGraph {
    bool check_if_edge_exists( int , int );
    void remove_vertex(int);
    void add_edge (int, int);
+//   void dfs(int);
    void init_property () { if (!properties) properties = new diganaGraphProperty; }
    diganaDirectedGraphType & getGraph () { return graph; }
    //void print_vertex_prop(int);
@@ -364,13 +368,14 @@ class diganaEdge {
    } 
    
    template<typename Value> Value get_property (std::string Name) { 
-            return diganaGraphMgr::getGraphMgr ().get_edge_property<Value> (source, sink, Name);    
+            return diganaGraphMgr::getGraphMgr ().get_edge_property<Value> (source, sink, parent_graph->getName(), Name);    
    }
 
    template<typename Value> void put_property (std::string Name, Value val) { 
-            diganaGraphMgr::getGraphMgr ().put_edge_property<Value> (source, sink, Name, val);    
+            diganaGraphMgr::getGraphMgr ().put_edge_property<Value> (source, sink, parent_graph->getName(), Name, val);    
    }
-
+   int get_source_id(){return source;}
+   int get_sink_id(){return sink;}
    private:
     //new cannot be called for this object it will always be a local variable.
     void * operator new   (size_t);
@@ -480,5 +485,197 @@ namespace diganaGraphIterator {
      return false;
     }
   };
+	
+
+
+    class edge_iterator{
+	private :
+	diganaGraph* graph;
+	typename boost::graph_traits<diganaUndirectedGraphType>::edge_iterator u_begin , u_end;
+        typename boost::graph_traits<diganaDirectedGraphType>::edge_iterator dir_begin , dir_end;
+
+	public:
+	void attach (diganaGraph * g) {
+     	 graph = g;
+     	 if (graph->getType () == diganaUndirectedGraphS) {
+       	 boost::tie (u_begin, u_end) = boost::edges (((diganaUndirectedGraph *)graph)->getGraph ());
+     	 } 
+	if (graph->getType () == diganaDirectedGraphS) {
+         boost::tie (dir_begin, dir_end) = boost::edges (((diganaDirectedGraph *)graph)->getGraph ());
+         } 
+
+     	 }
+    	 
+
+	diganaEdge operator * () {
+        diganaEdge edgex;  	
+     	if (graph->getType () == diganaUndirectedGraphS) {
+       	diganaUndirectedGraphType::edge_descriptor ue = *u_begin;
+	diganaUndirectedGraphType::vertex_descriptor u = boost::source(ue , ((diganaUndirectedGraph *) graph)->getGraph() );
+        diganaUndirectedGraphType::vertex_descriptor v = boost::target(ue , ((diganaUndirectedGraph *) graph)->getGraph() );
+	 typename property_map<diganaUndirectedGraphType, vertex_index2_t>::type VIdx2 =
+             boost::get(vertex_index2, ((diganaUndirectedGraph *)graph)->getGraph ());
+	int sink = VIdx2[v];
+	int source = VIdx2[u];
+	diganaEdge edgex(source , sink ,((diganaUndirectedGraph *) graph));
+	return edgex;
+	}
+	else if (graph->getType () == diganaDirectedGraphS) {
+        diganaDirectedGraphType::edge_descriptor de = *dir_begin;
+        diganaDirectedGraphType::vertex_descriptor u = boost::source(de , ((diganaDirectedGraph *) graph)->getGraph() );
+        diganaDirectedGraphType::vertex_descriptor v = boost::target(de , ((diganaDirectedGraph *) graph)->getGraph() );
+         typename property_map<diganaDirectedGraphType, vertex_index2_t>::type VIdx2 =
+             boost::get(vertex_index2, ((diganaDirectedGraph *)graph)->getGraph ());
+        int sink = VIdx2[v];
+        int source = VIdx2[u];
+        diganaEdge edgex(source , sink ,((diganaDirectedGraph *) graph));
+        return edgex;
+        } 
+ 
+    return edgex; 
+    }
+
+	 diganaEdge operator ++ () {
+     	if (graph->getType () == diganaUndirectedGraphS) ++u_begin;    
+ 	if (graph->getType () == diganaDirectedGraphS) ++dir_begin;
+     	return *(*this);
+    }
+
+ bool operator != (edge_iterator & other) {
+     if (graph->getType () == diganaUndirectedGraphS && u_begin != u_end) return true;
+     if (graph->getType () == diganaDirectedGraphS && dir_begin != dir_end) return true;
+     return false;
+    }
+	};
+
+	class in_edge_iterator{
+	
+	private :
+        diganaGraph* graph;
+	diganaVertex attached_vertex;
+        typename boost::graph_traits<diganaUndirectedGraphType>::in_edge_iterator in_begin_u , in_end_u;
+
+        public :
+
+        in_edge_iterator () {
+          graph = NULL;
+        }
+	void attach(int vertex_id , diganaGraph* g){
+	graph = g;
+	if (graph->getType () == diganaUndirectedGraphS) {
+        diganaUndirectedGraphType::vertex_descriptor v = boost::vertex (vertex_id, ((diganaUndirectedGraph *)graph)->getGraph ()); 
+	boost::tie (in_begin_u, in_end_u) = boost::in_edges ( v , ((diganaUndirectedGraph *)graph)->getGraph ());
+         }
+
+         attached_vertex = diganaVertex (vertex_id, graph);
+	}
+
+        diganaEdge operator * () {
+        diganaEdge edgex;
+        if (graph->getType () == diganaUndirectedGraphS) {
+        diganaUndirectedGraphType::edge_descriptor ue = *in_begin_u;
+        diganaUndirectedGraphType::vertex_descriptor u = boost::source(ue , ((diganaUndirectedGraph *) graph)->getGraph() );
+        diganaUndirectedGraphType::vertex_descriptor v = boost::target(ue , ((diganaUndirectedGraph *) graph)->getGraph() );
+         typename property_map<diganaUndirectedGraphType, vertex_index2_t>::type VIdx2 =
+             boost::get(vertex_index2, ((diganaUndirectedGraph *)graph)->getGraph ());
+        int sink = VIdx2[v];
+        int source = VIdx2[u];
+        diganaEdge edgex(source , sink ,((diganaUndirectedGraph *) graph));
+        return edgex;
+        }
+	return edgex;
+        }
+
+    
+
+        diganaEdge operator ++ () {
+       	if (graph->getType () == diganaUndirectedGraphS) ++in_begin_u;
+        return *(*this);
+    }
+
+ 	 bool operator != (in_edge_iterator & other) {
+     	if (graph->getType () == diganaUndirectedGraphS && in_begin_u != in_end_u) return true;
+
+     	return false;
+
+	
+}
+};
+
+
+
+	class out_edge_iterator{
+	
+	private :
+        diganaGraph* graph;
+	diganaVertex attached_vertex;
+        typename boost::graph_traits<diganaDirectedGraphType>::out_edge_iterator out_begin_d , out_end_d;
+        typename boost::graph_traits<diganaUndirectedGraphType>::out_edge_iterator out_begin_u , out_end_u;
+
+        public :
+        out_edge_iterator () {
+          graph = NULL;
+        }
+
+	void attach(int vertex_id , diganaGraph* g){
+	graph = g;
+        if (graph->getType () == diganaDirectedGraphS) {
+        diganaDirectedGraphType::vertex_descriptor v = boost::vertex (vertex_id, ((diganaDirectedGraph *)graph)->getGraph ());
+         boost::tie (out_begin_d, out_end_d) = boost::out_edges ( v , ((diganaDirectedGraph *)graph)->getGraph ());
+         }else
+	if (graph->getType () == diganaUndirectedGraphS) {
+        diganaDirectedGraphType::vertex_descriptor v = boost::vertex (vertex_id, ((diganaDirectedGraph *)graph)->getGraph ());
+         boost::tie (out_begin_u, out_end_u) = boost::out_edges ( v , ((diganaUndirectedGraph *)graph)->getGraph ());
+         }
+
+         attached_vertex = diganaVertex (vertex_id, graph);
+	}
+
+        diganaEdge operator * () {
+        diganaEdge edgex;
+        if (graph->getType () == diganaDirectedGraphS) {
+        diganaDirectedGraphType::edge_descriptor ue = *out_begin_d;
+        diganaDirectedGraphType::vertex_descriptor u = boost::source(ue , ((diganaDirectedGraph *) graph)->getGraph() );
+        diganaDirectedGraphType::vertex_descriptor v = boost::target(ue , ((diganaDirectedGraph *) graph)->getGraph() );
+         typename property_map<diganaDirectedGraphType, vertex_index2_t>::type VIdx2 =
+             boost::get(vertex_index2, ((diganaDirectedGraph *)graph)->getGraph ());
+        int sink = VIdx2[v];
+        int source = VIdx2[u];
+        diganaEdge edgex(source , sink ,((diganaDirectedGraph *) graph));
+        return edgex;
+        }
+	else if (graph->getType () == diganaUndirectedGraphS) {
+        diganaUndirectedGraphType::edge_descriptor ue = *out_begin_u;
+        diganaUndirectedGraphType::vertex_descriptor u = boost::source(ue , ((diganaUndirectedGraph *) graph)->getGraph() );
+        diganaUndirectedGraphType::vertex_descriptor v = boost::target(ue , ((diganaUndirectedGraph *) graph)->getGraph() );
+         typename property_map<diganaUndirectedGraphType, vertex_index2_t>::type VIdx2 =
+             boost::get(vertex_index2, ((diganaUndirectedGraph *)graph)->getGraph ());
+        int sink = VIdx2[v];
+        int source = VIdx2[u];
+        diganaEdge edgex(source , sink ,((diganaUndirectedGraph *) graph));
+        return edgex;
+        }
+
+        return edgex;
+        }
+
+
+    
+
+        diganaEdge operator ++ () {
+       	if (graph->getType () == diganaDirectedGraphS) ++out_begin_d;
+        if (graph->getType () == diganaUndirectedGraphS) ++out_begin_u;
+
+        return *(*this);
+    }
+
+ 	 bool operator != (out_edge_iterator & other) {
+     	if (graph->getType () == diganaDirectedGraphS && out_begin_d != out_end_d) return true;
+        if (graph->getType () == diganaUndirectedGraphS && out_begin_u != out_end_u) return true;
+     	return false;
+
+	
+}
+};
 }
 #endif //DIGANA_GRAPH

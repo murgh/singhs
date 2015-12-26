@@ -1,6 +1,6 @@
 #include "graph.hxx"
 #include <iostream>
-
+#include <stack>
 using namespace std;
 
 bool
@@ -488,47 +488,64 @@ const Value diganaGraphMgr::get_vertex_property (int vertex, std::string graph_n
 }
 
 template<typename Value>
-const Value diganaGraphMgr::get_edge_property (int sink, int source, std::string graph_name, std::string property_name) {
+const Value diganaGraphMgr::get_edge_property (int source , int sink, std::string graph_name, std::string property_name) {
   diganaGraph * graph = get_graph_through_name(graph_name)->second;  
   if (graph->getType () == diganaUndirectedGraphS) {
-    return ((diganaUndirectedGraph *) graph)->get_edge_property<Value> (sink, source, property_name);
+    return ((diganaUndirectedGraph *) graph)->get_edge_property<Value> (source , sink, property_name);
   } else {
-    return ((diganaDirectedGraph *) graph)->get_edge_property<Value> (sink, source, property_name);
+    return ((diganaDirectedGraph *) graph)->get_edge_property<Value> (source , sink, property_name);
   }
 }
 
-/*
-int main () {
+void
+diganaGraphMgr::dfs(std::string graph_name , int vertex_id) {
 
-  diganaDirectedGraph * graph = new diganaDirectedGraph (diganaGraphObjectIdentifier(1,"myGraph"), 
-		                         diganaDirectedGraphS);
-  cout << graph->add_vertex ("a") << "\n";//1
-  cout << graph->add_vertex ("b") << "\n";//2
-  cout << graph->add_vertex ("c") << "\n";//3
-  cout << graph->add_vertex ("d") << "\n";//4
-  cout << graph->add_vertex ("e") << "\n";//5
-  cout << graph->add_vertex ("f") << "\n";//5
+ mapNameToGraph::iterator graph_itr_obj = get_graph_through_name(graph_name);
+  //if invalid name is provided return -1
+   if (graph_itr_obj == Name_Graph_Map.end() ){
+   cout << "Invalid Graph Name" << endl;
+   return; }
+   else{
+   diganaGraphMgr::register_vertex_property<bool> (graph_name, "Visited");
+   diganaGraphMgr::register_vertex_property<bool> (graph_name, "Explored");
 
-  graph->add_edge (0,1);
-  graph->add_edge (0,5);
-  graph->add_edge (0,3);
-  graph->add_edge (1,2);
-  graph->add_edge (5,2);
-  graph->add_edge (4,2);
-  graph->add_edge (3,4);
-
-  //Iterating on all the adjacent edges of node 1 shall print b , f, e
-  //diganaGraphIterator::adjacency_iterator itr, eItr;
-  //itr.attach (0, graph);  
-
-  //Iterating on all vertices
-  diganaGraphIterator::vertex_iterator itr, eItr;
-  itr.attach (graph);  
-
-  diganaVertex v;
-  for (; itr != eItr; ++itr) {
+   diganaVertex v;
+   diganaGraphIterator::vertex_iterator itr, eItr;
+   itr.attach(graph_itr_obj->second);
+   for (; itr != eItr; ++itr) {
     v = *itr;
-    cout << "Vertex --> " << v.getVertexId () << "\n";
-  } 
-  return 0;  
-} */
+   put_vertex_property<bool>(v.getVertexId () , graph_name , "Explored" , 0);
+   put_vertex_property<bool>(v.getVertexId () , graph_name ,"Visited" , 0);
+
+  }
+
+   diganaGraphIterator::adjacency_iterator ai , aietr;
+   ai.attach(vertex_id ,graph_itr_obj->second );
+   std::stack<int> vstack;
+   vstack.push(vertex_id);
+
+   while (!vstack.empty()) {
+    
+    int vid = vstack.top();
+
+   ai.attach(vid ,graph_itr_obj->second );
+    vstack.pop();
+    put_vertex_property<bool>(vid , graph_name , "Explored" , 1);
+    if(get_vertex_property<bool>(vid , graph_name , "Explored") == 1) {
+	cout << vid << "\n" ;}
+ 
+    for(; ai != aietr ; ++ai) {
+    v = *ai;
+    int vid1 = v.getVertexId ();
+    vid = vid1;
+    if(get_vertex_property<bool>(vid1 , graph_name , "Explored") == 0 && 
+					(get_vertex_property<bool>(vid1 , graph_name , "Visited" ) == 0)){
+    put_vertex_property<bool>(vid1 , graph_name , "Visited" , 1);
+    vstack.push(v.getVertexId());
+    }
+
+    }}
+
+}}
+
+
