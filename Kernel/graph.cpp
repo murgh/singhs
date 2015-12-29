@@ -370,7 +370,7 @@ void diganaUndirectedGraph::register_edge_property (std::string name) {
 template <typename Value>
 void diganaUndirectedGraph::put_edge_property (int source, int sink, std::string property_name, Value value) {
   typedef diganaUndirectedGraphType::edge_descriptor Key;
-  Key k =  boost::edge(source, sink, graph);
+  Key k =  boost::edge(boost::vertex (source, graph), boost::vertex (sink, graph), graph).first;
   boost::dynamic_properties & d_property = properties->edge_properties ();
   boost::put (property_name, d_property, k, value);   
 }
@@ -378,7 +378,7 @@ void diganaUndirectedGraph::put_edge_property (int source, int sink, std::string
 template <typename Value>
 const Value diganaUndirectedGraph::get_edge_property (int source, int sink, std::string property_name) {
   typedef diganaUndirectedGraphType::edge_descriptor Key;
-  Key k =  boost::edge(source, sink, graph);
+  Key k =  boost::edge(boost::vertex (source, graph), boost::vertex (sink, graph), graph).first;
   boost::dynamic_properties & d_property = properties->edge_properties ();
   return boost::get<Value> (property_name, d_property, k);   
 }
@@ -415,7 +415,7 @@ void diganaDirectedGraph::register_edge_property (std::string name) {
 template <typename Value>
 void diganaDirectedGraph::put_edge_property (int source, int sink, std::string property_name, Value value) {
   typedef diganaDirectedGraphType::edge_descriptor Key;
-  Key k =  boost::edge(source, sink, graph);
+  Key k =  boost::edge(boost::vertex (source, graph), boost::vertex (sink, graph), graph).first;
   boost::dynamic_properties & d_property = properties->edge_properties ();
   boost::put (property_name, d_property, k, value);   
 }
@@ -423,7 +423,7 @@ void diganaDirectedGraph::put_edge_property (int source, int sink, std::string p
 template <typename Value>
 const Value diganaDirectedGraph::get_edge_property (int source, int sink, std::string property_name) {
   typedef diganaDirectedGraphType::edge_descriptor Key;
-  Key k =  boost::edge(source, sink, graph);
+  Key k =  boost::edge(boost::vertex (source, graph), boost::vertex (sink, graph), graph).first;
   boost::dynamic_properties & d_property = properties->edge_properties ();
   return boost::get<Value> (property_name, d_property, k);   
 }
@@ -508,6 +508,7 @@ diganaGraphMgr::dfs(std::string graph_name , int vertex_id) {
    else{
    diganaGraphMgr::register_vertex_property<bool> (graph_name, "Visited");
    diganaGraphMgr::register_vertex_property<bool> (graph_name, "Explored");
+   diganaGraphMgr::register_edge_property<bool> (graph_name, "Explored");
 
    diganaVertex v;
    diganaGraphIterator::vertex_iterator itr, eItr;
@@ -520,6 +521,7 @@ diganaGraphMgr::dfs(std::string graph_name , int vertex_id) {
   }
 
    diganaGraphIterator::adjacency_iterator ai , aietr;
+   diganaGraphIterator::edge_iterator ei , eitr;
    ai.attach(vertex_id ,graph_itr_obj->second );
    std::stack<int> vstack;
    vstack.push(vertex_id);
@@ -546,6 +548,22 @@ diganaGraphMgr::dfs(std::string graph_name , int vertex_id) {
 
     }}
 
+    diganaEdge e;
+    ei.attach (graph_itr_obj->second);
+    int i = 0;
+    for (; ei != eitr; ++ei) {
+      e = *ei;
+      if (i % 2 == 0)
+        e.put_property <bool> ("Explored", true);
+      else
+        e.put_property <bool> ("Explored", false);
+    }
+    ei.attach (graph_itr_obj->second );
+    for (; ei != eitr; ++ei) {
+      e = *ei;
+      if (e.get_property <bool> ("Explored") == true)
+        cout << "The edge is between " << e.get_source_id () << " and " << e.get_sink_id () << "\n";
+    }
 }}
 
 
