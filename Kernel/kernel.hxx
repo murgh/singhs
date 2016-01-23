@@ -27,6 +27,9 @@ class diganaKernelMgr {
     //Add edge API
     void add_edge (diganaGraphObjectIdentifier & graphId,
 		          int source_vertex_id, int sink_vertex_id);
+
+    //Get the index of a node in graph given it's name
+    int get_vertex_id (diganaGraphObjectIdentifier & graphId, std::string name); 
  
     //Register Vertex property API
     template<typename Value> void register_vertex_property ( string graph_name , string property_name );

@@ -187,6 +187,15 @@ diganaGraphMgr::check_vertex_id (diganaGraphObjectIdentifier & graph_Id, int ver
   return true;
 }
 
+int
+diganaGraphMgr::getVertexId (diganaGraphObjectIdentifier & graph_Id, std::string name) {
+
+  if (!get_graph_through_id (graph_Id.getId ())->second)
+    return false;
+
+  return get_graph_through_id (graph_Id.getId ())->second->getVertexId (name);
+}
+
 bool
 diganaGraphMgr::check_graph_identifier (diganaGraphObjectIdentifier & graph_Id) {
   std::string graph_name = graph_Id.getName() ;
@@ -437,6 +446,19 @@ void diganaGraph::register_graph_property (std::string name) {
 }
 */
 
+void diganaGraph::mapVertexIdAndName (diganaGraphObjectIdentifier id) {
+   vertex_name_index_map.insert (std::pair<std::string, int> (id.getName (), id.getId ()));
+}
+
+int diganaGraph::getVertexId (std::string name) {
+   std::map<std::string, int>::iterator it;
+   it = vertex_name_index_map.find (name);
+   if (it != vertex_name_index_map.end ())
+     return vertex_name_index_map[name];
+
+   return -1;   
+}
+
 template<typename Value>
 void diganaGraphMgr::register_vertex_property (std::string graph_name, std::string property_name) {
   diganaGraph * graph = get_graph_through_name(graph_name)->second;  
@@ -565,5 +587,3 @@ diganaGraphMgr::dfs(std::string graph_name , int vertex_id) {
         cout << "The edge is between " << e.get_source_id () << " and " << e.get_sink_id () << "\n";
     }
 }}
-
-

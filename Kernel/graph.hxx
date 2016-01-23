@@ -166,6 +166,7 @@ class diganaGraphMgr {
    int getVCount (std::string name); 
    bool check_graph_identifier (diganaGraphObjectIdentifier &);
    bool check_vertex_id (diganaGraphObjectIdentifier &, int);
+   int  getVertexId (diganaGraphObjectIdentifier &, std::string);
    void dfs(std::string , int );
    template<typename Value> void register_vertex_property (std::string, std::string); 
    template<typename Value> void register_edge_property (std::string, std::string); 
@@ -216,6 +217,8 @@ class diganaGraph {
    int         getVCount () const { return vertexCount; }
    void	       incVCount () { vertexCount++; }
    diganaGraphType getType () const { return type; }
+   int         getVertexId (std::string); 
+   void mapVertexIdAndName (diganaGraphObjectIdentifier);
 
    virtual int add_vertex (std::string) { return 0;}
    virtual bool check_if_edge_exists( int , int ){ return 0; };
@@ -228,6 +231,7 @@ class diganaGraph {
    diganaGraphObjectIdentifier identifier;
    diganaGraphType type;
    int vertexCount, edgeCount;
+   std::map<std::string, int> vertex_name_index_map;
 };
 
 

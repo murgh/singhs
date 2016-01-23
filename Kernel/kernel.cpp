@@ -47,6 +47,14 @@ diganaKernelMgr::add_edge (diganaGraphObjectIdentifier & graph_Id,
 		                                  source_vertex, sink_vertex);
 }
 
+int diganaKernelMgr::get_vertex_id (diganaGraphObjectIdentifier & graphId, std::string name) {
+  if (!diganaGraphMgr::getGraphMgr ().check_graph_identifier (graphId))
+	{     cout << "Error: Invalid Graph id" << endl ;
+     	      return -1;
+	}
+  return diganaGraphMgr::getGraphMgr ().getVertexId (graphId, name); 
+}
+
 template<typename Value>
 void diganaKernelMgr::register_vertex_property (string graph_name , string property_name ) {
 
