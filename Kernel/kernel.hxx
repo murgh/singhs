@@ -44,10 +44,10 @@ class diganaKernelMgr {
     template<typename Value> const Value get_edge_property ( int source , int sink , string graph_name , string property_name);
 
     //Get Vertex Property
-    template<typename Value> void put_vertex_property (int vertex, string graph_name, string property_name);
+    template<typename Value> void put_vertex_property (int vertex, string graph_name, string property_name, Value val);
 
     //Get Edge Property
-    template<typename Value> void put_edge_property ( int source , int sink , string graph_name , string property);
+    template<typename Value> void put_edge_property ( int source , int sink , string graph_name , string property, Value val);
 
 
   private:
