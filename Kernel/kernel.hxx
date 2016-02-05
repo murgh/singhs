@@ -32,22 +32,111 @@ class diganaKernelMgr {
     int get_vertex_id (diganaGraphObjectIdentifier & graphId, std::string name); 
  
     //Register Vertex property API
-    template<typename Value> void register_vertex_property ( string graph_name , string property_name );
+    template<typename Value> void register_vertex_property ( string graph_name , string property_name ) {
+        int id = diganaGraphMgr::getGraphMgr().getId(graph_name);
+        diganaGraphObjectIdentifier graph_Id ( id , graph_name);
+
+        if (!diganaGraphMgr::getGraphMgr ().check_graph_identifier (graph_Id) ) {
+                cout << "Invalid Graph Id" << endl;
+                return;
+        }
+        return diganaGraphMgr::getGraphMgr().register_vertex_property<Value> (graph_name , property_name);
+    }
 
     //Register Edge property API
-    template<typename Value> void register_edge_property ( string graph_name , string property_name );
+    template<typename Value> void register_edge_property ( string graph_name , string property_name ) {
+        int id = diganaGraphMgr::getGraphMgr().getId(graph_name);
+        diganaGraphObjectIdentifier graph_Id ( id , graph_name);
 
-    //Put Vertex property
-    template<typename Value> const Value get_vertex_property ( int vertex_id , string graph_name , string property_name);
+        if (!diganaGraphMgr::getGraphMgr ().check_graph_identifier (graph_Id) ) {
+                cout << "Invalid Graph Id" << endl;
+                return;
+        }
 
-    //Put Edge property
-    template<typename Value> const Value get_edge_property ( int source , int sink , string graph_name , string property_name);
+        return diganaGraphMgr::getGraphMgr().register_edge_property<Value> (graph_name , property_name);
+    }
 
-    //Get Vertex Property
-    template<typename Value> void put_vertex_property (int vertex, string graph_name, string property_name, Value val);
+    //Get Vertex property
+    template<typename Value> const Value get_vertex_property ( int vertex_id , string graph_name , string property_name) {
+        int id = diganaGraphMgr::getGraphMgr().getId(graph_name);
+        diganaGraphObjectIdentifier graph_Id ( id , graph_name);
 
-    //Get Edge Property
-    template<typename Value> void put_edge_property ( int source , int sink , string graph_name , string property, Value val);
+        if (!diganaGraphMgr::getGraphMgr ().check_graph_identifier (graph_Id) ) {
+                cout << "Invalid Graph Id" << endl;
+                return;
+        }
+
+        if (!diganaGraphMgr::getGraphMgr().check_vertex_id (graph_Id , vertex_id)) {
+                cout << "Invalid Vertex Id" << endl;
+                return;
+        }
+
+        return diganaGraphMgr::getGraphMgr().get_vertex_property<Value> (vertex_id , graph_name , property_name);
+    }
+
+    //Get Edge property
+    template<typename Value> const Value get_edge_property ( int source , int sink , string graph_name , string property_name) {
+        int id = diganaGraphMgr::getGraphMgr().getId(graph_name);
+        diganaGraphObjectIdentifier graph_Id ( id , graph_name);
+
+        if (!diganaGraphMgr::getGraphMgr ().check_graph_identifier (graph_Id) ) {
+                cout << "Invalid Graph Id" << endl;
+                return;
+        }
+
+        if (!diganaGraphMgr::getGraphMgr().check_vertex_id (graph_Id , source)) {
+                cout << "Invalid Source vertex Id" << endl;
+                return;
+        }
+
+        if (!diganaGraphMgr::getGraphMgr().check_vertex_id (graph_Id , sink)) {
+                cout << "Invalid Sink vertex Id" << endl;
+                return;
+        }
+
+        return diganaGraphMgr::getGraphMgr().get_edge_property<Value> (sink , source , graph_name , property_name);
+    }
+
+    //Put Vertex Property
+    template<typename Value> void put_vertex_property (int vertex_id, string graph_name, string property_name, Value data) {
+        int id = diganaGraphMgr::getGraphMgr().getId(graph_name);
+        diganaGraphObjectIdentifier graph_Id ( id , graph_name);
+
+        if (!diganaGraphMgr::getGraphMgr ().check_graph_identifier (graph_Id) ) {
+                cout << "Invalid Graph Id" << endl;
+                return;
+        }
+
+        if (!diganaGraphMgr::getGraphMgr().check_vertex_id (graph_Id , vertex_id)) {
+                cout << "Invalid Vertex Id" << endl;
+                return;
+        }
+
+        return diganaGraphMgr::getGraphMgr().put_vertex_property<Value> ( vertex_id , graph_name , property_name , data);
+    }
+
+    //Put Edge Property
+    template<typename Value> void put_edge_property ( int source , int sink , string graph_name , string property_name, Value data) {
+        int id = diganaGraphMgr::getGraphMgr().getId(graph_name);
+        diganaGraphObjectIdentifier graph_Id ( id , graph_name);
+
+        if (!diganaGraphMgr::getGraphMgr ().check_graph_identifier (graph_Id) ) {
+                cout << "Invalid Graph Id" << endl;
+                return;
+        }
+
+        if (!diganaGraphMgr::getGraphMgr().check_vertex_id (graph_Id , source)) {
+                cout << "Invalid Source vertex Id" << endl;
+                return;
+        }
+
+        if (!diganaGraphMgr::getGraphMgr().check_vertex_id (graph_Id , sink)) {
+                cout << "Invalid Sink vertex Id" << endl;
+                return;
+        }
+
+        return diganaGraphMgr::getGraphMgr().put_vertex_property<Value> ( sink , source ,  graph_name , property_name , data);
+    }
 
 
   private:
