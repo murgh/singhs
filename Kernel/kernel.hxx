@@ -17,7 +17,7 @@ class diganaKernelMgr {
     //Graph APIs for kernel
 
     //Create graph API
-    int create_graph (diganaGraphObjectIdentifier & graphId, 
+    diganaGraph * create_graph (diganaGraphObjectIdentifier & graphId, 
 		             diganaGraphType graph_type); 
 
     //Add vertex API

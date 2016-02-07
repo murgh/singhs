@@ -9,7 +9,7 @@ diganaKernelMgr::print () {
   return 0;
 }
 
-int
+diganaGraph *
 diganaKernelMgr::create_graph (diganaGraphObjectIdentifier & graph_Id,
 		               diganaGraphType graph_type) {
   return diganaGraphMgr::getGraphMgr ().create_graph (graph_Id, graph_type); 

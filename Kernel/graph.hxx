@@ -132,6 +132,10 @@ class diganaGraphObjectIdentifier {
    }
    diganaGraphObjectIdentifier () :
 	identifier (std::pair<int, std::string> (Null_Identifier_ID, std::string())) { }
+   diganaGraphObjectIdentifier (int id) :
+	identifier (std::pair<int, std::string> (id, std::string())) { }
+   diganaGraphObjectIdentifier (std::string str) :
+	identifier (std::pair<int, std::string> (Null_Identifier_ID, str)) { }
 
    bool operator == (const diganaGraphObjectIdentifier &) const;
    void operator = (const diganaGraphObjectIdentifier &);
@@ -153,7 +157,8 @@ class diganaGraphMgr {
      static diganaGraphMgr graphMgrInst;
      return graphMgrInst; 
    }
-   int create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGraphType type);
+   diganaGraph * create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGraphType type);
+   diganaGraph * get_graph (diganaGraphObjectIdentifier graph_Id);
    bool graph_exists (diganaGraphObjectIdentifier & graph_Id);
    mapNameToGraph::iterator get_graph_through_name(std::string graph_name);
    mapIdToGraph::iterator get_graph_through_id(int graph_id);
@@ -170,10 +175,6 @@ class diganaGraphMgr {
    void dfs(std::string , int );
    template<typename Value> void register_vertex_property (std::string, std::string); 
    template<typename Value> void register_edge_property (std::string, std::string); 
-   template<typename Value> const Value get_vertex_property (int, std::string, std::string); 
-   template<typename Value> void put_vertex_property (int, std::string, std::string, Value); 
-   template<typename Value> const Value get_edge_property (int, int, std::string, std::string); 
-   template<typename Value> void put_edge_property (int, int, std::string, std::string, Value); 
 
 /*   int insert_vertex (diganaGraphObjectIdentifier graph_Id, std::string name);
    void insert_edge (std::string graph,   
@@ -203,6 +204,7 @@ class diganaGraph {
                 diganaGraphType t) : identifier(objId) , type (t) { 
      vertexCount = 0;
      edgeCount = 0;
+     properties = NULL;
    }
 
    //Copy constructor
@@ -219,19 +221,45 @@ class diganaGraph {
    diganaGraphType getType () const { return type; }
    int         getVertexId (std::string); 
    void mapVertexIdAndName (diganaGraphObjectIdentifier);
+   void init_property () { if (!properties) properties = new diganaGraphProperty; }
+   diganaGraphProperty * get_properties () { return properties; }
 
-   virtual int add_vertex (std::string) { return 0;}
+   virtual int add_vertex (diganaGraphObjectIdentifier) { return 0;}
    virtual bool check_if_edge_exists( int , int ){ return 0; };
    virtual void remove_vertex (int){}
-   virtual void add_edge (int, int) { }
-  // virtual void dfs(int ){}
+   virtual void add_edge (diganaGraphObjectIdentifier, diganaGraphObjectIdentifier) { }
+   // virtual void dfs(int ){}
    //virtual void print_vertex_prop(int){}
+
+   template<typename Value> void register_vertex_property (std::string name) {
+     init_property ();
+     if (type == diganaUndirectedGraphS) {
+       properties->register_vertex_property<
+	        diganaUndirectedGraphType::vertex_descriptor, Value> (name);
+     } else if (type == diganaDirectedGraphS) {
+       properties->register_vertex_property<
+	        diganaDirectedGraphType::vertex_descriptor, Value> (name);
+     }
+   }
+
+
+   template<typename Value> void register_edge_property (std::string name) {
+     init_property ();
+     if (type == diganaUndirectedGraphS) {
+       properties->register_edge_property<
+	        diganaUndirectedGraphType::edge_descriptor, Value> (name);
+     } else if (type == diganaDirectedGraphS) {
+       properties->register_edge_property<
+	        diganaDirectedGraphType::edge_descriptor, Value> (name);
+     }
+   }
 
   private:
    diganaGraphObjectIdentifier identifier;
    diganaGraphType type;
    int vertexCount, edgeCount;
    std::map<std::string, int> vertex_name_index_map;
+   diganaGraphProperty * properties;
 };
 
 
@@ -240,26 +268,17 @@ class diganaUndirectedGraph : public diganaGraph {
    diganaUndirectedGraph (diganaGraphObjectIdentifier objId,
                           diganaGraphType t) :
    diganaGraph (objId, t) { 
-     properties = NULL;
    }
-   int add_vertex (std::string);
+   int add_vertex (diganaGraphObjectIdentifier);
    bool check_if_edge_exists( int , int );
    void remove_vertex(int);
-   void add_edge (int, int);
+   void add_edge (diganaGraphObjectIdentifier, diganaGraphObjectIdentifier);
   // void dfs(int);
-   void init_property () { if (!properties) properties = new diganaGraphProperty; }
    diganaUndirectedGraphType & getGraph () { return graph; }
    //void print_vertex_prop(int);
-   template<typename Value> void register_vertex_property (std::string); 
-   template<typename Value> void register_edge_property (std::string); 
-   template<typename Value> const Value get_vertex_property (int, std::string); 
-   template<typename Value> void put_vertex_property (int, std::string, Value); 
-   template<typename Value> const Value get_edge_property (int, int, std::string); 
-   template<typename Value> void put_edge_property (int, int, std::string, Value); 
       
   private:
    diganaUndirectedGraphType graph;
-   diganaGraphProperty * properties;
 };
 
 class diganaDirectedGraph : public diganaGraph {
@@ -267,26 +286,17 @@ class diganaDirectedGraph : public diganaGraph {
    diganaDirectedGraph (diganaGraphObjectIdentifier objId,
                           diganaGraphType t) :
    diganaGraph (objId, t) { 
-     properties = NULL;
    }
-   int add_vertex (std::string);
+   int add_vertex (diganaGraphObjectIdentifier);
    bool check_if_edge_exists( int , int );
    void remove_vertex(int);
-   void add_edge (int, int);
+   void add_edge (diganaGraphObjectIdentifier, diganaGraphObjectIdentifier);
 //   void dfs(int);
-   void init_property () { if (!properties) properties = new diganaGraphProperty; }
    diganaDirectedGraphType & getGraph () { return graph; }
    //void print_vertex_prop(int);
-   template<typename Value> void register_vertex_property (std::string); 
-   template<typename Value> void register_edge_property (std::string); 
-   template<typename Value> const Value get_vertex_property (int, std::string); 
-   template<typename Value> void put_vertex_property (int, std::string, Value); 
-   template<typename Value> const Value get_edge_property (int, int, std::string); 
-   template<typename Value> void put_edge_property (int, int, std::string, Value); 
 
   private:
    diganaDirectedGraphType graph;
-   diganaGraphProperty * properties;
 };
 
 
@@ -317,12 +327,37 @@ class diganaVertex {
      parent_graph = NULL;
    } 
    
-   template<typename Value> Value get_property (std::string Name) { 
-            return diganaGraphMgr::getGraphMgr ().get_vertex_property<Value> (vertexID, Name);    
+   template<typename Value> Value get_property (std::string name) { 
+	    
+     Value val;
+     boost::dynamic_properties & d_property = 
+            parent_graph->get_properties ()->vertex_properties (); 
+     if (parent_graph->getType () == diganaUndirectedGraphS) {
+       diganaUndirectedGraphType::vertex_descriptor key = 
+	                     boost::vertex(vertexID, ((diganaUndirectedGraph *)parent_graph)->getGraph ()); 
+       val =  boost::get<Value> (name, d_property, key);
+     } else if (parent_graph->getType () == diganaDirectedGraphS) {
+       diganaDirectedGraphType::vertex_descriptor key = 
+	                     boost::vertex(vertexID, ((diganaDirectedGraph *)parent_graph)->getGraph ()); 
+       val =  boost::get<Value> (name, d_property, key);
+	     
+     }
+     return val;
    }
 
-   template<typename Value> void put_property (std::string Name, Value val) { 
-            diganaGraphMgr::getGraphMgr ().put_vertex_property<Value> (vertexID, Name, val);    
+   template<typename Value> void put_property (std::string name, Value val) { 
+
+     boost::dynamic_properties & d_property = 
+            parent_graph->get_properties ()->vertex_properties (); 
+     if (parent_graph->getType () == diganaUndirectedGraphS) {
+       diganaUndirectedGraphType::vertex_descriptor key = 
+	                     boost::vertex(vertexID, ((diganaUndirectedGraph *) parent_graph)->getGraph ()); 
+       boost::put (name, d_property, key, val);
+     } else if (parent_graph->getType () == diganaDirectedGraphS) {
+       diganaDirectedGraphType::vertex_descriptor key = 
+	                     boost::vertex(vertexID, ((diganaDirectedGraph *) parent_graph)->getGraph ()); 
+       boost::put (name, d_property, key, val);
+     }
    }
 
    diganaGraph * getParentGraph () { return parent_graph; }
@@ -371,13 +406,46 @@ class diganaEdge {
      parent_graph = NULL;
    } 
    
-   template<typename Value> Value get_property (std::string Name) { 
-            return diganaGraphMgr::getGraphMgr ().get_edge_property<Value> (source, sink, parent_graph->getName(), Name);    
+   template<typename Value> Value get_property (std::string name) { 
+
+     Value val;
+     boost::dynamic_properties & d_property = 
+            parent_graph->get_properties ()->edge_properties (); 
+     if (parent_graph->getType () == diganaUndirectedGraphS) {
+       diganaUndirectedGraphType::edge_descriptor key = 
+	        boost::edge(boost::vertex (source, ((diganaUndirectedGraph *) parent_graph)->getGraph ()), 
+		            boost::vertex (sink, ((diganaUndirectedGraph *) parent_graph)->getGraph ()), 
+			    ((diganaUndirectedGraph *) parent_graph)->getGraph ()).first;
+       val = boost::get<Value> (name, d_property, key);
+     } else if (parent_graph->getType () == diganaDirectedGraphS) {
+       diganaDirectedGraphType::edge_descriptor key = 
+	        boost::edge(boost::vertex (source, ((diganaDirectedGraph *)parent_graph)->getGraph ()), 
+		            boost::vertex (sink, ((diganaDirectedGraph *)parent_graph)->getGraph ()), 
+			    ((diganaDirectedGraph *)parent_graph)->getGraph ()).first;
+       val = boost::get<Value> (name, d_property, key);
+     }
+     return val;
    }
 
-   template<typename Value> void put_property (std::string Name, Value val) { 
-            diganaGraphMgr::getGraphMgr ().put_edge_property<Value> (source, sink, parent_graph->getName(), Name, val);    
+   template<typename Value> void put_property (std::string name, Value val) { 
+
+     boost::dynamic_properties & d_property = 
+            parent_graph->get_properties ()->edge_properties (); 
+     if (parent_graph->getType () == diganaUndirectedGraphS) {
+       diganaUndirectedGraphType::edge_descriptor key = 
+	        boost::edge(boost::vertex (source, ((diganaUndirectedGraph *)parent_graph)->getGraph ()), 
+		            boost::vertex (sink, ((diganaUndirectedGraph *)parent_graph)->getGraph ()), 
+			    ((diganaUndirectedGraph *) parent_graph)->getGraph ()).first;
+       boost::put (name, d_property, key, val);
+     } else if (parent_graph->getType () == diganaDirectedGraphS) {
+       diganaDirectedGraphType::edge_descriptor key = 
+	        boost::edge(boost::vertex (source, ((diganaDirectedGraph *)parent_graph)->getGraph ()), 
+		            boost::vertex (sink, ((diganaDirectedGraph *) parent_graph)->getGraph ()), 
+			    ((diganaDirectedGraph *) parent_graph)->getGraph ()).first;
+       boost::put (name, d_property, key, val);
+     }
    }
+
    int get_source_id(){return source;}
    int get_sink_id(){return sink;}
    private:

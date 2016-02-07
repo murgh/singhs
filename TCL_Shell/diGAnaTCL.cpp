@@ -70,10 +70,10 @@ int create_graph ( string option1 , string value1 , string option2 , string valu
 		return -1;
 	}
 	
-	int returned_id = diganaKernelMgr::diganaGetKernel().create_graph ( graph_identifier , type );
-	cout << "Id provided to graph is " << returned_id << endl;
+	diganaGraph * graph = diganaGraphMgr::getGraphMgr().create_graph ( graph_identifier , type );
+	cout << "Id provided to graph is " << graph->getId () << endl;
 
-	return returned_id;
+	return graph->getId ();
 }
 
 void print_create_node_usage() 
@@ -112,10 +112,8 @@ int create_node (string option1 , string value1 , string option2 , string value2
 	cout << "name       : " << node_name << endl;
 	cout << "graph      : " << graph_name << endl;
 
-	int id = diganaGraphMgr::getGraphMgr().getId(graph_name);	
-	diganaGraphObjectIdentifier graph_Id (id , graph_name);
-	diganaGraphObjectIdentifier node_Id ( Null_Identifier_ID , node_name);
-	int returned_id = diganaKernelMgr::diganaGetKernel().add_vertex ( graph_Id , node_Id );
+	diganaGraph * graph = diganaGraphMgr::getGraphMgr().get_graph (graph_name);
+	int returned_id = graph->add_vertex (node_name);
 	cout << "Id provided to node is " << returned_id << endl;
 
 	return returned_id;
@@ -161,11 +159,10 @@ void create_edge (string option1 , string value1 , string option2 , string value
 	cout << "source     : " << source_id << endl;
 	cout << "sink       : " << sink_id << endl;
 
-	int id = diganaGraphMgr::getGraphMgr().getId(graph_name);
-	diganaGraphObjectIdentifier graph_Id ( id , graph_name);
+	diganaGraph * graph = diganaGraphMgr::getGraphMgr ().get_graph (graph_name);
 	int source = atoi(source_id.c_str());
 	int sink = atoi(sink_id.c_str());
-	diganaKernelMgr::diganaGetKernel().add_edge ( graph_Id , source , sink );
+	graph->add_edge (source , sink);
 }
 
 //void register_node_property ( string option1 , string value1 , string option2 , string value2 , string	
@@ -174,7 +171,6 @@ void create_edge (string option1 , string value1 , string option2 , string value
 void run_diGAna ()
 {
    pMgr.print ();  	
-   diganaKernelMgr::diganaGetKernel().print ();  	
    dMgr.print ();
      cout << "This is the code that I have added in run_diGAna " << endl;
 }
