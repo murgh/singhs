@@ -1,7 +1,18 @@
 #include "graph.hxx"
 #include <iostream>
 #include <stack>
+#include <string>
+#include <sstream>
+
 using namespace std;
+
+template <typename T>
+string ToString(T val)
+ {
+    stringstream stream;
+    stream << val;
+    return stream.str();
+ }
 
 bool
 diganaGraphObjectIdentifier::operator == (const diganaGraphObjectIdentifier & operand2) const
@@ -248,7 +259,12 @@ diganaGraphMgr::check_graph_identifier (diganaGraphObjectIdentifier & graph_Id) 
 int
 diganaUndirectedGraph::add_vertex (diganaGraphObjectIdentifier id) {
    
+   if (!id.is_valid ()) {
+     std::cout << "ERROR : Invalid Vertex ID" << std::endl;
+     return -1;
+   }
    std::string name = id.getName ();
+   if (name.empty ()) name = ToString<int> (id.getId ());
    boost::graph_traits <diganaUndirectedGraphType>::vertex_descriptor v =
 	                                           boost::add_vertex (graph);
    property_map<diganaUndirectedGraphType, vertex_name_t>::type VertexName =
@@ -258,6 +274,8 @@ diganaUndirectedGraph::add_vertex (diganaGraphObjectIdentifier id) {
    VertexIdx2[v] = getVCount();
    VertexName[v] = name;
    incVCount ();
+   mapVertexIdAndName (diganaGraphObjectIdentifier(VertexIdx2[v], name));
+   //printf ("%s %d %x\n", name.c_str (), id.getId (), v); 
    return VertexIdx2[v];
 }
 
@@ -289,8 +307,9 @@ bool diganaDirectedGraph::check_if_edge_exists(int source , int sink) {
 //Addedge for Undirected Graph
 void
 diganaUndirectedGraph::add_edge (diganaGraphObjectIdentifier source_id, diganaGraphObjectIdentifier sink_id) {
-   int source = source_id.getId ();
-   int sink = sink_id.getId ();
+   int source = getVertexId (ToString<int> (source_id.getId ()));
+   int sink = getVertexId (ToString<int> (sink_id.getId ()));
+
    boost::graph_traits <diganaUndirectedGraphType>::vertex_descriptor u =
 	                                               boost::vertex(source, graph);
 
@@ -298,13 +317,20 @@ diganaUndirectedGraph::add_edge (diganaGraphObjectIdentifier source_id, diganaGr
 	                                               boost::vertex(sink, graph);
 
    boost::add_edge (u, v, graph);
+   boost::graph_traits <diganaUndirectedGraphType>::edge_descriptor e = 
+                                                  boost::edge(u, v, graph).first;
 }
 
 //Addvertex for Directed Graph
 int
 diganaDirectedGraph::add_vertex (diganaGraphObjectIdentifier id) {
 
+   if (!id.is_valid ()) {
+     std::cout << "ERROR : Invalid Vertex ID" << std::endl;
+     return -1;
+   }
    std::string name = id.getName ();
+   if (name.empty ()) name = ToString<int> (id.getId ());
    boost::graph_traits <diganaDirectedGraphType>::vertex_descriptor v =
 	                                           boost::add_vertex (graph);
    property_map<diganaDirectedGraphType, vertex_name_t>::type VertexName =
@@ -314,6 +340,7 @@ diganaDirectedGraph::add_vertex (diganaGraphObjectIdentifier id) {
    VertexIdx2[v] = getVCount();
    VertexName[v] = name;
    incVCount ();
+   mapVertexIdAndName (diganaGraphObjectIdentifier(VertexIdx2[v], name));
    return VertexIdx2[v];
 }
 
@@ -353,8 +380,9 @@ boost::clear_vertex(v , graph);
 //Addedge for Directed Graph
 void
 diganaDirectedGraph::add_edge (diganaGraphObjectIdentifier source_id, diganaGraphObjectIdentifier sink_id) {
-   int source = source_id.getId ();
-   int sink = sink_id.getId ();
+   int source = getVertexId (ToString<int> (source_id.getId ()));
+   int sink = getVertexId (ToString<int> (sink_id.getId ()));
+
    boost::graph_traits <diganaDirectedGraphType>::vertex_descriptor u =
 	                                               boost::vertex(source, graph);
 
