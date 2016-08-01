@@ -259,10 +259,11 @@ diganaGraphMgr::check_graph_identifier (diganaGraphObjectIdentifier & graph_Id) 
 int
 diganaUndirectedGraph::add_vertex (diganaGraphObjectIdentifier id) {
    
-   if (!id.is_valid ()) {
+   /*if (!id.is_valid ()) {
      std::cout << "ERROR : Invalid Vertex ID" << std::endl;
      return -1;
    }
+   */
    std::string name = id.getName ();
    if (name.empty ()) name = ToString<int> (id.getId ());
    boost::graph_traits <diganaUndirectedGraphType>::vertex_descriptor v =
@@ -325,10 +326,11 @@ diganaUndirectedGraph::add_edge (diganaGraphObjectIdentifier source_id, diganaGr
 int
 diganaDirectedGraph::add_vertex (diganaGraphObjectIdentifier id) {
 
-   if (!id.is_valid ()) {
+   /*if (!id.is_valid ()) {
      std::cout << "ERROR : Invalid Vertex ID" << std::endl;
      return -1;
    }
+   */
    std::string name = id.getName ();
    if (name.empty ()) name = ToString<int> (id.getId ());
    boost::graph_traits <diganaDirectedGraphType>::vertex_descriptor v =
@@ -472,3 +474,41 @@ diganaGraphMgr::dfs(std::string graph_name , int vertex_id) {
         cout << "The edge is between " << e.get_source_id () << " and " << e.get_sink_id () << "\n";
     }
 }}
+
+//adding vector of vector class : needs to be implemented as graph property for 
+// preserving coarsened edges in multilevel partitioning
+typedef std::pair <int , int >  ip ; 
+class vector_of_vector {
+public : 
+std::vector< std::vector< ip > > vov ;
+
+void insert_elems ( std::vector <ip> internal_vector )
+        {
+		{
+		vov.push_back( internal_vector ); 
+		}
+
+    return ;
+ }
+void iterate_elems () {
+
+
+for(std::vector<std::vector< ip > >::iterator it = vov.begin(); it != vov.end(); ++it)
+	{
+		
+	for(std::vector< ip >::iterator jt = it->begin(); jt != it->end(); ++jt)
+		{
+		   std::cout << "source " << jt->first << " and sink " << jt->second << "\n"; 
+	           std::cout << std::endl;
+		}
+	std::cout << std::endl;
+	}
+return ; 
+}
+
+
+};
+
+int main(){
+return 0;
+}
