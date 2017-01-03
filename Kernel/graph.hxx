@@ -30,7 +30,7 @@ class diganaDirectedGraph;
 class diganaGraphMgr; 
 
 typedef boost::variant <diganaDirectedGraph, diganaUndirectedGraph> diganaGraphVariant;
-//
+
 //Vertex Properties
 typedef property<vertex_name_t, std::string, 
         property<vertex_index2_t, int> > diganaVertexProperties; 
@@ -118,7 +118,54 @@ class diganaGraphProperty {
 //The base class for the dynamic property type if any application wants to
 //add a new property on the graph.
 class diganaDynamicGraphProperty : public std::string
- { };
+ { 
+   typedef std::pair <void *, void *> PropMapVal;
+   typedef std::map <std::string, PropMapVal> PropNameMap; 
+   typedef void (*set_property) (std::string, std::string);
+   typedef std::string (*get_property) (std::string);
+
+   public:
+     virtual void register_tcl_callbacks () {
+	     return;
+     }
+   protected:  
+     void register_sp (std::string name, PropMapVal fnPtrs) {
+       if (!isSubPropertyRegistered (name))
+	 nameFnMap.insert (std::pair <std::string, PropMapVal>(name, fnPtrs));
+     }
+
+     std::string get_sub_property (std::string name) {
+       if (!isSubPropertyRegistered (name)) {
+	 printf ("Error : Property %s is not registered\n", name.c_str ());
+	 return std::string ("");
+       }	 
+       PropMapVal & fnPair = nameFnMap.find (name)->second;
+       get_property function = (get_property) fnPair.first;	
+       return function (name);//Get API
+     }
+
+     void set_sub_property (std::string name, std::string prop) {
+       if (!isSubPropertyRegistered (name)) {
+	 printf ("Error : Property %s is not registered\n", name.c_str ());
+	 return;
+       }	 
+       PropMapVal & fnPair = nameFnMap.find (name)->second;
+       set_property function = (set_property) fnPair.second;
+       function (name, prop);//Set API
+     }
+
+   private:
+     PropNameMap nameFnMap;
+
+     bool isSubPropertyRegistered (std::string name, bool issueError = false) {
+       PropNameMap::iterator it;
+       it = nameFnMap.find (name);
+       if (it != nameFnMap.end ())
+	 return true;
+
+       return false;
+     }
+ };
 
 //Class object identifier to identify an object. Objects in our
 //graph library are graph, vertices and edges. They can be 
