@@ -1,21 +1,23 @@
 #! /bin/bash
-BOOST="/home/user/MP/boost_1_59_0"
-TCL="/usr/include/tcl8.4"
-TCL_VERSION="tcl8.4"
+BOOST="../../Boost/boost_1_59_0"
+TCL="/usr/include/tcl8.5"
+TCL_VERSION="tcl8.5"
 PARTITION_SOURCES="Partitioner/partition.cpp"
 DISTRIBUTOR_SOURCES="Distributor/distributor.cpp"
 KERNEL_SOURCES="Kernel/kernel.cpp"
 TCL_SOURCES="TCL_Shell/diGAna_TCL_Shell.c"
 GRAPH_SOURCES="Kernel/graph.cpp"
-SOURCES="$PARTITION_SOURCES $DISTRIBUTOR_SOURCES $KERNEL_SOURCES $TCL_SOURCES $GRAPH_SOURCES"
+APPLICATION_SOURCES="Applications/Timer/timer.cxx"
+SOURCES="$PARTITION_SOURCES $DISTRIBUTOR_SOURCES $KERNEL_SOURCES $TCL_SOURCES $GRAPH_SOURCES $APPLICATION_SOURCES"
 
-rm -rf part.o distro.o kernel.o graph.o mymodule.so
+rm -rf part.o distro.o kernel.o graph.o mymodule.so apps.o
 touch $SOURCES
 #echo "g++ -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall $SOURCES -o mymodule.so"
 g++ $PARTITION_SOURCES -c -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -o part.o
 g++ $DISTRIBUTOR_SOURCES -c -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -o distro.o
 g++ $KERNEL_SOURCES -c -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -o kernel.o
 g++ $GRAPH_SOURCES -c -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -o graph.o
-g++ $TCL_SOURCES part.o distro.o kernel.o graph.o -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -l$TCL_VERSION -Wall -Wno-write-strings -o digana.o
+g++ $APPLICATION_SOURCES -c -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL -Wall -o apps.o
+g++ $TCL_SOURCES part.o distro.o kernel.o graph.o apps.o -fPIC -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -l$TCL_VERSION -Wall -Wno-write-strings -o digana.o
 #echo "g++ $SOURCES -shared -o mymodule.so -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL" 
 #g++ $SOURCES -shared -o mymodule.so -I $BOOST -I $TCL -I Partitioner -I Distributor -I Kernel -I TCL_Shell -L $LIBTCL 
