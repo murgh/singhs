@@ -24,7 +24,7 @@ diganaGraph * create_test_timing_graph () {
 	id.setName ("Circuit");
 	diganaGraph * graph = 
 		diganaGraphMgr::getGraphMgr ().create_graph (id, diganaDirectedGraphS);   
-	timerPinInfo pin_properties [29] =
+	timerPinInfo pin_properties [31] =
 	{
 		timerPinInfo ("IN1", false/*clk*/, true/*data*/, timerIOPort, timerInput),
 		timerPinInfo ("IN2", false/*clk*/, true/*data*/, timerIOPort, timerInput),
@@ -54,19 +54,36 @@ diganaGraph * create_test_timing_graph () {
 		timerPinInfo ("cb3/A", true/*clk*/, false/*data*/, timerComboPin, timerInput),
 		timerPinInfo ("cb3/Y", true/*clk*/, false/*data*/, timerComboPin, timerOutput),
 		timerPinInfo ("cb4/A", true/*clk*/, false/*data*/, timerComboPin, timerInput),
-		timerPinInfo ("cb4/Y", true/*clk*/, false/*data*/, timerComboPin, timerOutput)
+		timerPinInfo ("cb4/Y", true/*clk*/, false/*data*/, timerComboPin, timerOutput),
+		timerPinInfo ("V_IN", false/*clk*/, false/*data*/, timerPinVirtualNode, timerInput),
+		timerPinInfo ("V_OUT", false/*clk*/, false/*data*/, timerPinVirtualNode, timerOutput)
 	};
 	graph->register_vertex_property<timerPinProperty> ("Pin_Property");
 	graph->register_edge_property<timerArcProperty> ("Arc_Property");
 
 	diganaVertex V;
-	/*Create the Graph*/
-	for (int i = 0; i < 29; i++) {
+	/*Create Nodes for Graph*/
+	for (int i = 0; i < 31; i++) {
 		graph->add_vertex (i);
 		timerPinProperty timerProp (&(pin_properties[i]));
 		V = diganaVertex (i, graph);
 		V.put_property<timerPinProperty> ("Pin_Property", timerProp);		
 	}
 
+	diganaEdge E;
+	/*Create Edges for Graph*/
+	for (int i = 0; i < 28; i++) {
+		graph->add_edge (29, 0); 
+		graph->add_edge (29, 1); 
+		graph->add_edge (29, 2); 
+		graph->add_edge (3, 30); 
+	}
+
 	return graph;
+}
+
+int main () {
+
+	diganaGraph * graph = create_test_timing_graph ();
+	return 0;
 }
