@@ -115,5 +115,6 @@ diganaGraph * create_test_timing_graph () {
 int main () {
 
 	diganaGraph * graph = create_test_timing_graph ();
+	//graph->path_enumerate () ;
 	return 0;
 }
