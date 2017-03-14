@@ -70,14 +70,44 @@ diganaGraph * create_test_timing_graph () {
 		V.put_property<timerPinProperty> ("Pin_Property", timerProp);		
 	}
 
-	diganaEdge E;
 	/*Create Edges for Graph*/
-	for (int i = 0; i < 28; i++) {
-		graph->add_edge (29, 0); 
-		graph->add_edge (29, 1); 
-		graph->add_edge (29, 2); 
-		graph->add_edge (3, 30); 
-	}
+	/*Data Edges*/
+	graph->add_edge (29, 0); 
+	graph->add_edge (29, 1); 
+	graph->add_edge (29, 2); 
+	graph->add_edge (3, 30); 
+	graph->add_edge (0, 4); 
+	graph->add_edge (4, 5); 
+	graph->add_edge (5, 8); 
+	graph->add_edge (8, 10); 
+	graph->add_edge (1, 6); 
+	graph->add_edge (6, 7); 
+	graph->add_edge (7, 9); 
+	graph->add_edge (9, 10); 
+	graph->add_edge (10, 11); 
+	graph->add_edge (12, 13); 
+	graph->add_edge (13, 14); 
+	graph->add_edge (14, 15); 
+	graph->add_edge (15, 16); 
+	graph->add_edge (17, 18); 
+	graph->add_edge (18, 19); 
+	graph->add_edge (19, 20); 
+	graph->add_edge (20, 3); 
+
+	/*Clock*/
+	graph->add_edge (2, 21); 
+	graph->add_edge (21, 22); 
+	graph->add_edge (22, 23); 
+	graph->add_edge (23, 24); 
+	graph->add_edge (24, 12); 
+	graph->add_edge (12, 11); 
+	graph->add_edge (24, 25); 
+	graph->add_edge (25, 26); 
+	graph->add_edge (26, 27); 
+	graph->add_edge (27, 28); 
+	graph->add_edge (28, 17); 
+	graph->add_edge (17, 16); 
+
 
 	return graph;
 }
