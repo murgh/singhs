@@ -14,6 +14,7 @@ diganaPartitionMgr::print () {
 }
 
 class prop : public diganaDynamicGraphProperty {
+	public:
 	int a;
 	int b;
 };
@@ -39,14 +40,20 @@ diganaPartitionMgr::test_property_interface () {
   graph->register_vertex_property<prop> ("cood");
   graph->register_edge_property<double> ("delay");
   i = 0;
+  prop p;
+  p.a = 10, p.b = 20;
   while (i < 9) {
     diganaVertex v(i, graph);
     diganaEdge e(i, i+1, graph);
     v.put_property<int> ("length", i+5);
     e.put_property<double> ("delay", i-10);
+    v.put_property<prop> ("cood", p);
    
     i++;
   }
+  diganaVertex v(8, graph);
+  prop prop_p = v.get_property<prop> ("cood");
+
   return 0;}
 void 
 diganaKL::bipartition ( std::string graph_name) {
@@ -349,7 +356,7 @@ void diganaKL::implement_kl(std::string graph_name) {
 
 // sample implementation 
 
-
+/*
 int main(){
 
   diganaGraphObjectIdentifier id;
@@ -376,5 +383,4 @@ int main(){
 return 0;
 
 
-}						
-
+}*/						

@@ -119,39 +119,54 @@ class diganaGraphProperty {
 //add a new property on the graph.
 class diganaDynamicGraphProperty : public std::string
  { 
-   typedef std::pair <void *, void *> PropMapVal;
+   typedef std::pair <std::pair <void *, void *>, void *> PropMapVal;
    typedef std::map <std::string, PropMapVal> PropNameMap; 
-   typedef void (*set_property) (std::string, std::string);
-   typedef std::string (*get_property) (std::string);
+   typedef void (*set_property_fn) (std::string, std::string);
+   typedef std::string (*get_property_fn) (std::string);
+   typedef void (*print_property_fn) (std::string);
 
    public:
      virtual void register_tcl_callbacks () {
 	     return;
      }
    protected:  
+     //Register the sub property
      void register_sp (std::string name, PropMapVal fnPtrs) {
        if (!isSubPropertyRegistered (name))
 	 nameFnMap.insert (std::pair <std::string, PropMapVal>(name, fnPtrs));
      }
 
-     std::string get_sub_property (std::string name) {
+     //Get sub property
+     std::string get_sp (std::string name) {
        if (!isSubPropertyRegistered (name)) {
 	 printf ("Error : Property %s is not registered\n", name.c_str ());
 	 return std::string ("");
        }	 
        PropMapVal & fnPair = nameFnMap.find (name)->second;
-       get_property function = (get_property) fnPair.first;	
+       get_property_fn function = (get_property_fn) fnPair.first.first;	
        return function (name);//Get API
      }
 
-     void set_sub_property (std::string name, std::string prop) {
-       if (!isSubPropertyRegistered (name)) {
+     //Set sup property
+     void set_sp (std::string name, std::string prop) {
+       if (isSubPropertyRegistered (name)) {
 	 printf ("Error : Property %s is not registered\n", name.c_str ());
 	 return;
        }	 
        PropMapVal & fnPair = nameFnMap.find (name)->second;
-       set_property function = (set_property) fnPair.second;
+       set_property_fn function = (set_property_fn) fnPair.first.second;
        function (name, prop);//Set API
+     }
+
+     //Print the sub property
+     void print_sp (std::string name) {
+       if (!isSubPropertyRegistered (name)) {
+	 printf ("Error : Property %s is not registered\n", name.c_str ());
+	 return; 
+       }	 
+       PropMapVal & fnPair = nameFnMap.find (name)->second;
+       print_property_fn function = (print_property_fn) fnPair.second; 
+       function (name);
      }
 
    private:

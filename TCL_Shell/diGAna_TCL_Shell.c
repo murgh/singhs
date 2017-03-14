@@ -41,6 +41,9 @@ int search(string search_space[], string value, int size) {
 	return 0;
 }
 
+int set_node_property (ClientData cd, Tcl_Interp * interp, int objc, Tcl_Obj * const objv[]) {
+	return 0;
+}
 
 int create_graph_cmd(ClientData cd, Tcl_Interp * interp, int objc, Tcl_Obj * const objv[]) {
 		
@@ -189,15 +192,15 @@ int create_edge_cmd(ClientData cd, Tcl_Interp * interp, int objc, Tcl_Obj * cons
 int AppInit(Tcl_Interp *interp) {
 	if (Tcl_Init(interp) == TCL_ERROR) return TCL_ERROR;
 	Tcl_SetVar(interp,"tcl_rcFileName","~/.wishrc",TCL_GLOBAL_ONLY);
-	Tcl_SetVar(interp,"tcl_prompt1","echo -n meow@user>> ",TCL_GLOBAL_ONLY);
+	Tcl_SetVar(interp,"tcl_prompt1","echo -n DIGANA>> ",TCL_GLOBAL_ONLY);
 	Tcl_CreateObjCommand (interp, "create_graph", create_graph_cmd, NULL, NULL);
 	Tcl_CreateObjCommand (interp, "create_node" , create_node_cmd, NULL, NULL);
 	Tcl_CreateObjCommand (interp, "create_edge" , create_edge_cmd, NULL, NULL);
 
 	return TCL_OK;
 }
-
+/*
 int main(int argc, char *argv[]) {
 	Tcl_Main(argc, argv, AppInit);
 	return 0;
-}
+}*/
