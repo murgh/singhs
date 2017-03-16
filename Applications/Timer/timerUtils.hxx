@@ -1,7 +1,7 @@
 #include<vector>
 #include<map>
 #include<string>
-#include "graph.hxx"
+#include "../../Kernel/graph.hxx"
 
 #ifndef timerUtils
 #define timerUtils
@@ -44,6 +44,7 @@ enum timerPinIdentifier{
 	timerComboPin,
 	timerLatchData,
 	timerLatchClock,
+	timerPinVirtualNode,
 	timerPinIDNone
      };
 
@@ -52,6 +53,7 @@ enum timerPinDirection{
 	timerOutput,
 	timerDirNone
      };
+
 class timerClock {
 	public:
 		int clockId;

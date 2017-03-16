@@ -30,6 +30,10 @@ void create_edge_usage (Tcl_Interp * interp) {
 	Tcl_SetObjResult(interp,Tcl_NewStringObj(usage_string,-1));
 }
 
+void register_property_usage (Tcl_Interp * interp) {
+
+}
+
 int search(string search_space[], string value, int size) {
 
 	int i;
@@ -41,7 +45,11 @@ int search(string search_space[], string value, int size) {
 	return 0;
 }
 
-int set_node_property (ClientData cd, Tcl_Interp * interp, int objc, Tcl_Obj * const objv[]) {
+int set_property (ClientData cd, Tcl_Interp * interp, int objc, Tcl_Obj * const objv[]) {
+	return 0;
+}
+
+int get_property (ClientData cd, Tcl_Interp * interp, int objc, Tcl_Obj * const objv[]) {
 	return 0;
 }
 
