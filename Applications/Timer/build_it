@@ -1,0 +1,5 @@
+swig -perl5 timerDesignInfo.i
+g++ -c `perl -MConfig -e 'print join(" ", @Config{qw(ccflags optimize cccdlflags)}, "-I$Config{archlib}/CORE")'` timerDesignInfo.cxx timerDesignInfo_wrap.c 
+g++ `perl -MConfig -e 'print $Config{lddlflags}'` timerDesignInfo.o timerDesignInfo_wrap.o -o timerDesignInfo.so
+
+
