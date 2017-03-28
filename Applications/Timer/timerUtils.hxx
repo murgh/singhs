@@ -1,6 +1,6 @@
-#include<vector>
-#include<map>
-#include<string>
+#include <vector>
+#include <map>
+#include <string>
 #include "../../Kernel/graph.hxx"
 
 #ifndef timerUtils
@@ -24,6 +24,7 @@ enum timerTransition{
 enum timerArcType{
 	timerDelayArc,
 	timerCheckArc,
+	timeTriggerArc,
 	timerArcNone
      } ;
 
@@ -51,8 +52,15 @@ enum timerPinIdentifier{
 enum timerPinDirection{
 	timerInput,
 	timerOutput,
+	timerInOut,
 	timerDirNone
      };
+
+enum timerArcUnateness {
+	timerNegUnate,
+	timerPosUnate,
+	timerNonUnate
+};
 
 class timerClock {
 	public:

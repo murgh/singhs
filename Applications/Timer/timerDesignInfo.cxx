@@ -2,6 +2,8 @@
 #include "timerEdge.hxx"
 #include "timerUtils.hxx"
 #include "timerLibData.hxx"
+#include "timerLibData.hxx"
+#include "../../Kernel/graph.hxx"
 
 std::list<timerLibData *> theLibraryInfo;
 
@@ -19,6 +21,46 @@ void create_node (char * circuit_name,
 	V.put_property<timerPinProperty> ("Pin_Property", timerPinProperty (pinInfo));
 }	
 
+diganaGraph * get_or_create_circuit (char * circuit) {
+	diganaGraphObjectIdentifier id;
+	id.setName (circuit);
+	diganaGraph * graph = diganaGraphMgr::getGraphMgr ().get_graph (id); 
+	if (!graph) {
+ 	  graph = diganaGraphMgr::getGraphMgr ().create_graph (id, diganaDirectedGraphS);
+	  graph->register_vertex_property <timerPinProperty> ("Pin_Property");
+	} 
+	return graph;
+}
+
+void add_pin (diganaGraph * circuit, char * name) {
+	int vId = circuit->add_vertex (diganaGraphObjectIdentifier (name));
+	diganaVertex V = diganaVertex (vId, circuit);
+	timerPinInfo * pinInfo = new timerPinInfo (name);
+	V.put_property<timerPinProperty> ("Pin_Property", timerPinProperty (pinInfo));
+}
+
+void add_pin_direction (diganaGraph * circuit, char * name, char * dir) {
+	timerPinDirection pinDir; 
+	std::string direction (dir);
+	if (direction == "in")
+		pinDir = timerInput;
+	else if (direction == "out")
+		pinDir = timerOutput;
+	else if (direction == "inout")
+		pinDir = timerInOut;
+	else
+		pinDir = timerDirNone;
+
+	diganaVertex V = diganaVertex (circuit->getVertexId (name), circuit);
+	timerPinProperty P = V.get_property<timerPinProperty> ("Pin_Property"); 
+	P.getPinInfo ()->setDirection (pinDir);
+}
+
+//To be added
+//void add_pin_identifier (graph * circuit, char * name, char * id) {
+
+//}
+
 void create_edge (char * circuit_name,
 		  char * source,
 		  char * sink) {
@@ -31,6 +73,7 @@ void create_edge (char * circuit_name,
 	graph->add_edge (srcId, sinkId);
 	
 }
+
 
 timerLibData *  add_or_get_library (char * libNameS) {
 	std::string libName = std::string (libNameS);

@@ -197,6 +197,12 @@ int create_edge_cmd(ClientData cd, Tcl_Interp * interp, int objc, Tcl_Obj * cons
 
 }
 
+
+int create_edge_cmd(ClientData cd, Tcl_Interp * interp, int objc, Tcl_Obj * const objv[]) {
+	read_liberty ();
+	return TCL_OK;
+}
+
 int AppInit(Tcl_Interp *interp) {
 	if (Tcl_Init(interp) == TCL_ERROR) return TCL_ERROR;
 	Tcl_SetVar(interp,"tcl_rcFileName","~/.wishrc",TCL_GLOBAL_ONLY);
@@ -204,6 +210,7 @@ int AppInit(Tcl_Interp *interp) {
 	Tcl_CreateObjCommand (interp, "create_graph", create_graph_cmd, NULL, NULL);
 	Tcl_CreateObjCommand (interp, "create_node" , create_node_cmd, NULL, NULL);
 	Tcl_CreateObjCommand (interp, "create_edge" , create_edge_cmd, NULL, NULL);
+	Tcl_CreateObjCommand (interp, "read_liberty" , read_liberty_cmd, NULL, NULL);
 
 	return TCL_OK;
 }

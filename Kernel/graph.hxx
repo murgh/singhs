@@ -388,6 +388,12 @@ class diganaVertex {
      vertexID = -1;
      parent_graph = NULL;
    } 
+
+   diganaVertex operator = (const diganaVertex & v) {
+	vertexID = v.vertexID;
+	parent_graph = v.parent_graph;
+	return *this;
+   }
    
    template<typename Value> Value get_property (std::string name) { 
 	    

@@ -211,7 +211,7 @@ int
 diganaGraphMgr::getVertexId (diganaGraphObjectIdentifier & graph_Id, std::string name) {
 
   if (!get_graph_through_id (graph_Id.getId ())->second)
-    return false;
+    return -1;
 
   return get_graph_through_id (graph_Id.getId ())->second->getVertexId (name);
 }

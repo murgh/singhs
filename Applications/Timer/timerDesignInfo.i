@@ -36,6 +36,12 @@
 
         void add_timing_sense (timerLibArc * arc, char * timing_sense); 
 
+        diganaGraph * get_or_create_circuit (char * circuit);
+
+        void add_pin (diganaGraph * circuit, char * name);
+
+        void add_pin_direction (diganaGraph * circuit, char * name, char * dir);
+
         extern char * getLibName (timerLibData *);
 %}
 
@@ -69,3 +75,10 @@
         timerLibArc * add_timing_arc (timerLibCell * cell, char * source, char * sink);
 
         void add_timing_type (timerLibArc * arc, char * timing_type);
+
+        diganaGraph * get_or_create_circuit (char * circuit);
+
+        void add_pin (diganaGraph * circuit, char * name);
+
+        void add_pin_direction (diganaGraph * circuit, char * name, char * dir);
+
