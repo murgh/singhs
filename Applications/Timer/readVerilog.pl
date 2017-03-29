@@ -2,22 +2,15 @@
 use Verilog::Netlist;
 use timerDesignInfo;
 
-my $nl = new Verilog::Netlist;
-
-foreach my $file ('smallverilog.v') {
-  $nl->read_file (filename => $file);
-}
- $nl->link ();
- $nl->lint ();
- $nl->exit_if_error ();
-
-my $top_mod = $nl->find_module ("top");
-
-my $circuit = timerDesignInfo::get_or_create_circuit ($top_mod->name); 
-
-my $circuit_node_count = 0;
-
 sub create_nodes_of_graph {
+  my $top_mod = shift;
+  my $circuit = shift;
+  my $circuit_node_count = shift;
+  my %node_name_to_id_hash = shift;
+  my %net_sink_hash = shift;
+  my %net_source_hash = shift;
+  my @nets = shift;
+
   #Go on each of ports of top module and print all the ports
   foreach my $top_port ($top_mod->ports) {
     my $msb = $top_mod->find_net($top_port->name)->msb;
@@ -30,11 +23,20 @@ sub create_nodes_of_graph {
     } 
     if ($msb == $lsb) {
       my $node_name = $top_port->name;
-      create_node_cmd ($node_name, $top_port->direction);
+      create_node_cmd ($circuit, 
+		       $node_name, 
+		       $top_port->direction, 
+		       $circuit_node_count,
+		       \%node_name_to_id_hash);
       #KNOWN ISSUE HERE : Can be a problem because 
       #port name and net name are
       #assumed to be the same which may or may not be the case.
-      pair_net_node ($is_source, $node_name, $node_name);
+      pair_net_node ($is_source, 
+		     $node_name, 
+		     $node_name, 
+		     \%net_sink_hash,
+		     \%net_source_hash,
+		     \@nets);
     } else {
       my $tot = $lsb + $msb;
       if ($lsb < $msb) {
@@ -44,8 +46,17 @@ sub create_nodes_of_graph {
       }
       while ($len <= $tot) {
         my $node_name = $top_port->name . "[" . $len . "]";
-        create_node_cmd ($node_name, $top_port->direction);
-        pair_net_node ($is_source, $node_name, $node_name);
+        create_node_cmd ($circuit, 
+		         $node_name, 
+		         $top_port->direction, 
+		         $circuit_node_count,
+		         \%node_name_to_id_hash);
+        pair_net_node ($is_source, 
+		       $node_name, 
+		       $node_name, 
+		       \%net_sink_hash,
+		       \%net_source_hash,
+		       \@nets);
         $len = $len + 1;
       }
     }
@@ -64,8 +75,17 @@ sub create_nodes_of_graph {
 	      $is_source = 1;
       }
       my $node_name = $modcell->name . "/" . $port_name;
-      create_node_cmd ($node_name, $port_dir);
-      pair_net_node ($is_source, $net, $node_name);
+      create_node_cmd ($circuit, 
+		       $node_name, 
+		       $port_dir,
+		       $circuit_node_count,
+		       \%node_name_to_id_hash);
+      pair_net_node ($is_source, 
+		     $net, 
+		     $node_name, 
+		     \%net_sink_hash,
+		     \%net_source_hash,
+		     \@nets);
     }
   }	
 }
@@ -80,11 +100,15 @@ sub find_port_dir {
     }
   }
 }
+
 sub pair_net_node {
   my $is_source = shift;
   my $net_name = shift;
   my $node_name = shift; 
-  
+  my %net_sink_hash = shift;
+  my %net_source_hash = shift;
+  my @nets = shift;
+   
   my $found = 0;
   foreach $net (@nets) {
    if ($net eq $net_name) {
@@ -111,10 +135,15 @@ sub pair_net_node {
 }
 
 sub create_interconnect_arcs {
+  my $circuit = shift;
+  my $node_name_to_id_hash = shift;
+  my %net_sink_hash = shift;
+  my %net_source_hash = shift;
+  my @nets = shift;
   foreach my $net (@nets) {
     foreach my $source (@{$net_source_hash{$net}}) {
       foreach my $sink (@{$net_sink_hash{$net}}) {
-        create_edge_cmd ($source, $sink);
+        create_edge_cmd ($circuit, $source, $sink, $node_name_to_id_hash);
       }
     }
   }	  
@@ -125,6 +154,8 @@ sub get_cell_arcs {
 }
 
 sub create_timing_arcs {
+  my  $top_mod = shift;	
+  my  $circuit = shift;	
   foreach my $modcell ($top_mod->cells) {
     my $node_name = "";
     my $is_source;
@@ -135,24 +166,81 @@ sub create_timing_arcs {
 }
 
 sub create_edges_of_graph {
-  create_interconnect_arcs ();
-  create_timing_arcs ();
+  my  $top_mod = shift;	
+  my $circuit = shift;
+  my %node_name_to_id_hash = shift;
+  my %net_sink_hash = shift;
+  my %net_source_hash = shift;
+  my @nets = shift;
+  create_interconnect_arcs ($circuit,
+		  	    \%node_name_to_id_hash,
+		    	    \%net_sink_hash,
+			    \%net_source_hash,
+			    \@nets);
+  create_timing_arcs ($top_mod, $circuit);
 }
 
 sub create_node_cmd {
-	print "Create node -> @_[0] dir --> @_[1]\n";
-	my $id = timerDesignInfo::add_pin ($circuit, @_[0], $circuit_node_count);
- 	timerDesignInfo::add_pin_direction ($circuit, $id, @_[1]);
-	$node_name_to_id_hash{@_[0]} = $id;
+	my $circuit = shift;
+	my $node_name = shift;
+        my $direction = shift;
+        my $circuit_node_count = shift;	
+        my $node_name_to_id_hash = shift;	
+	print "Create node -> $node_name dir --> $direction\n";
+	my $id = timerDesignInfo::add_pin ($circuit, $node_name, $circuit_node_count);
+ 	timerDesignInfo::add_pin_direction ($circuit, $id, $direction);
+	$node_name_to_id_hash{$node_name} = $id;
 	$circuit_node_count = $circuit_node_count + 1;
 }
 
 sub create_edge_cmd {
-	print "Create Edge @_[0] --> @_[1]\n";
-	my $src = $node_name_to_id_hash{@_[0]};
-	my $sink = $node_name_to_id_hash{@_[1]};
- 	timerDesignInfo::add_timing_arc ($circuit, $src, $sink);
+	my $circuit = shift;
+	my $source = shift;
+	my $sink = shift;
+	my $node_name_to_id_hash = shift;
+	print "Create Edge $source --> $sink\n";
+	my $src = $node_name_to_id_hash{$source};
+	my $snk = $node_name_to_id_hash{$sink};
+ 	timerDesignInfo::add_timing_arc ($circuit, $src, $snk);
 }
 
-create_nodes_of_graph ();
-create_edges_of_graph ();
+sub read_verilog_netlist {
+  my $verilog_file = shift;
+  my $nl = new Verilog::Netlist;
+
+  foreach my $file ($verilog_file) {
+    $nl->read_file (filename => $file);
+  }
+  $nl->link ();
+  $nl->lint ();
+  $nl->exit_if_error ();
+
+  my $top_mod = $nl->find_module ("top");
+
+  my $circuit = timerDesignInfo::get_or_create_circuit ($top_mod->name); 
+
+  my $circuit_node_count = 0;
+
+  my %node_name_to_id_hash = ();
+  my %net_sink_hash = ();
+  my %net_source_hash = ();
+  my @nets = (); 
+
+  create_nodes_of_graph ($top_mod, 
+		  	 $circuit, 
+			 $circuit_node_count,
+			 \%node_name_to_id_hash,
+			 \%net_sink_hash,
+			 \%net_source_hash,
+			 \@nets);
+
+  create_edges_of_graph ($top_mod,
+		         $circuit,
+			 \%node_name_to_id_hash,
+			 \%net_sink_hash,
+			 \%net_source_hash,
+			 \@nets);
+}
+
+read_verilog_netlist ( $ARGV[0] );
+
