@@ -15,6 +15,8 @@ my $top_mod = $nl->find_module ("top");
 
 my $circuit = timerDesignInfo::get_or_create_circuit ($top_mod->name); 
 
+my $circuit_node_count = 0;
+
 sub create_nodes_of_graph {
   #Go on each of ports of top module and print all the ports
   foreach my $top_port ($top_mod->ports) {
@@ -118,6 +120,10 @@ sub create_interconnect_arcs {
   }	  
 }
 
+sub get_cell_arcs {
+   print "The inputs are - @_[0] @_[1] @_[2]\n";
+}
+
 sub create_timing_arcs {
   foreach my $modcell ($top_mod->cells) {
     my $node_name = "";
@@ -130,17 +136,22 @@ sub create_timing_arcs {
 
 sub create_edges_of_graph {
   create_interconnect_arcs ();
-  #create_timing_arcs ();
+  create_timing_arcs ();
 }
 
 sub create_node_cmd {
 	print "Create node -> @_[0] dir --> @_[1]\n";
-	timerDesignInfo::add_pin ($circuit, @_[0]);
- 	timerDesignInfo::add_pin_direction ($circuit, @_[0], @_[1]);
+	my $id = timerDesignInfo::add_pin ($circuit, @_[0], $circuit_node_count);
+ 	timerDesignInfo::add_pin_direction ($circuit, $id, @_[1]);
+	$node_name_to_id_hash{@_[0]} = $id;
+	$circuit_node_count = $circuit_node_count + 1;
 }
 
 sub create_edge_cmd {
 	print "Create Edge @_[0] --> @_[1]\n";
+	my $src = $node_name_to_id_hash{@_[0]};
+	my $sink = $node_name_to_id_hash{@_[1]};
+ 	timerDesignInfo::add_timing_arc ($circuit, $src, $sink);
 }
 
 create_nodes_of_graph ();

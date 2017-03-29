@@ -28,18 +28,20 @@ diganaGraph * get_or_create_circuit (char * circuit) {
 	if (!graph) {
  	  graph = diganaGraphMgr::getGraphMgr ().create_graph (id, diganaDirectedGraphS);
 	  graph->register_vertex_property <timerPinProperty> ("Pin_Property");
+	  graph->register_edge_property <timerPinProperty> ("Arc_Property");
 	} 
 	return graph;
 }
 
-void add_pin (diganaGraph * circuit, char * name) {
-	int vId = circuit->add_vertex (diganaGraphObjectIdentifier (name));
+int add_pin (diganaGraph * circuit, char * name, int node_count) {
+	int vId = circuit->add_vertex (node_count);
 	diganaVertex V = diganaVertex (vId, circuit);
 	timerPinInfo * pinInfo = new timerPinInfo (name);
 	V.put_property<timerPinProperty> ("Pin_Property", timerPinProperty (pinInfo));
+	return vId;
 }
 
-void add_pin_direction (diganaGraph * circuit, char * name, char * dir) {
+void add_pin_direction (diganaGraph * circuit, int id, char * dir) {
 	timerPinDirection pinDir; 
 	std::string direction (dir);
 	if (direction == "in")
@@ -51,7 +53,7 @@ void add_pin_direction (diganaGraph * circuit, char * name, char * dir) {
 	else
 		pinDir = timerDirNone;
 
-	diganaVertex V = diganaVertex (circuit->getVertexId (name), circuit);
+	diganaVertex V = diganaVertex (id, circuit);
 	timerPinProperty P = V.get_property<timerPinProperty> ("Pin_Property"); 
 	P.getPinInfo ()->setDirection (pinDir);
 }
@@ -61,17 +63,9 @@ void add_pin_direction (diganaGraph * circuit, char * name, char * dir) {
 
 //}
 
-void create_edge (char * circuit_name,
-		  char * source,
-		  char * sink) {
-	int srcId, sinkId;
-	diganaGraphObjectIdentifier id;
-	id.setName (circuit_name);
-	diganaGraph * graph = diganaGraphMgr::getGraphMgr ().get_graph (id); 
-        srcId = graph->getVertexId (source);
-        sinkId = graph->getVertexId (sink);
-	graph->add_edge (srcId, sinkId);
-	
+void add_timing_arc (diganaGraph * circuit, int source, int sink) {
+	circuit->add_edge (source, sink);
+
 }
 
 

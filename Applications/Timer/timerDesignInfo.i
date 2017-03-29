@@ -14,9 +14,7 @@
 		          timerPinIdentifier pinId,
 	       	          timerPinDirection pinDir); 
 
-        void create_edge (char * circuit_name,
-		          char * source,
-		          char * sink); 
+        void add_timing_arc (diganaGraph * circuit, int source, int sink);
 
         extern timerLibData *  add_or_get_library (char * libName);
 
@@ -38,9 +36,9 @@
 
         diganaGraph * get_or_create_circuit (char * circuit);
 
-        void add_pin (diganaGraph * circuit, char * name);
+        int add_pin (diganaGraph * circuit, char * name, int node_count);
 
-        void add_pin_direction (diganaGraph * circuit, char * name, char * dir);
+        void add_pin_direction (diganaGraph * circuit, int id, char * dir);
 
         extern char * getLibName (timerLibData *);
 %}
@@ -52,9 +50,7 @@
 		          timerPinIdentifier pinId,
 	       	          timerPinDirection pinDir); 
 
-        void create_edge (char * circuit_name,
-		          char * source,
-		          char * sink); 
+        void add_timing_arc (diganaGraph * circuit, int source, int sink);
 
         timerLibData *  add_or_get_library (char * libName);
 
@@ -62,7 +58,7 @@
 
         timerLibPin * add_or_get_pin (timerLibCell * cell, char * pinName); 
 
-        void add_pin_direction (timerLibPin * pin, char * dir);
+        int add_pin (diganaGraph * circuit, char * name, int node_count);
 
         void add_pin_cap (timerLibPin * pin, float cap);
 
@@ -78,7 +74,5 @@
 
         diganaGraph * get_or_create_circuit (char * circuit);
 
-        void add_pin (diganaGraph * circuit, char * name);
-
-        void add_pin_direction (diganaGraph * circuit, char * name, char * dir);
+        void add_pin_direction (diganaGraph * circuit, int id, char * dir);
 
