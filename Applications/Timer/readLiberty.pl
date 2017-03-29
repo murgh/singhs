@@ -1,15 +1,12 @@
-
 use Liberty::Parser;
 use timerDesignInfo;
 
-my $input_lib_file = $ARGV[0];
-my $parser = new Liberty::Parser;
-my $library_group = $parser->read_file ($input_lib_file);
-my @cell_groups = $parser->get_groups_by_type ($library_group, 'cell');
-
-my $library = timerDesignInfo::add_or_get_library ($input_lib_file); 
 
 sub create_cells {
+  my $parser = shift;
+  my $library = shift;
+  my $library_group = shift; 
+  my @cell_groups = $parser->get_groups_by_type ($library_group, 'cell');
   foreach $cell (@cell_groups) {
     my $current_cell_name = $parser->get_group_name ($cell);
     chomp ($current_cell_name);
@@ -27,6 +24,10 @@ sub create_cells {
 }
 
 sub create_cell_arcs {
+  my $parser = shift;
+  my $library = shift;
+  my $library_group = shift; 
+  my @cell_groups = $parser->get_groups_by_type ($library_group, 'cell');
   foreach $cell (@cell_groups) {
     my $current_cell_name = $parser->get_group_name ($cell);
     chomp ($current_cell_name);
@@ -52,5 +53,15 @@ sub create_cell_arcs {
   }
 }
 
-create_cells ();
-create_cell_arcs ();
+sub read_liberty {
+  my $input_lib_file = shift;
+  my $parser = new Liberty::Parser;
+
+  my $library = timerDesignInfo::add_or_get_library ($input_lib_file); 
+
+  my $library_group = $parser->read_file ($input_lib_file);
+
+  create_cells ($parser, $library, $library_group);
+  create_cell_arcs ($parser, $library, $library_group);
+}
+

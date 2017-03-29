@@ -76,3 +76,4 @@
 
         void add_pin_direction (diganaGraph * circuit, int id, char * dir);
 
+        void add_pin_direction (timerLibPin * pin, char * dir);
