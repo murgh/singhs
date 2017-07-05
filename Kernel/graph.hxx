@@ -40,7 +40,7 @@ typedef property<graph_name_t, std::string> diganaGraphProperties;
 
 //The undirected graph class
 typedef boost::adjacency_list< listS, 
-	                       listS,
+	                       vecS,
 			       undirectedS, 
 	                       diganaVertexProperties, 
 			       no_property, 
@@ -50,7 +50,7 @@ typedef boost::adjacency_list< listS,
 
 //The directed graph class
 typedef boost::adjacency_list< listS, 
-	                       listS, 
+	                       vecS, 
 			       directedS, 
 			       diganaVertexProperties, 
 			       no_property, 

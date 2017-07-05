@@ -61,12 +61,4 @@ enum timerArcUnateness {
 	timerPosUnate,
 	timerNonUnate
 };
-
-class timerClock {
-	public:
-		int clockId;
-		std::string clockName;
-		std::vector<float> waveform;
-		float period;
-};
 #endif

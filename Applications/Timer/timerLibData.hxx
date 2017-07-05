@@ -17,6 +17,7 @@ class timerLibPin {
 			thePinCap = -1;
 			theFanin = -1;
 			theFanout = -1;
+			theIsClock = false;
 		}
 
 		//Set APIs
@@ -34,6 +35,8 @@ class timerLibPin {
 			else
 			  setDirection (timerDirNone);
 		}
+		void setIsClock () { theIsClock = true;}
+		bool getIsClock () { return theIsClock; }
 
 		void setPinAttr (std::string attribute, void * val) {
 			if (attribute == "direction")
@@ -60,6 +63,7 @@ class timerLibPin {
 		float thePinCap;
 		int theFanin;
 		int theFanout;
+		bool theIsClock;
 };
 
 class timerLibArc {
@@ -105,6 +109,8 @@ class timerLibCell {
 	public:
 		timerLibCell (std::string name) { 
 			theName = name;
+			theTimingArcList.clear ();
+			thePinList.clear ();
 		}
 
 		timerLibPin * add_or_get_pin (std::string pinName) {
@@ -130,7 +136,55 @@ class timerLibCell {
 			return newArc;
 		}
 
+		timerLibArc * get_timing_arc (std::string source, std::string sink) {
+			timerLibPin * srcPin = add_or_get_pin (source);
+			timerLibPin * sinkPin = add_or_get_pin (sink);
+			timerLibArc arc (srcPin, sinkPin);
+			std::list<timerLibArc *>::iterator it = theTimingArcList.begin ();
+			for (; it != theTimingArcList.end (); ++it)
+				if (*(*it) == arc)
+					return *it;
+			return NULL;
+
+		}
+
+		std::list<timerLibArc *> & get_timing_arc_list () {
+			return theTimingArcList;
+		}
+
 		std::string getName () { return theName; }
+
+		timerPinIdentifier get_pin_type (timerLibCell * cell, char * pinName) {
+			std::list<timerLibPin *>::iterator itr;
+			itr = thePinList.begin ();
+			timerLibPin * pin = NULL;
+			for (; itr != thePinList.end (); ++itr) {
+				pin = *itr;
+				if (strcmp (pinName, pin->getName ().c_str ())	== 0)
+					break;
+				pin = NULL;
+			}
+			if (pin == NULL)
+			  return timerPinIDNone;
+			if (pin->getIsClock ())
+			  return timerLatchClock; 	
+			bool isClockSource = false;
+			std::list<timerLibArc *>::iterator arcIter;
+			arcIter = theTimingArcList.begin ();
+			for (; arcIter != theTimingArcList.end (); ++arcIter) {
+				timerLibArc * arc = *arcIter;
+				if (arc->getSink () == pin) {
+					if (arc->getSource ()->getIsClock ()) {
+						isClockSource = true;
+					}
+				}
+			}
+			if (isClockSource) {
+				return timerLatchData;
+			} else {
+				return timerComboPin;
+			}
+		}
 
 	private:
 		std::string theName;

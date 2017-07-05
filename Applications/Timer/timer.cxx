@@ -2,6 +2,8 @@
 #include "timerEdge.hxx"
 #include "timerUtils.hxx"
 
+extern void perform_timing_analysis (diganaGraph *);
+
 void
 timerPinInfo::addPinTimeInfo (timerClock * clock, timerPinTimeArgs & time, bool isArrival) {
 	std::vector<timerPinTime*> & timeData = (isArrival) ? theArrival : theRequired;
@@ -24,6 +26,7 @@ diganaGraph * create_test_timing_graph () {
 	id.setName ("Circuit");
 	diganaGraph * graph = 
 		diganaGraphMgr::getGraphMgr ().create_graph (id, diganaDirectedGraphS);   
+	int node_count = 31;
 	timerPinInfo pin_properties [31] =
 	{
 		timerPinInfo ("IN1", false/*clk*/, true/*data*/, timerIOPort, timerInput),
@@ -112,9 +115,14 @@ diganaGraph * create_test_timing_graph () {
 	return graph;
 }
 
+void perform_timing (diganaGraph * graph) {
+	printf ("Performing TA\n");
+}
+
 int main () {
 
 	diganaGraph * graph = create_test_timing_graph ();
+	perform_timing_analysis (graph);
 	//graph->path_enumerate () ;
 	return 0;
 }

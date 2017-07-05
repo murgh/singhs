@@ -4,8 +4,18 @@
 #include "timerLibData.hxx"
 #include "timerLibData.hxx"
 #include "../../Kernel/graph.hxx"
+#include "timer.hxx"
 
 std::list<timerLibData *> theLibraryInfo;
+
+char pin_type [6][30] = {
+  "timerIOPort\0",
+  "timerComboPin\0",
+  "timerLatchData\0",
+  "timerLatchClock\0",
+  "timerPinVirtualNode\0",
+  "timerPinIDNone\0"
+};	
 
 void create_node (char * circuit_name,
 		  char * name, 
@@ -33,6 +43,47 @@ diganaGraph * get_or_create_circuit (char * circuit) {
 	return graph;
 }
 
+void add_clock (diganaGraph * circuit, char * name, int period, int nodeId, int isVirtual) {
+	timerClock * clock;
+	if ( (clock = timerConstraints::is_clock_in_clock_map (name)) )
+	  return;
+	if (!isVirtual) {
+	  diganaVertex V = diganaVertex (nodeId, circuit);
+	  timerPinProperty P = V.get_property<timerPinProperty> ("Pin_Property"); 
+	  timerPinInfo * pinInfo = P.getPinInfo ();
+	  if (!pinInfo->getIsIOPort ()) {
+	    printf ("WARNING : The clock source %s is not a primary port, no clock created\n", 
+			  pinInfo->getName ().c_str ());
+	    return;
+	  }
+          pinInfo->setIsClock ();
+	  std::pair<int, std::string> info = 
+		  std::pair<int, std::string> (nodeId, pinInfo->getName ());
+	  clock = new timerClock (name, period, info); 
+	} else {
+	  clock = new timerClock (name, period, true); 
+	}
+	timerConstraints::add_clock_in_clock_map (clock);
+}
+
+void add_IO_delay (diganaGraph * circuit, float value, int nodeId, int input) {
+	diganaVertex V = diganaVertex (nodeId, circuit);
+	timerPinProperty P = V.get_property<timerPinProperty> ("Pin_Property"); 
+	timerPinInfo * pinInfo = P.getPinInfo ();
+	if (!pinInfo->getIsIOPort ()) {
+	  printf ("WARNING : The object %s is not a primary port, no IO delay asserted\n", 
+			  pinInfo->getName ().c_str ());
+	  return;
+	}
+	timerClock * clock;
+	if ( !(clock = timerConstraints::is_clock_in_clock_map (std::string ("default"))) ) {
+
+	  clock = new timerClock (std::string ("default"), 10, true);//Default virtual clock	
+	  timerConstraints::add_clock_in_clock_map (clock);
+	}
+	pinInfo->assert_IO_Delay (clock, ((timerTime) value), input);
+}
+
 int add_pin (diganaGraph * circuit, char * name, int node_count) {
 	int vId = circuit->add_vertex (node_count);
 	diganaVertex V = diganaVertex (vId, circuit);
@@ -41,8 +92,24 @@ int add_pin (diganaGraph * circuit, char * name, int node_count) {
 	return vId;
 }
 
-void add_pin_direction (diganaGraph * circuit, int id, char * dir) {
+void add_pin_direction_io (diganaGraph * circuit, 
+			   int id, char * dir, 
+			   int isIO, char * type) {
+	std::string pin_type = std::string (pin_type);
 	timerPinDirection pinDir; 
+	timerPinIdentifier identity = isIO ? timerIOPort : timerPinIDNone;
+	if (identity == timerPinIDNone) {
+	  if (strcmp (type, "timerComboPin") == 0) { 
+	    identity = timerComboPin; 
+	  } else if (strcmp (type, "timerLatchClock") == 0) { 
+	    identity = timerLatchClock; 
+	  } else if (strcmp (type, "timerLatchData") == 0) {
+	    identity = timerLatchData; 
+	  } else if (strcmp (type, "timerPinVirtualNode") == 0) {
+	    identity = timerPinVirtualNode;
+	  }
+	}
+
 	std::string direction (dir);
 	if (direction == "in")
 		pinDir = timerInput;
@@ -56,16 +123,11 @@ void add_pin_direction (diganaGraph * circuit, int id, char * dir) {
 	diganaVertex V = diganaVertex (id, circuit);
 	timerPinProperty P = V.get_property<timerPinProperty> ("Pin_Property"); 
 	P.getPinInfo ()->setDirection (pinDir);
+	P.getPinInfo ()->setIdentity (identity);
 }
-
-//To be added
-//void add_pin_identifier (graph * circuit, char * name, char * id) {
-
-//}
 
 void add_timing_arc (diganaGraph * circuit, int source, int sink) {
 	circuit->add_edge (source, sink);
-
 }
 
 
@@ -77,27 +139,34 @@ timerLibData *  add_or_get_library (char * libNameS) {
 			return *it;
 	timerLibData * libData = new timerLibData (libName);	
 	theLibraryInfo.push_back (libData);
-	printf ("***Info : Added Library %s\n", libNameS);
+	//printf ("***Info : Added Library %s\n", libNameS);
 	return libData;
 }
 
 timerLibCell * add_or_get_cell (timerLibData * lib, char * cellName) {
 	if (!lib) return NULL;
-	printf ("***Info : Added Library Cell %s\n", cellName);
+	//printf ("***Info : Added Library Cell %s\n", cellName);
 	//return lib->add_or_get_cell (std::string (cellName));
 	timerLibCell * libCell = lib->add_or_get_cell (std::string (cellName));
-	printf ("Lib Cell = %p %s\n", libCell, libCell->getName ().c_str ());
+	//printf ("Lib Cell = %p %s\n", libCell, libCell->getName ().c_str ());
 	return libCell;
 }
 
 timerLibPin * add_or_get_pin (timerLibCell * cell, char * pinName) {
 	if (!cell) return NULL;
-	printf ("Cell = %p \n", cell);
-	printf ("***Info : Added Pin %s in Cell %s\n", pinName, cell->getName ().c_str ());
+	//printf ("Cell = %p \n", cell);
+	//printf ("***Info : Added Pin %s in Cell %s\n", pinName, cell->getName ().c_str ());
 	//return cell->add_or_get_pin (std::string (pinName));
 	timerLibPin * cellPin = cell->add_or_get_pin (std::string (pinName));
-	printf ("Cell = %p Pin = %p\n", cell, cellPin);
+	//printf ("Cell = %p Pin = %p\n", cell, cellPin);
 	return cellPin;
+}
+
+
+
+void mark_clock (timerLibPin * pin) {
+	if (!pin) return;	
+	pin->setIsClock ();
 }
 
 void add_pin_cap (timerLibPin * pin, float val) {
@@ -113,6 +182,24 @@ void add_pin_direction (timerLibPin * pin, char * val) {
 timerLibArc * add_timing_arc (timerLibCell * cell, char * source, char * sink) {
 	if (!cell) return NULL;
 	return cell->add_or_get_timing_arc (source, sink);
+}
+
+timerLibArc * get_timing_arc (timerLibCell * cell, char * source, char * sink) {
+	if (!cell) return NULL;
+	return cell->get_timing_arc (source, sink);
+}
+
+char * get_pin_type (timerLibCell * cell, char * pin) {
+	if (!cell) return pin_type[timerPinIDNone];
+	timerPinIdentifier pinType = cell->get_pin_type (cell, pin);
+	if (pinType == timerLatchData)
+		return pin_type[timerLatchData];
+	else if (pinType == timerComboPin)
+		return pin_type[timerComboPin];
+	else if (pinType == timerLatchClock)
+		return pin_type[timerLatchClock];
+	else
+		return pin_type[timerPinIDNone];
 }
 
 void add_timing_type (timerLibArc * arc, char * timing_type) {
@@ -131,4 +218,12 @@ void add_timing_sense (timerLibArc * arc, char * timing_sense) {
 		arc->setUnateness (timerNegUnate);
 	else
 		arc->setUnateness (timerNonUnate);
+}
+
+//Timer Report Call
+
+void perform_timing_analysis (char * circuit) {
+	diganaGraph * graph = get_or_create_circuit (circuit);
+	printf ("Performing Timing Analysis\n");
+	perform_timing_analysis (graph);
 }

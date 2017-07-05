@@ -24,11 +24,15 @@
 
         void add_pin_direction (timerLibPin * pin, char * dir);
 
+        void mark_clock (timerLibPin * pin);
+
         void add_pin_cap (timerLibPin * pin, float cap);
 
         void add_pin_relPin (timerLibPin * pin, char * relPin);
 
         timerLibArc * add_timing_arc (timerLibCell * cell, char * source, char * sink);
+
+        timerLibArc * get_timing_arc (timerLibCell * cell, char * source, char * sink);
 
         void add_timing_type (timerLibArc * arc, char * timing_type);
 
@@ -38,9 +42,17 @@
 
         int add_pin (diganaGraph * circuit, char * name, int node_count);
 
-        void add_pin_direction (diganaGraph * circuit, int id, char * dir);
+        void add_pin_direction_io (diganaGraph * circuit, int id, char * dir, int isIO, char * p);
+
+        void perform_timing_analysis (char * circuit);
 
         extern char * getLibName (timerLibData *);
+
+        extern char * get_pin_type (timerLibCell * cell, char * pin);
+
+        void add_clock (diganaGraph * circuit, char * name, int period, int nodeId, int isVirtual); 
+
+        void add_IO_delay (diganaGraph * circuit, float value, int source, int input); 
 %}
 
         void create_node (char * circuit_name,
@@ -60,6 +72,8 @@
 
         int add_pin (diganaGraph * circuit, char * name, int node_count);
 
+        void mark_clock (timerLibPin * pin);
+
         void add_pin_cap (timerLibPin * pin, float cap);
 
         void add_pin_relPin (timerLibPin * pin, char * relPin);
@@ -74,6 +88,16 @@
 
         diganaGraph * get_or_create_circuit (char * circuit);
 
-        void add_pin_direction (diganaGraph * circuit, int id, char * dir);
+        void add_pin_direction_io (diganaGraph * circuit, int id, char * dir, int isIO, char * p);
 
         void add_pin_direction (timerLibPin * pin, char * dir);
+
+        void perform_timing_analysis (char * circuit);
+
+        timerLibArc * get_timing_arc (timerLibCell * cell, char * source, char * sink);
+
+        char * get_pin_type (timerLibCell * cell, char * pin);
+
+        void add_clock (diganaGraph * circuit, char * name, int period, int nodeId, int isVirtual);
+
+        void add_IO_delay (diganaGraph * circuit, float value, int nodeId, int input);
