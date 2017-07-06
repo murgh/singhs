@@ -9,14 +9,16 @@
 #include "timerLibData.hxx"
 #include "timerEdge.hxx"
 #include "timerPin.hxx"
+#include "timerConstraints.hxx"
 
 void perform_timing_analysis (diganaGraph * graph);
 
 class TA_Path {
 	public:
-		std::list<diganaEdge> theEdgeList;
+		std::list<int> theNodeList;
 };
 
+//The timer container
 class TA_Timer {
 	
 	public:
@@ -27,6 +29,7 @@ class TA_Timer {
 		}
 		diganaGraph * TA_create_timing_graph (diganaGraph *);
 		void TA_enumerate_paths ();
+		void checkAndPerformTagSplitting (diganaVertex & timerPin);
 	private:
 		diganaGraph * theTimingGraph;
 		diganaVertex theInVirtualNode, theOutVirtualNode;

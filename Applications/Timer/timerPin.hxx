@@ -1,5 +1,6 @@
 #include "timerUtils.hxx"
 #include "timerConstraints.hxx"
+#include "timer.hxx"
 
 #ifndef timerPin_H
 #define timerPin_H
@@ -14,21 +15,21 @@ struct timerPinTimeArgs {
 		timerTransition trans;
 };
 
+typedef std::pair<timerClockTag *, timerPinTime *> timerClockTime;
+
 //The main class to contain the pin timing information
 //for timer contains the clock and arrival/required time
 //regarding it.
 class timerPinTime {
 
 	public:
-		timerPinTime (timerClock * clock) {
-		  theClock = clock;
+		timerPinTime () {
 		  for (int i = timerEarly; i < timerAnalysis; i++) 
 			  for (int j = timerRise; j < timerTrans; j++) 
 				  theTime [i][j] = timerUndefDelay;
 		}
 
-		timerPinTime (timerClock * clock, timerTime time) {
-		  theClock = clock;
+		timerPinTime (timerTime time) {
 		  for (int i = timerEarly; i < timerAnalysis; i++)
 			  for (int j = timerRise; j < timerTrans; j++) 
 				  theTime [i][j] = time;
@@ -51,16 +52,15 @@ class timerPinTime {
 				  theTime [i][j] = time.theTime [i][j];
 	          return *this;		
 		}	
-		timerClock* getClock () const { return theClock; }
 
 	private:
 		timerTime     theTime[timerAnalysis][timerTrans];
-		timerClock*   theClock;
 };
 
 //The main timer pin info container class
 //contains all the relevant information to
 //be stored on a timer pin
+//Each timer p
 class timerPinInfo {
 
 	public:
@@ -127,9 +127,14 @@ class timerPinInfo {
 		  printf ("direction : %s\n", get_direction ().c_str ()); 
 		}
 
-		void assert_IO_Delay (timerClock * clock, timerTime value, bool isInput) {
-		  return (isInput) ? assert_Input_Delay (clock, value) : 
-		  		     assert_Output_Delay (clock, value);	  
+		void assert_IO_Delay (timerClockTag & cTag, timerTime value, bool isInput) {
+		  if (isInput)
+	            cTag.setArrivalTag ();
+		  else
+		    cTag.setRequiredTag ();
+
+		  return (isInput) ? assert_Input_Delay (cTag, value) : 
+		  		     assert_Output_Delay (cTag, value);	  
 		}
 
 		void writePin (timerAnalysisType el, timerTransition tran) {
@@ -138,44 +143,79 @@ class timerPinInfo {
 				  		     //theArrival);
 		}
 
+		bool isTagPresent (timerClockTag & tag, timerClockTime & timeInfo) {
+		  std::list<timerClockTime>::iterator it, eItr;
+		  if (tag.isArrivalTag ()) { 
+		    it = theArrival.begin ();
+		    eItr = theArrival.end ();
+	         	    
+		  } else {
+		    it = theRequired.begin ();  
+		    eItr = theRequired.end ();
+		  }
+
+		  for (; it != eItr; ++it) {
+		    timeInfo = *it;
+		    if (*timeInfo.first == tag)
+		      return true;
+		  }
+
+		  return false;
+		}
+
+		void assert_Clock (timerClockTag & cTag, timerTime value) {
+		  timerClockTime timerInfo;
+		  if ( isTagPresent (cTag, timerInfo) ) { 
+		    timerInfo.second->setTime(timerEarly, timerFall, value);		     
+		    timerInfo.second->setTime(timerEarly, timerRise, value);		     
+		    timerInfo.second->setTime(timerLate, timerFall, value);		     
+		    timerInfo.second->setTime(timerLate, timerRise, value);		     
+		    return;
+		  }
+		  timerPinTime * time = new timerPinTime (value);
+		  timerClockTag * cTagN = new timerClockTag (cTag);
+		  theArrival.push_front (timerClockTime (cTagN, time) );
+		}
+
 	private:
 		std::string thePinName;
 		bool	    theIsClock;
 		bool	    theIsData;
 		timerPinIdentifier theIdentity;
 		timerPinDirection theDirection;
-		std::map<timerClock *, timerPinTime*> theArrival;
-		std::map<timerClock *, timerPinTime*> theRequired;
+		std::list<timerClockTime> theArrival; //List of arrival tags and arrival time
+		std::list<timerClockTime> theRequired;//List of required tags and required
 
-		void assert_Input_Delay (timerClock * clock, timerTime value) {
-		  std::map<timerClock *, timerPinTime*>::iterator it = theArrival.begin ();
-		  if (it != theArrival.end ()) {
-		    timerPinTime * time = it->second;
-		    time->setTime(timerEarly, timerFall, value);		     
-		    time->setTime(timerEarly, timerRise, value);		     
-		    time->setTime(timerLate, timerFall, value);		     
-		    time->setTime(timerLate, timerRise, value);		     
+		void assert_Input_Delay (timerClockTag & cTag, timerTime value) {
+		  timerClockTime timerInfo;
+		  if ( isTagPresent (cTag, timerInfo) ) { 
+		    timerInfo.second->setTime(timerEarly, timerFall, value);		     
+		    timerInfo.second->setTime(timerEarly, timerRise, value);		     
+		    timerInfo.second->setTime(timerLate, timerFall, value);		     
+		    timerInfo.second->setTime(timerLate, timerRise, value);		     
 		    return;
 		  }
-		  timerPinTime * time = new timerPinTime (clock, value);
-		  theArrival.insert (std::pair<timerClock *, timerPinTime*> (clock, time) );
+		  timerPinTime * time = new timerPinTime (value);
+		  timerClockTag * cTagN = new timerClockTag (cTag);
+		  theArrival.push_front (timerClockTime (cTagN, time) );
 		  //printf ("InputDelay : %s %f\n", thePinName.c_str (), value);
 		}	
 
-		void assert_Output_Delay (timerClock * clock, timerTime value) {
-		  std::map<timerClock *, timerPinTime*>::iterator it = theRequired.begin ();
-		  if (it != theRequired.end ()) {
-		    timerPinTime * time = it->second;
-		    time->setTime(timerEarly, timerFall, value);		     
-		    time->setTime(timerEarly, timerRise, value);		     
-		    time->setTime(timerLate, timerFall, value);		     
-		    time->setTime(timerLate, timerRise, value);		     
+		void assert_Output_Delay (timerClockTag & cTag, timerTime value) {
+		  timerClockTime timerInfo;
+		  if ( isTagPresent (cTag, timerInfo) ) { 
+		    timerInfo.second->setTime(timerEarly, timerFall, value);		     
+		    timerInfo.second->setTime(timerEarly, timerRise, value);		     
+		    timerInfo.second->setTime(timerLate, timerFall, value);		     
+		    timerInfo.second->setTime(timerLate, timerRise, value);		     
 		    return;
 		  }
-		  timerPinTime * time = new timerPinTime (clock, value);
-		  theRequired.insert (std::pair<timerClock *, timerPinTime*> (clock, time) );
+		  timerPinTime * time = new timerPinTime (value);
+		  timerClockTag * cTagN = new timerClockTag (cTag);
+		  theRequired.push_front (timerClockTime (cTagN, time) );
 		  //printf ("OutputDelay : %s %f\n", thePinName.c_str (), value);
 		}	
+
 
 };
 

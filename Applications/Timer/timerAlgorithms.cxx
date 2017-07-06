@@ -82,6 +82,12 @@ TA_Timer::TA_create_timing_graph (diganaGraph * graph) {
 }
 
 void
+TA_Timer::checkAndPerformTagSplitting (diganaVertex & timingPin) {
+	diganaGraphIterator::adjacency_iterator ai , aietr;
+	diganaGraph * circuit = timingPin.getParentGraph ();
+}
+
+void
 TA_Timer::TA_enumerate_paths () {
 		
 }

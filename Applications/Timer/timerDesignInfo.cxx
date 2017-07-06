@@ -3,6 +3,7 @@
 #include "timerUtils.hxx"
 #include "timerLibData.hxx"
 #include "timerLibData.hxx"
+#include "timerConstraints.hxx"
 #include "../../Kernel/graph.hxx"
 #include "timer.hxx"
 
@@ -60,6 +61,8 @@ void add_clock (diganaGraph * circuit, char * name, int period, int nodeId, int 
 	  std::pair<int, std::string> info = 
 		  std::pair<int, std::string> (nodeId, pinInfo->getName ());
 	  clock = new timerClock (name, period, info); 
+	  timerClockTag clockTag(true, true, clock, nodeId);
+	  pinInfo->assert_Clock (clockTag, 0);//0 arrival
 	} else {
 	  clock = new timerClock (name, period, true); 
 	}
@@ -81,7 +84,8 @@ void add_IO_delay (diganaGraph * circuit, float value, int nodeId, int input) {
 	  clock = new timerClock (std::string ("default"), 10, true);//Default virtual clock	
 	  timerConstraints::add_clock_in_clock_map (clock);
 	}
-	pinInfo->assert_IO_Delay (clock, ((timerTime) value), input);
+	timerClockTag clockTag (false, true, clock, nodeId);
+	pinInfo->assert_IO_Delay (clockTag, ((timerTime) value), input);
 }
 
 int add_pin (diganaGraph * circuit, char * name, int node_count) {
