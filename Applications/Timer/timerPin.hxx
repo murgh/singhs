@@ -230,6 +230,13 @@ class timerPinInfo {
 
 		void addPinTimeInfo (timerClock *, timerPinTimeArgs &, bool); 
 
+		//Propagate the requisite pin info from a source pin to sink pin
+		static void 
+		propagatePinInfo (timerPinInfo * source, timerPinInfo * sink) {
+		  if (source->getIsClock ()) sink->setIsClock (); 
+		  if (source->getIsData ()) sink->setIsData (); 
+		}
+
 		std::string get_direction () {
 		  if (theDirection == timerInput) return std::string ("input");
 		  if (theDirection == timerOutput) return std::string ("output");
@@ -248,11 +255,10 @@ class timerPinInfo {
 		}
 
 		void print () {
-		  printf ("Pin Info :\n");
-		  printf ("Name : %s\n", thePinName.c_str ());
-		  printf ("isClock,isData : %d,%d\n", theIsClock, theIsData); 
-		  printf ("identifier : %s\n", get_identifier_name ().c_str ()); 
-		  printf ("direction : %s\n", get_direction ().c_str ()); 
+		  printf ("Pin(%s) ", thePinName.c_str ());
+		  printf ("isClock(%d) isData(%d) ", theIsClock, theIsData); 
+		  printf ("type(%s) ", get_identifier_name ().c_str ()); 
+		  printf ("dir(%s)\n", get_direction ().c_str ()); 
 		}
 
 		void assert_IO_Delay (timerPinTag & cTag, timerTime value, bool isInput) {
@@ -266,9 +272,6 @@ class timerPinInfo {
 		}
 
 		void writePin (timerAnalysisType el, timerTransition tran) {
-		  //Pin Name, Arrival, Required, Slack, Clock
-		  //printf ("%20s|%5f|%5f|%5f|%10s\n", thePinName.c_str (), 
-				  		     //theArrival);
 		}
 
 		void assert_Clock (timerPinTag & cTag, timerTime time) {

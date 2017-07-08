@@ -4,13 +4,13 @@ int verbose = 0;
 std::map<std::string, timerClock *> timerConstraints::theClockMap;
 void perform_timing_analysis (diganaGraph * graph) {
 	TA_Timer * timer = new TA_Timer (graph);
-	timer->TA_enumerate_clock_paths ();
-	/*
-	timer->TA_Build_Required ();
-	timer->TA_enumerate_data_paths ();
-	timer->TA_compute_slack ();
-	timer->TA_write_paths ();
-	*/
+	std::list<diganaVertex> theClockPortList, theStartPointList;
+	timer->buildClockPortAndStartPointList (theClockPortList, theStartPointList);
+	timer->TA_enumerate_clock_paths (theClockPortList);
+	//timer->TA_Build_Required ();
+	timer->TA_enumerate_data_paths (theStartPointList);
+	//timer->TA_compute_slack ();
+	//timer->TA_write_paths ();
 }
 
 timerPinProperty getPinProp (diganaVertex & vertex) {
@@ -120,6 +120,7 @@ TA_Timer::propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin) {
   timerPinInfo * sourcePinInfo = getPinInfo (sourcePin);   
   timerPinInfo * sinkPinInfo = getPinInfo (sinkPin);   
 
+  timerPinInfo::propagatePinInfo (sourcePinInfo, sinkPinInfo);
   timerPinTagContainer::Iterator sourceItr (sourcePinInfo->get_pin_tag_container ());
   timerPinTag * tag;
   while ( (tag = sourceItr.next ()) )
@@ -134,6 +135,7 @@ TA_Timer::performBFSAndPropagatePinTags (diganaVertex pin, bool isClock) {
   thePinQueue.push_back (pin);
   while ( !thePinQueue.empty () ) {
     diganaVertex source = thePinQueue.front ();
+    getPinInfo (source)->print ();
     thePinQueue.pop_front ();
     diganaGraphIterator::adjacency_iterator ai , aietr;
     ai.attach (source.getVertexId (), source.getParentGraph ());
@@ -142,8 +144,10 @@ TA_Timer::performBFSAndPropagatePinTags (diganaVertex pin, bool isClock) {
       propagatePinTags (source, sink);
       timerPinInfo * sinkInfo = getPinInfo (sink);
       if ((isClock && sinkInfo->getIsClockEnd ()) ||
-          (!isClock && sinkInfo->getIsDataEnd ()))
+          (!isClock && sinkInfo->getIsDataEnd ())) {
+        sinkInfo->print ();
 	continue;
+      }
       thePinQueue.push_back (sink);
     }
   }
@@ -168,7 +172,8 @@ TA_Timer::propagatePinTagsFromStart (diganaVertex & startPin, bool isClock) {
 
 //}
 void
-TA_Timer::buildClockPortList (std::list<diganaVertex> & theClockPortList) {
+TA_Timer::buildClockPortAndStartPointList (std::list<diganaVertex> & theClockPortList,
+					   std::list<diganaVertex> & theStartPointList) {
   diganaGraphIterator::adjacency_iterator ai , aietr;
 
   ai.attach (theInVirtualNode);
@@ -178,6 +183,9 @@ TA_Timer::buildClockPortList (std::list<diganaVertex> & theClockPortList) {
     
     if (startPinInfo->getIsClockSrc ())
       theClockPortList.push_back (startPin);
+
+    if (startPinInfo->getIsDataStart ())
+      theStartPointList.push_back (startPin);
   }
 }
 
@@ -185,10 +193,8 @@ TA_Timer::buildClockPortList (std::list<diganaVertex> & theClockPortList) {
 //Iterate on all the sink pins of the in virtual node and
 //perform the requisite operation on clock ports.
 void
-TA_Timer::TA_enumerate_clock_paths () {
+TA_Timer::TA_enumerate_clock_paths (std::list<diganaVertex> & theClockPortList) {
   printf ("Enumerating Clock Paths ....\n");
-  std::list<diganaVertex> theClockPortList;
-  buildClockPortList (theClockPortList);
   std::list<diganaVertex>::iterator itr;
   for (itr = theClockPortList.begin (); itr != theClockPortList.end (); ++itr) {
     diganaVertex clockPort = *itr;
@@ -196,4 +202,8 @@ TA_Timer::TA_enumerate_clock_paths () {
   }  
 }
 
+void
+TA_Timer::TA_enumerate_data_paths (std::list<diganaVertex> & theStartPointList) {
+  printf ("Enumerating Data Paths ....\n");
 
+}

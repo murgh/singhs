@@ -76,5 +76,6 @@ module top(in, clk, o, out);
     .A2(_04_),
     .ZN(_08_)
   );
-  DFFRS_X1 dff (.D(out[0]), .CK(clk), .Q(o));
+  INV_X1 K_ (.A(clk), .ZN(wclk));
+  DFFRS_X1 dff (.D(out[0]), .CK(wclk), .Q(o));
 endmodule
