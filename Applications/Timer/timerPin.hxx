@@ -72,6 +72,31 @@ class timerPinTagContainer {
 		  theTagSetSize++;
 		}
 
+		int getTagSetSize () { return theTagSetSize; }
+		std::list<timerPinTag *> & getTagSet () { return theTagSet; }
+
+	class Iterator {
+	 
+		public:
+			Iterator (timerPinTagContainer * cont) {
+			  theIterSize = cont->getTagSetSize ();
+			  theTagList = cont->getTagSet ();
+			}
+
+			timerPinTag * next () {
+			  if (theIterSize == 0) 
+			    return NULL;
+			  timerPinTag * tag = theTagList.front ();
+			  theTagList.pop_front ();
+			  theTagList.push_back (tag);
+			  theIterSize--;
+			  return tag;
+			}
+
+		private:
+			int theIterSize;
+			std::list<timerPinTag *> theTagList;
+	};
 	private:
 		std::list<timerPinTag *> theTagSet;
 		int			 theTagSetSize;
@@ -252,13 +277,17 @@ class timerPinInfo {
 		}
 
 		timerPinTagContainer * get_pin_tag_container () {
+		  return thePinTagContainer; 
+		}
+
+		timerPinTagContainer * get_pin_tag_container_pvt () {
 		  if (!thePinTagContainer)
 		    thePinTagContainer = new timerPinTagContainer;
 		  return thePinTagContainer;
 		}
 
 		void assert_pin_tag (timerPinTag * cTag) {
-		  get_pin_tag_container ()->addTag (cTag); 
+		  get_pin_tag_container_pvt ()->addTag (cTag); 
 		}
 
 	private:

@@ -30,6 +30,7 @@ class TA_Timer {
 		diganaGraph * TA_create_timing_graph (diganaGraph *);
 		void TA_enumerate_paths ();
 		void checkAndPerformTagSplitting (diganaVertex & timerPin, bool);
+		void propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin);
 		timerPinInfo * getPinInfo (diganaVertex & tPin) {
 		  timerPinProperty P = tPin.get_property<timerPinProperty> ("Pin_Property");
 		  return P.getPinInfo ();

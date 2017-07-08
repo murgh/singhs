@@ -4,7 +4,13 @@ int verbose = 0;
 std::map<std::string, timerClock *> timerConstraints::theClockMap;
 void perform_timing_analysis (diganaGraph * graph) {
 	TA_Timer * timer = new TA_Timer (graph);
-	timer->TA_enumerate_paths ();
+	/*
+	timer->TA_enumerate_clock_paths ();
+	timer->TA_Build_Required ();
+	timer->TA_enumerate_data_paths ();
+	timer->TA_compute_slack ();
+	timer->TA_write_paths ();
+	*/
 }
 
 timerPinProperty getPinProp (diganaVertex & vertex) {
@@ -107,9 +113,17 @@ TA_Timer::checkAndPerformTagSplitting (diganaVertex & sourcePin, bool isClock) {
 	}
 }
 
-void
-TA_Timer::mergePropagatedTags (diganaVertex & sinkPin) {
 
+//Iterate over each of the source tag and put it into the sink tag set
+void
+TA_Timer::propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin) {
+  timerPinInfo * sourcePinInfo = getPinInfo (sourcePin);   
+  timerPinInfo * sinkPinInfo = getPinInfo (sinkPin);   
+
+  timerPinTagContainer::Iterator sourceItr (sourcePinInfo->get_pin_tag_container ());
+  timerPinTag * tag;
+  while ( (tag = sourceItr.next ()) )
+    sinkPinInfo->assert_pin_tag (tag);
 }
 
 //Given a delay arc propagate the delays and slews for a given cTag 
@@ -118,8 +132,10 @@ TA_Timer::mergePropagatedTags (diganaVertex & sinkPin) {
 
 //}
 
+//For each of the clock ports, populate the tags.
 void
-TA_Timer::TA_enumerate_paths () {
+TA_Timer::TA_enumerate_clock_paths () {
 		
 }
+
 
