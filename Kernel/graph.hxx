@@ -546,6 +546,10 @@ namespace diganaGraphIterator {
      attached_vertex = diganaVertex (vertex, graph);
     }	  
 
+    void attach (diganaVertex & V) {
+      attach (V.getVertexId (), V.getParentGraph ());
+    }
+
     diganaVertex operator * () {
      diganaVertex vertex;
      diganaGraph * graph = attached_vertex.getParentGraph ();

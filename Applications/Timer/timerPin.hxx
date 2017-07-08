@@ -190,7 +190,36 @@ class timerPinInfo {
 
 		bool getIsClock () const { return theIsClock; }
 		bool getIsData () const { return theIsData; }
-		bool getIsClockSrc () const { ((theIdentity == timerIOPort) && theIsClock); }
+
+		//Is Clock source only if it is an IO port having clock bit true
+		bool getIsClockSrc () const { return (
+				(theIdentity == timerIOPort) && theIsClock); 
+					    }
+
+		//Data path start point if it is a data IO port OR Latch Q Pin
+		bool getIsDataStart () const { return (
+				(theIdentity == timerIOPort && !theIsData)
+				                      || 
+				(theIdentity == timerLatchData && theDirection == timerOutput) 
+						      ); 
+					     }
+
+		//Clock Path end point if it is a latch Clock pin or an IO out port
+		bool getIsClockEnd () const { return (
+				(theIdentity == timerLatchClock) 
+						     ||
+				(theIdentity == timerIOPort && theDirection == timerOutput)
+						     ); 
+					   } 
+
+		//Data end point if it is Output port OR is a latch D pin
+		bool getIsDataEnd () const { return (
+				(theIdentity == timerIOPort && theDirection == timerOutput) 
+				                     || 
+				(theIdentity == timerLatchData && theDirection == timerInput) 
+						    ); 
+					   }
+
 		bool getIsIOPort () const { return (theIdentity == timerIOPort); }
 		std::string getName () const { return thePinName;} 
 		timerPinDirection getDirection () const { return theDirection; }
@@ -242,38 +271,8 @@ class timerPinInfo {
 				  		     //theArrival);
 		}
 
-		bool isTagPresent (timerPinTag & tag, timerClockTime & timeInfo) {
-		  std::list<timerClockTime>::iterator it, eItr;
-		  if (tag.isArrivalTag ()) { 
-		    it = theArrival.begin ();
-		    eItr = theArrival.end ();
-	         	    
-		  } else {
-		    it = theRequired.begin ();  
-		    eItr = theRequired.end ();
-		  }
-
-		  for (; it != eItr; ++it) {
-		    timeInfo = *it;
-		    if (*timeInfo.first == tag)
-		      return true;
-		  }
-
-		  return false;
-		}
-
-		void assert_Clock (timerPinTag & cTag, timerTime value) {
-		  timerClockTime timerInfo;
-		  if ( isTagPresent (cTag, timerInfo) ) { 
-		    timerInfo.second->setTime(timerEarly, timerFall, value);		     
-		    timerInfo.second->setTime(timerEarly, timerRise, value);		     
-		    timerInfo.second->setTime(timerLate, timerFall, value);		     
-		    timerInfo.second->setTime(timerLate, timerRise, value);		     
-		    return;
-		  }
-		  timerPinTime * time = new timerPinTime (value);
-		  timerPinTag * cTagN = new timerPinTag (cTag);
-		  theArrival.push_front (timerClockTime (cTagN, time) );
+		void assert_Clock (timerPinTag & cTag, timerTime time) {
+		  assert_Input_Delay (cTag, time);
 		}
 
 		timerPinTagContainer * get_pin_tag_container () {
@@ -290,6 +289,17 @@ class timerPinInfo {
 		  get_pin_tag_container_pvt ()->addTag (cTag); 
 		}
 
+		timerPinTag * getPinTag (timerPinTag & tag) {
+		  if (!thePinTagContainer)
+		    return NULL;
+		  timerPinTag * storedTag;
+		  timerPinTagContainer::Iterator itr (thePinTagContainer);
+		  while ( (storedTag = itr.next ()) ) {
+		    if (*storedTag == tag)
+		      return storedTag;
+		  }   
+		  return NULL;
+		}
 	private:
 		std::string thePinName;
 		bool	    theIsClock;
@@ -303,30 +313,32 @@ class timerPinInfo {
 
 		void assert_Input_Delay (timerPinTag & cTag, timerTime value) {
 		  timerClockTime timerInfo;
-		  if ( isTagPresent (cTag, timerInfo) ) { 
+		  /*if ( isTagPresent (cTag, timerInfo) ) { 
 		    timerInfo.second->setTime(timerEarly, timerFall, value);		     
 		    timerInfo.second->setTime(timerEarly, timerRise, value);		     
 		    timerInfo.second->setTime(timerLate, timerFall, value);		     
 		    timerInfo.second->setTime(timerLate, timerRise, value);		     
 		    return;
-		  }
+		  }*/
 		  timerPinTime * time = new timerPinTime (value);
 		  timerPinTag * cTagN = new timerPinTag (cTag);
+		  assert_pin_tag (cTagN);
 		  theArrival.push_front (timerClockTime (cTagN, time) );
 		  //printf ("InputDelay : %s %f\n", thePinName.c_str (), value);
 		}	
 
 		void assert_Output_Delay (timerPinTag & cTag, timerTime value) {
 		  timerClockTime timerInfo;
-		  if ( isTagPresent (cTag, timerInfo) ) { 
+		  /*if ( isTagPresent (cTag, timerInfo) ) { 
 		    timerInfo.second->setTime(timerEarly, timerFall, value);		     
 		    timerInfo.second->setTime(timerEarly, timerRise, value);		     
 		    timerInfo.second->setTime(timerLate, timerFall, value);		     
 		    timerInfo.second->setTime(timerLate, timerRise, value);		     
 		    return;
-		  }
+		  }*/
 		  timerPinTime * time = new timerPinTime (value);
 		  timerPinTag * cTagN = new timerPinTag (cTag);
+		  assert_pin_tag (cTagN);
 		  theRequired.push_front (timerClockTime (cTagN, time) );
 		  //printf ("OutputDelay : %s %f\n", thePinName.c_str (), value);
 		}	

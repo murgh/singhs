@@ -28,9 +28,12 @@ class TA_Timer {
 		~TA_Timer () {
 		}
 		diganaGraph * TA_create_timing_graph (diganaGraph *);
-		void TA_enumerate_paths ();
+		void TA_enumerate_clock_paths ();
 		void checkAndPerformTagSplitting (diganaVertex & timerPin, bool);
+		void performBFSAndPropagatePinTags (diganaVertex pin, bool);
 		void propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin);
+		void propagatePinTagsFromStart (diganaVertex & sourcePin, bool);
+		void buildClockPortList (std::list<diganaVertex> &);
 		timerPinInfo * getPinInfo (diganaVertex & tPin) {
 		  timerPinProperty P = tPin.get_property<timerPinProperty> ("Pin_Property");
 		  return P.getPinInfo ();
