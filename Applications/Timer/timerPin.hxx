@@ -7,6 +7,75 @@
 
 class timerPinTime;
 class timerPinInfo;
+class timerPinTagContainer; 
+
+class timerPinTag {
+
+	public:
+		timerPinTag (bool clockTag, bool arr, int srcId) {
+		  theArrival = arr;
+		  theClockPath = clockTag;
+		  theSourceId = srcId; 
+		  theMasterTag = NULL;
+		}
+
+		timerPinTag (const timerPinTag & tag) {
+		  theArrival = tag.theArrival;
+		  theClockPath = tag.theClockPath;
+		  theSourceId = tag.theSourceId; 
+		  theMasterTag = tag.theMasterTag;
+		}
+
+		bool operator == (const timerPinTag & other) {
+		  return (
+			  theSourceId == other.theSourceId
+			 );
+		}
+
+		int getSource () const { return theSourceId; }
+		bool isClockPath () const { return theClockPath; }
+		bool isDataPath () const { return !theClockPath; }
+
+		void setClockPath () { theClockPath = true; }
+		void setDataPath () { theClockPath = false; }
+
+		bool isSplitTag () { return (theMasterTag != NULL); }
+
+		bool isArrivalTag () { return theArrival; }
+		bool isRequiredTag () { return !theArrival; }
+
+		void setArrivalTag () { theArrival = true; }
+		void setRequiredTag () { theArrival = false; }
+
+		void setMasterTag (timerPinTagContainer * tag) { theMasterTag = tag; }
+		timerPinTagContainer * getMasterTag () { return theMasterTag; }
+
+	private:
+		//Not taking the polarity in consideration for now
+		//bool	     thePositivePolarity;
+		bool		theArrival; //Arrival tag, if false it acts as required tag
+		bool 	     	theClockPath;
+		int	     	theSourceId;
+		timerPinTagContainer * theMasterTag; //For Split Tags
+};
+
+class timerPinTagContainer {
+
+	public:
+		timerPinTagContainer () {
+		  theTagSet.clear ();
+		  theTagSetSize = 0;
+		}
+
+		void addTag (timerPinTag * tag) {
+		  theTagSet.push_back (tag);
+		  theTagSetSize++;
+		}
+
+	private:
+		std::list<timerPinTag *> theTagSet;
+		int			 theTagSetSize;
+};
 
 struct timerPinTimeArgs {
 	public:
@@ -15,7 +84,7 @@ struct timerPinTimeArgs {
 		timerTransition trans;
 };
 
-typedef std::pair<timerClockTag *, timerPinTime *> timerClockTime;
+typedef std::pair<timerPinTag *, timerPinTime *> timerClockTime;
 
 //The main class to contain the pin timing information
 //for timer contains the clock and arrival/required time
@@ -68,6 +137,7 @@ class timerPinInfo {
 		  thePinName = name;
 		  theIsClock = false;
 		  theIsData = false;
+		  thePinTagContainer = NULL;
 		  theArrival.clear ();
 		  theRequired.clear ();
 		}
@@ -82,6 +152,7 @@ class timerPinInfo {
 		  theIsData = isData;
 		  theIdentity = identity;
 		  theDirection = direction;
+		  thePinTagContainer = NULL;
 		  theArrival.clear ();
 		  theRequired.clear ();
 		}
@@ -99,6 +170,9 @@ class timerPinInfo {
 		std::string getName () const { return thePinName;} 
 		timerPinDirection getDirection () const { return theDirection; }
 		timerPinIdentifier getIdentity () const { return theIdentity; }
+
+		void setTagSplitPoint () { theIsSplitPoint = true; }
+		bool isTagSplitPoint () { return theIsSplitPoint; }
 
 		void addPinTimeInfo (timerClock *, timerPinTimeArgs &, bool); 
 
@@ -127,7 +201,7 @@ class timerPinInfo {
 		  printf ("direction : %s\n", get_direction ().c_str ()); 
 		}
 
-		void assert_IO_Delay (timerClockTag & cTag, timerTime value, bool isInput) {
+		void assert_IO_Delay (timerPinTag & cTag, timerTime value, bool isInput) {
 		  if (isInput)
 	            cTag.setArrivalTag ();
 		  else
@@ -143,7 +217,7 @@ class timerPinInfo {
 				  		     //theArrival);
 		}
 
-		bool isTagPresent (timerClockTag & tag, timerClockTime & timeInfo) {
+		bool isTagPresent (timerPinTag & tag, timerClockTime & timeInfo) {
 		  std::list<timerClockTime>::iterator it, eItr;
 		  if (tag.isArrivalTag ()) { 
 		    it = theArrival.begin ();
@@ -163,7 +237,7 @@ class timerPinInfo {
 		  return false;
 		}
 
-		void assert_Clock (timerClockTag & cTag, timerTime value) {
+		void assert_Clock (timerPinTag & cTag, timerTime value) {
 		  timerClockTime timerInfo;
 		  if ( isTagPresent (cTag, timerInfo) ) { 
 		    timerInfo.second->setTime(timerEarly, timerFall, value);		     
@@ -173,20 +247,32 @@ class timerPinInfo {
 		    return;
 		  }
 		  timerPinTime * time = new timerPinTime (value);
-		  timerClockTag * cTagN = new timerClockTag (cTag);
+		  timerPinTag * cTagN = new timerPinTag (cTag);
 		  theArrival.push_front (timerClockTime (cTagN, time) );
+		}
+
+		timerPinTagContainer * get_pin_tag_container () {
+		  if (!thePinTagContainer)
+		    thePinTagContainer = new timerPinTagContainer;
+		  return thePinTagContainer;
+		}
+
+		void assert_pin_tag (timerPinTag * cTag) {
+		  get_pin_tag_container ()->addTag (cTag); 
 		}
 
 	private:
 		std::string thePinName;
 		bool	    theIsClock;
 		bool	    theIsData;
+		bool	    theIsSplitPoint;
 		timerPinIdentifier theIdentity;
 		timerPinDirection theDirection;
+		timerPinTagContainer * thePinTagContainer;
 		std::list<timerClockTime> theArrival; //List of arrival tags and arrival time
 		std::list<timerClockTime> theRequired;//List of required tags and required
 
-		void assert_Input_Delay (timerClockTag & cTag, timerTime value) {
+		void assert_Input_Delay (timerPinTag & cTag, timerTime value) {
 		  timerClockTime timerInfo;
 		  if ( isTagPresent (cTag, timerInfo) ) { 
 		    timerInfo.second->setTime(timerEarly, timerFall, value);		     
@@ -196,12 +282,12 @@ class timerPinInfo {
 		    return;
 		  }
 		  timerPinTime * time = new timerPinTime (value);
-		  timerClockTag * cTagN = new timerClockTag (cTag);
+		  timerPinTag * cTagN = new timerPinTag (cTag);
 		  theArrival.push_front (timerClockTime (cTagN, time) );
 		  //printf ("InputDelay : %s %f\n", thePinName.c_str (), value);
 		}	
 
-		void assert_Output_Delay (timerClockTag & cTag, timerTime value) {
+		void assert_Output_Delay (timerPinTag & cTag, timerTime value) {
 		  timerClockTime timerInfo;
 		  if ( isTagPresent (cTag, timerInfo) ) { 
 		    timerInfo.second->setTime(timerEarly, timerFall, value);		     
@@ -211,7 +297,7 @@ class timerPinInfo {
 		    return;
 		  }
 		  timerPinTime * time = new timerPinTime (value);
-		  timerClockTag * cTagN = new timerClockTag (cTag);
+		  timerPinTag * cTagN = new timerPinTag (cTag);
 		  theRequired.push_front (timerClockTime (cTagN, time) );
 		  //printf ("OutputDelay : %s %f\n", thePinName.c_str (), value);
 		}	

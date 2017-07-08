@@ -81,11 +81,42 @@ TA_Timer::TA_create_timing_graph (diganaGraph * graph) {
    	if (verbose) printf ("End Creating the timing graph \n");
 }
 
+//Check and perform the tag splitting.
 void
-TA_Timer::checkAndPerformTagSplitting (diganaVertex & timingPin) {
+TA_Timer::checkAndPerformTagSplitting (diganaVertex & sourcePin, bool isClock) {
+	diganaGraph * circuit = sourcePin.getParentGraph ();
 	diganaGraphIterator::adjacency_iterator ai , aietr;
-	diganaGraph * circuit = timingPin.getParentGraph ();
+	diganaVertex adjPin;
+	int count = 0;
+	ai.attach (sourcePin.getVertexId (), circuit);
+	for (; ai != aietr && count <= 1 ; ++ai, ++count);
+	if (count == 1) 
+	  return;//No tag splitting is needed
+	timerPinInfo * srcPinInfo = getPinInfo (sourcePin);
+	timerPinInfo * sinkPinInfo;
+	srcPinInfo->setTagSplitPoint ();
+	ai.attach (sourcePin.getVertexId (), circuit);
+	for (; ai != aietr; ++ai) {
+           //Create a new tag on each of the sink pins
+	   diganaVertex sinkPin = *ai;
+	   sinkPinInfo = getPinInfo (sinkPin);
+	   timerPinTagContainer * masterTag = sinkPinInfo->get_pin_tag_container ();
+	   timerPinTag * tag = new timerPinTag (isClock, true, sourcePin.getVertexId ());	
+	   tag->setMasterTag (masterTag);
+	   sinkPinInfo->assert_pin_tag (tag);
+	}
 }
+
+void
+TA_Timer::mergePropagatedTags (diganaVertex & sinkPin) {
+
+}
+
+//Given a delay arc propagate the delays and slews for a given cTag 
+//void
+//TA_Timer::propagateDelaysAndSlews (diganaEdge & delayArc) {
+
+//}
 
 void
 TA_Timer::TA_enumerate_paths () {
