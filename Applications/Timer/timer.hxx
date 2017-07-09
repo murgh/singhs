@@ -28,14 +28,15 @@ class TA_Timer {
 		~TA_Timer () {
 		}
 		diganaGraph * TA_create_timing_graph (diganaGraph *);
-		void TA_enumerate_clock_paths (std::list<diganaVertex> &);
-		void TA_enumerate_data_paths (std::list<diganaVertex> &);
+		void TA_compute_slack ();
+		void TA_write_paths ();
+		void TA_enumerate_clock_paths ();
+		void TA_enumerate_data_paths ();
+		void TA_Build_Required ();
 		void checkAndPerformTagSplitting (diganaVertex & timerPin, bool);
 		void performBFSAndPropagatePinTags (diganaVertex pin, bool);
 		void propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin);
 		void propagatePinTagsFromStart (diganaVertex & sourcePin, bool);
-		void buildClockPortAndStartPointList (std::list<diganaVertex> &,
-						      std::list<diganaVertex> &);
 		timerPinInfo * getPinInfo (diganaVertex & tPin) {
 		  timerPinProperty P = tPin.get_property<timerPinProperty> ("Pin_Property");
 		  return P.getPinInfo ();
@@ -43,8 +44,13 @@ class TA_Timer {
 
 	private:
 		diganaGraph * theTimingGraph;
-		diganaVertex theInVirtualNode, theOutVirtualNode;
 		std::vector<TA_Path *> thePathCollection; 
 		std::set<timerClock *> theTimerClockSet;
+		std::list<diganaVertex> theClockPortList;
+		std::list<diganaVertex> theStartPointList;
+		std::list<diganaVertex> theEndPointList;
+		std::map<diganaVertex, 
+			 std::pair<timerPinTag*, timerPinTag*> > theEndTagPair;
+
 };
 #endif //TIMER

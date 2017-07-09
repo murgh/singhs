@@ -198,7 +198,7 @@ class timerPinInfo {
 
 		//Data path start point if it is a data IO port OR Latch Q Pin
 		bool getIsDataStart () const { return (
-				(theIdentity == timerIOPort && !theIsData)
+				(theIdentity == timerIOPort && theIsData)
 				                      || 
 				(theIdentity == timerLatchData && theDirection == timerOutput) 
 						      ); 
@@ -288,6 +288,12 @@ class timerPinInfo {
 		  return thePinTagContainer;
 		}
 
+		void assert_other_pin_tag (timerPinTag * tag) {
+		  if (!theOtherPinTagContainer)
+		    theOtherPinTagContainer = new timerPinTagContainer (); 
+		  theOtherPinTagContainer->addTag (tag);
+		}
+
 		void assert_pin_tag (timerPinTag * cTag) {
 		  get_pin_tag_container_pvt ()->addTag (cTag); 
 		}
@@ -311,6 +317,7 @@ class timerPinInfo {
 		timerPinIdentifier theIdentity;
 		timerPinDirection theDirection;
 		timerPinTagContainer * thePinTagContainer;
+		timerPinTagContainer * theOtherPinTagContainer;
 		std::list<timerClockTime> theArrival; //List of arrival tags and arrival time
 		std::list<timerClockTime> theRequired;//List of required tags and required
 
@@ -341,7 +348,7 @@ class timerPinInfo {
 		  }*/
 		  timerPinTime * time = new timerPinTime (value);
 		  timerPinTag * cTagN = new timerPinTag (cTag);
-		  assert_pin_tag (cTagN);
+		  assert_other_pin_tag (cTagN);
 		  theRequired.push_front (timerClockTime (cTagN, time) );
 		  //printf ("OutputDelay : %s %f\n", thePinName.c_str (), value);
 		}	

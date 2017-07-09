@@ -37,6 +37,7 @@ diganaGraph * get_or_create_circuit (char * circuit) {
 	id.setName (circuit);
 	diganaGraph * graph = diganaGraphMgr::getGraphMgr ().get_graph (id); 
 	if (!graph) {
+	  printf ("Creating New Graph \n");
  	  graph = diganaGraphMgr::getGraphMgr ().create_graph (id, diganaDirectedGraphS);
 	  graph->register_vertex_property <timerPinProperty> ("Pin_Property");
 	  graph->register_edge_property <timerPinProperty> ("Arc_Property");
@@ -84,6 +85,7 @@ void add_IO_delay (diganaGraph * circuit, float value, int nodeId, int input) {
 	  clock = new timerClock (std::string ("default"), 10, true);//Default virtual clock	
 	  timerConstraints::add_clock_in_clock_map (clock);
 	}
+	pinInfo->setIsData ();
 	timerPinTag clockTag (false, true, nodeId);
 	pinInfo->assert_IO_Delay (clockTag, ((timerTime) value), input);
 }
@@ -227,7 +229,7 @@ void add_timing_sense (timerLibArc * arc, char * timing_sense) {
 //Timer Report Call
 
 void perform_timing_analysis (char * circuit) {
-	diganaGraph * graph = get_or_create_circuit (circuit);
 	printf ("Performing Timing Analysis\n");
+	diganaGraph * graph = get_or_create_circuit (circuit);
 	perform_timing_analysis (graph);
 }

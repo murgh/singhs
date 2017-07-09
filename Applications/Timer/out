@@ -1,0 +1,1465 @@
+Reading Liberty File NangateOpenCellLibrary_fast.lib .... 
+Cell AND2_X1  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell AND2_X1  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell AND2_X2  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell AND2_X2  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell AND2_X4  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell AND2_X4  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell AND3_X1  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell AND3_X1  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell AND3_X1  Src A3 Sink ZN timing_sense positive_unate timing_type 
+Cell AND3_X2  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell AND3_X2  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell AND3_X2  Src A3 Sink ZN timing_sense positive_unate timing_type 
+Cell AND3_X4  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell AND3_X4  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell AND3_X4  Src A3 Sink ZN timing_sense positive_unate timing_type 
+Cell AND4_X1  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell AND4_X1  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell AND4_X1  Src A3 Sink ZN timing_sense positive_unate timing_type 
+Cell AND4_X1  Src A4 Sink ZN timing_sense positive_unate timing_type 
+Cell AND4_X2  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell AND4_X2  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell AND4_X2  Src A3 Sink ZN timing_sense positive_unate timing_type 
+Cell AND4_X2  Src A4 Sink ZN timing_sense positive_unate timing_type 
+Cell AND4_X4  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell AND4_X4  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell AND4_X4  Src A3 Sink ZN timing_sense positive_unate timing_type 
+Cell AND4_X4  Src A4 Sink ZN timing_sense positive_unate timing_type 
+Cell AOI21_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI21_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI21_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI21_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI21_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI21_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI21_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI21_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI21_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI21_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI21_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI21_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI21_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI21_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI21_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI22_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X1  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X1  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X1  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X2  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X2  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X2  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X4  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X4  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X4  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI211_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI221_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell AOI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell BUF_X1  Src A Sink Z timing_sense positive_unate timing_type 
+Cell BUF_X2  Src A Sink Z timing_sense positive_unate timing_type 
+Cell BUF_X4  Src A Sink Z timing_sense positive_unate timing_type 
+Cell BUF_X8  Src A Sink Z timing_sense positive_unate timing_type 
+Cell BUF_X16  Src A Sink Z timing_sense positive_unate timing_type 
+Cell BUF_X32  Src A Sink Z timing_sense positive_unate timing_type 
+Cell CLKBUF_X1  Src A Sink Z timing_sense positive_unate timing_type 
+Cell CLKBUF_X2  Src A Sink Z timing_sense positive_unate timing_type 
+Cell CLKBUF_X3  Src A Sink Z timing_sense positive_unate timing_type 
+Cell CLKGATETST_X1  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell CLKGATETST_X1  Src CK Sink E timing_sense  timing_type hold_rising
+Cell CLKGATETST_X1  Src CK Sink E timing_sense  timing_type setup_rising
+Cell CLKGATETST_X1  Src CK Sink SE timing_sense  timing_type hold_rising
+Cell CLKGATETST_X1  Src CK Sink SE timing_sense  timing_type setup_rising
+Cell CLKGATETST_X1  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATETST_X1  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATETST_X1  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATETST_X1  Src CK Sink GCK timing_sense positive_unate timing_type combinational_fall
+Cell CLKGATETST_X2  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell CLKGATETST_X2  Src CK Sink E timing_sense  timing_type hold_rising
+Cell CLKGATETST_X2  Src CK Sink E timing_sense  timing_type setup_rising
+Cell CLKGATETST_X2  Src CK Sink SE timing_sense  timing_type hold_rising
+Cell CLKGATETST_X2  Src CK Sink SE timing_sense  timing_type setup_rising
+Cell CLKGATETST_X2  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATETST_X2  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATETST_X2  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATETST_X2  Src CK Sink GCK timing_sense positive_unate timing_type combinational_fall
+Cell CLKGATETST_X4  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell CLKGATETST_X4  Src CK Sink E timing_sense  timing_type hold_rising
+Cell CLKGATETST_X4  Src CK Sink E timing_sense  timing_type setup_rising
+Cell CLKGATETST_X4  Src CK Sink SE timing_sense  timing_type hold_rising
+Cell CLKGATETST_X4  Src CK Sink SE timing_sense  timing_type setup_rising
+Cell CLKGATETST_X4  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATETST_X4  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATETST_X4  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATETST_X4  Src CK Sink GCK timing_sense positive_unate timing_type combinational_fall
+Cell CLKGATETST_X8  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell CLKGATETST_X8  Src CK Sink E timing_sense  timing_type hold_rising
+Cell CLKGATETST_X8  Src CK Sink E timing_sense  timing_type setup_rising
+Cell CLKGATETST_X8  Src CK Sink SE timing_sense  timing_type hold_rising
+Cell CLKGATETST_X8  Src CK Sink SE timing_sense  timing_type setup_rising
+Cell CLKGATETST_X8  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATETST_X8  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATETST_X8  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATETST_X8  Src CK Sink GCK timing_sense positive_unate timing_type combinational_fall
+Cell CLKGATE_X1  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell CLKGATE_X1  Src CK Sink E timing_sense  timing_type hold_rising
+Cell CLKGATE_X1  Src CK Sink E timing_sense  timing_type setup_rising
+Cell CLKGATE_X1  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATE_X1  Src CK Sink GCK timing_sense positive_unate timing_type combinational_fall
+Cell CLKGATE_X2  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell CLKGATE_X2  Src CK Sink E timing_sense  timing_type hold_rising
+Cell CLKGATE_X2  Src CK Sink E timing_sense  timing_type setup_rising
+Cell CLKGATE_X2  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATE_X2  Src CK Sink GCK timing_sense positive_unate timing_type combinational_fall
+Cell CLKGATE_X4  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell CLKGATE_X4  Src CK Sink E timing_sense  timing_type hold_rising
+Cell CLKGATE_X4  Src CK Sink E timing_sense  timing_type setup_rising
+Cell CLKGATE_X4  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATE_X4  Src CK Sink GCK timing_sense positive_unate timing_type combinational_fall
+Cell CLKGATE_X8  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell CLKGATE_X8  Src CK Sink E timing_sense  timing_type hold_rising
+Cell CLKGATE_X8  Src CK Sink E timing_sense  timing_type setup_rising
+Cell CLKGATE_X8  Src CK Sink GCK timing_sense positive_unate timing_type 
+Cell CLKGATE_X8  Src CK Sink GCK timing_sense positive_unate timing_type combinational_fall
+Cell DFFRS_X1  Src CK Sink D timing_sense  timing_type hold_rising
+Cell DFFRS_X1  Src CK Sink D timing_sense  timing_type setup_rising
+Cell DFFRS_X1  Src CK Sink RN timing_sense  timing_type recovery_rising
+Cell DFFRS_X1  Src CK Sink RN timing_sense  timing_type removal_rising
+Cell DFFRS_X1  Src RN Sink RN timing_sense  timing_type min_pulse_width
+Cell DFFRS_X1  Src CK Sink SN timing_sense  timing_type recovery_rising
+Cell DFFRS_X1  Src CK Sink SN timing_sense  timing_type removal_rising
+Cell DFFRS_X1  Src SN Sink SN timing_sense  timing_type min_pulse_width
+Cell DFFRS_X1  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell DFFRS_X1  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell DFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFRS_X1  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell DFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src CK Sink D timing_sense  timing_type hold_rising
+Cell DFFRS_X2  Src CK Sink D timing_sense  timing_type setup_rising
+Cell DFFRS_X2  Src CK Sink RN timing_sense  timing_type recovery_rising
+Cell DFFRS_X2  Src CK Sink RN timing_sense  timing_type removal_rising
+Cell DFFRS_X2  Src RN Sink RN timing_sense  timing_type min_pulse_width
+Cell DFFRS_X2  Src CK Sink SN timing_sense  timing_type recovery_rising
+Cell DFFRS_X2  Src CK Sink SN timing_sense  timing_type removal_rising
+Cell DFFRS_X2  Src SN Sink SN timing_sense  timing_type min_pulse_width
+Cell DFFRS_X2  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell DFFRS_X2  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell DFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFRS_X2  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell DFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFR_X1  Src CK Sink D timing_sense  timing_type hold_rising
+Cell DFFR_X1  Src CK Sink D timing_sense  timing_type setup_rising
+Cell DFFR_X1  Src CK Sink RN timing_sense  timing_type recovery_rising
+Cell DFFR_X1  Src CK Sink RN timing_sense  timing_type removal_rising
+Cell DFFR_X1  Src RN Sink RN timing_sense  timing_type min_pulse_width
+Cell DFFR_X1  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell DFFR_X1  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell DFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFR_X1  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell DFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFR_X2  Src CK Sink D timing_sense  timing_type hold_rising
+Cell DFFR_X2  Src CK Sink D timing_sense  timing_type setup_rising
+Cell DFFR_X2  Src CK Sink RN timing_sense  timing_type recovery_rising
+Cell DFFR_X2  Src CK Sink RN timing_sense  timing_type removal_rising
+Cell DFFR_X2  Src RN Sink RN timing_sense  timing_type min_pulse_width
+Cell DFFR_X2  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell DFFR_X2  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell DFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell DFFR_X2  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell DFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell DFFS_X1  Src CK Sink D timing_sense  timing_type hold_rising
+Cell DFFS_X1  Src CK Sink D timing_sense  timing_type setup_rising
+Cell DFFS_X1  Src CK Sink SN timing_sense  timing_type recovery_rising
+Cell DFFS_X1  Src CK Sink SN timing_sense  timing_type removal_rising
+Cell DFFS_X1  Src SN Sink SN timing_sense  timing_type min_pulse_width
+Cell DFFS_X1  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell DFFS_X1  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell DFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFS_X1  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell DFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFS_X2  Src CK Sink D timing_sense  timing_type hold_rising
+Cell DFFS_X2  Src CK Sink D timing_sense  timing_type setup_rising
+Cell DFFS_X2  Src CK Sink SN timing_sense  timing_type recovery_rising
+Cell DFFS_X2  Src CK Sink SN timing_sense  timing_type removal_rising
+Cell DFFS_X2  Src SN Sink SN timing_sense  timing_type min_pulse_width
+Cell DFFS_X2  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell DFFS_X2  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell DFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell DFFS_X2  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell DFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell DFF_X1  Src CK Sink D timing_sense  timing_type hold_rising
+Cell DFF_X1  Src CK Sink D timing_sense  timing_type setup_rising
+Cell DFF_X1  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell DFF_X1  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell DFF_X1  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell DFF_X2  Src CK Sink D timing_sense  timing_type hold_rising
+Cell DFF_X2  Src CK Sink D timing_sense  timing_type setup_rising
+Cell DFF_X2  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell DFF_X2  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell DFF_X2  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell DLH_X1  Src G Sink D timing_sense  timing_type hold_falling
+Cell DLH_X1  Src G Sink D timing_sense  timing_type setup_falling
+Cell DLH_X1  Src G Sink G timing_sense  timing_type min_pulse_width
+Cell DLH_X1  Src D Sink Q timing_sense positive_unate timing_type 
+Cell DLH_X1  Src G Sink Q timing_sense non_unate timing_type rising_edge
+Cell DLH_X2  Src G Sink D timing_sense  timing_type hold_falling
+Cell DLH_X2  Src G Sink D timing_sense  timing_type setup_falling
+Cell DLH_X2  Src G Sink G timing_sense  timing_type min_pulse_width
+Cell DLH_X2  Src D Sink Q timing_sense positive_unate timing_type 
+Cell DLH_X2  Src G Sink Q timing_sense non_unate timing_type rising_edge
+Cell DLL_X1  Src GN Sink D timing_sense  timing_type hold_rising
+Cell DLL_X1  Src GN Sink D timing_sense  timing_type setup_rising
+Cell DLL_X1  Src GN Sink GN timing_sense  timing_type min_pulse_width
+Cell DLL_X1  Src D Sink Q timing_sense positive_unate timing_type 
+Cell DLL_X1  Src GN Sink Q timing_sense non_unate timing_type falling_edge
+Cell DLL_X2  Src GN Sink D timing_sense  timing_type hold_rising
+Cell DLL_X2  Src GN Sink D timing_sense  timing_type setup_rising
+Cell DLL_X2  Src GN Sink GN timing_sense  timing_type min_pulse_width
+Cell DLL_X2  Src D Sink Q timing_sense positive_unate timing_type 
+Cell DLL_X2  Src GN Sink Q timing_sense non_unate timing_type falling_edge
+Cell FA_X1  Src A Sink CO timing_sense positive_unate timing_type 
+Cell FA_X1  Src A Sink CO timing_sense positive_unate timing_type 
+Cell FA_X1  Src B Sink CO timing_sense positive_unate timing_type 
+Cell FA_X1  Src B Sink CO timing_sense positive_unate timing_type 
+Cell FA_X1  Src CI Sink CO timing_sense positive_unate timing_type 
+Cell FA_X1  Src CI Sink CO timing_sense positive_unate timing_type 
+Cell FA_X1  Src A Sink S timing_sense positive_unate timing_type 
+Cell FA_X1  Src A Sink S timing_sense negative_unate timing_type 
+Cell FA_X1  Src A Sink S timing_sense negative_unate timing_type 
+Cell FA_X1  Src A Sink S timing_sense positive_unate timing_type 
+Cell FA_X1  Src B Sink S timing_sense positive_unate timing_type 
+Cell FA_X1  Src B Sink S timing_sense negative_unate timing_type 
+Cell FA_X1  Src B Sink S timing_sense negative_unate timing_type 
+Cell FA_X1  Src B Sink S timing_sense positive_unate timing_type 
+Cell FA_X1  Src CI Sink S timing_sense positive_unate timing_type 
+Cell FA_X1  Src CI Sink S timing_sense negative_unate timing_type 
+Cell FA_X1  Src CI Sink S timing_sense negative_unate timing_type 
+Cell FA_X1  Src CI Sink S timing_sense positive_unate timing_type 
+Cell HA_X1  Src A Sink CO timing_sense positive_unate timing_type 
+Cell HA_X1  Src B Sink CO timing_sense positive_unate timing_type 
+Cell HA_X1  Src A Sink S timing_sense positive_unate timing_type 
+Cell HA_X1  Src A Sink S timing_sense negative_unate timing_type 
+Cell HA_X1  Src B Sink S timing_sense positive_unate timing_type 
+Cell HA_X1  Src B Sink S timing_sense negative_unate timing_type 
+Cell INV_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell INV_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell INV_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell INV_X8  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell INV_X16  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell INV_X32  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell MUX2_X1  Src A Sink Z timing_sense positive_unate timing_type 
+Cell MUX2_X1  Src A Sink Z timing_sense positive_unate timing_type 
+Cell MUX2_X1  Src B Sink Z timing_sense positive_unate timing_type 
+Cell MUX2_X1  Src B Sink Z timing_sense positive_unate timing_type 
+Cell MUX2_X1  Src S Sink Z timing_sense positive_unate timing_type 
+Cell MUX2_X1  Src S Sink Z timing_sense negative_unate timing_type 
+Cell MUX2_X2  Src A Sink Z timing_sense positive_unate timing_type 
+Cell MUX2_X2  Src A Sink Z timing_sense positive_unate timing_type 
+Cell MUX2_X2  Src B Sink Z timing_sense positive_unate timing_type 
+Cell MUX2_X2  Src B Sink Z timing_sense positive_unate timing_type 
+Cell MUX2_X2  Src S Sink Z timing_sense positive_unate timing_type 
+Cell MUX2_X2  Src S Sink Z timing_sense negative_unate timing_type 
+Cell NAND2_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND2_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND2_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND2_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND2_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND2_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND3_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND3_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND3_X1  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND3_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND3_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND3_X2  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND3_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND3_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND3_X4  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND4_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND4_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND4_X1  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND4_X1  Src A4 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND4_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND4_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND4_X2  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND4_X2  Src A4 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND4_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND4_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND4_X4  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell NAND4_X4  Src A4 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR2_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR2_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR2_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR2_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR2_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR2_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR3_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR3_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR3_X1  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR3_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR3_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR3_X2  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR3_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR3_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR3_X4  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR4_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR4_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR4_X1  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR4_X1  Src A4 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR4_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR4_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR4_X2  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR4_X2  Src A4 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR4_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR4_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR4_X4  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell NOR4_X4  Src A4 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI21_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI22_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src A3 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B3 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B3 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B3 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B3 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B3 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B3 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI33_X1  Src B3 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X1  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X1  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X1  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X2  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X2  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X2  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X4  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X4  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X4  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI211_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI221_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X1  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X2  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src A2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src B2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C1 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OAI222_X4  Src C2 Sink ZN timing_sense negative_unate timing_type 
+Cell OR2_X1  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell OR2_X1  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell OR2_X2  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell OR2_X2  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell OR2_X4  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell OR2_X4  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell OR3_X1  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell OR3_X1  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell OR3_X1  Src A3 Sink ZN timing_sense positive_unate timing_type 
+Cell OR3_X2  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell OR3_X2  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell OR3_X2  Src A3 Sink ZN timing_sense positive_unate timing_type 
+Cell OR3_X4  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell OR3_X4  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell OR3_X4  Src A3 Sink ZN timing_sense positive_unate timing_type 
+Cell OR4_X1  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell OR4_X1  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell OR4_X1  Src A3 Sink ZN timing_sense positive_unate timing_type 
+Cell OR4_X1  Src A4 Sink ZN timing_sense positive_unate timing_type 
+Cell OR4_X2  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell OR4_X2  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell OR4_X2  Src A3 Sink ZN timing_sense positive_unate timing_type 
+Cell OR4_X2  Src A4 Sink ZN timing_sense positive_unate timing_type 
+Cell OR4_X4  Src A1 Sink ZN timing_sense positive_unate timing_type 
+Cell OR4_X4  Src A2 Sink ZN timing_sense positive_unate timing_type 
+Cell OR4_X4  Src A3 Sink ZN timing_sense positive_unate timing_type 
+Cell OR4_X4  Src A4 Sink ZN timing_sense positive_unate timing_type 
+Cell SDFFRS_X1  Src CK Sink D timing_sense  timing_type hold_rising
+Cell SDFFRS_X1  Src CK Sink D timing_sense  timing_type setup_rising
+Cell SDFFRS_X1  Src CK Sink RN timing_sense  timing_type recovery_rising
+Cell SDFFRS_X1  Src CK Sink RN timing_sense  timing_type removal_rising
+Cell SDFFRS_X1  Src RN Sink RN timing_sense  timing_type min_pulse_width
+Cell SDFFRS_X1  Src CK Sink SE timing_sense  timing_type hold_rising
+Cell SDFFRS_X1  Src CK Sink SE timing_sense  timing_type setup_rising
+Cell SDFFRS_X1  Src CK Sink SI timing_sense  timing_type hold_rising
+Cell SDFFRS_X1  Src CK Sink SI timing_sense  timing_type setup_rising
+Cell SDFFRS_X1  Src CK Sink SN timing_sense  timing_type recovery_rising
+Cell SDFFRS_X1  Src CK Sink SN timing_sense  timing_type removal_rising
+Cell SDFFRS_X1  Src SN Sink SN timing_sense  timing_type min_pulse_width
+Cell SDFFRS_X1  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell SDFFRS_X1  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src CK Sink D timing_sense  timing_type hold_rising
+Cell SDFFRS_X2  Src CK Sink D timing_sense  timing_type setup_rising
+Cell SDFFRS_X2  Src CK Sink RN timing_sense  timing_type recovery_rising
+Cell SDFFRS_X2  Src CK Sink RN timing_sense  timing_type removal_rising
+Cell SDFFRS_X2  Src RN Sink RN timing_sense  timing_type min_pulse_width
+Cell SDFFRS_X2  Src CK Sink SE timing_sense  timing_type hold_rising
+Cell SDFFRS_X2  Src CK Sink SE timing_sense  timing_type setup_rising
+Cell SDFFRS_X2  Src CK Sink SI timing_sense  timing_type hold_rising
+Cell SDFFRS_X2  Src CK Sink SI timing_sense  timing_type setup_rising
+Cell SDFFRS_X2  Src CK Sink SN timing_sense  timing_type recovery_rising
+Cell SDFFRS_X2  Src CK Sink SN timing_sense  timing_type removal_rising
+Cell SDFFRS_X2  Src SN Sink SN timing_sense  timing_type min_pulse_width
+Cell SDFFRS_X2  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell SDFFRS_X2  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFRS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src CK Sink D timing_sense  timing_type hold_rising
+Cell SDFFR_X1  Src CK Sink D timing_sense  timing_type setup_rising
+Cell SDFFR_X1  Src CK Sink RN timing_sense  timing_type recovery_rising
+Cell SDFFR_X1  Src CK Sink RN timing_sense  timing_type removal_rising
+Cell SDFFR_X1  Src RN Sink RN timing_sense  timing_type min_pulse_width
+Cell SDFFR_X1  Src CK Sink SE timing_sense  timing_type hold_rising
+Cell SDFFR_X1  Src CK Sink SE timing_sense  timing_type setup_rising
+Cell SDFFR_X1  Src CK Sink SI timing_sense  timing_type hold_rising
+Cell SDFFR_X1  Src CK Sink SI timing_sense  timing_type setup_rising
+Cell SDFFR_X1  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell SDFFR_X1  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X1  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X1  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src CK Sink D timing_sense  timing_type hold_rising
+Cell SDFFR_X2  Src CK Sink D timing_sense  timing_type setup_rising
+Cell SDFFR_X2  Src CK Sink RN timing_sense  timing_type recovery_rising
+Cell SDFFR_X2  Src CK Sink RN timing_sense  timing_type removal_rising
+Cell SDFFR_X2  Src RN Sink RN timing_sense  timing_type min_pulse_width
+Cell SDFFR_X2  Src CK Sink SE timing_sense  timing_type hold_rising
+Cell SDFFR_X2  Src CK Sink SE timing_sense  timing_type setup_rising
+Cell SDFFR_X2  Src CK Sink SI timing_sense  timing_type hold_rising
+Cell SDFFR_X2  Src CK Sink SI timing_sense  timing_type setup_rising
+Cell SDFFR_X2  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell SDFFR_X2  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src RN Sink Q timing_sense positive_unate timing_type clear
+Cell SDFFR_X2  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFR_X2  Src RN Sink QN timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src CK Sink D timing_sense  timing_type hold_rising
+Cell SDFFS_X1  Src CK Sink D timing_sense  timing_type setup_rising
+Cell SDFFS_X1  Src CK Sink SE timing_sense  timing_type hold_rising
+Cell SDFFS_X1  Src CK Sink SE timing_sense  timing_type setup_rising
+Cell SDFFS_X1  Src CK Sink SI timing_sense  timing_type hold_rising
+Cell SDFFS_X1  Src CK Sink SI timing_sense  timing_type setup_rising
+Cell SDFFS_X1  Src CK Sink SN timing_sense  timing_type recovery_rising
+Cell SDFFS_X1  Src CK Sink SN timing_sense  timing_type removal_rising
+Cell SDFFS_X1  Src SN Sink SN timing_sense  timing_type min_pulse_width
+Cell SDFFS_X1  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell SDFFS_X1  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X1  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X1  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src CK Sink D timing_sense  timing_type hold_rising
+Cell SDFFS_X2  Src CK Sink D timing_sense  timing_type setup_rising
+Cell SDFFS_X2  Src CK Sink SE timing_sense  timing_type hold_rising
+Cell SDFFS_X2  Src CK Sink SE timing_sense  timing_type setup_rising
+Cell SDFFS_X2  Src CK Sink SI timing_sense  timing_type hold_rising
+Cell SDFFS_X2  Src CK Sink SI timing_sense  timing_type setup_rising
+Cell SDFFS_X2  Src CK Sink SN timing_sense  timing_type recovery_rising
+Cell SDFFS_X2  Src CK Sink SN timing_sense  timing_type removal_rising
+Cell SDFFS_X2  Src SN Sink SN timing_sense  timing_type min_pulse_width
+Cell SDFFS_X2  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell SDFFS_X2  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src SN Sink Q timing_sense negative_unate timing_type preset
+Cell SDFFS_X2  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFFS_X2  Src SN Sink QN timing_sense positive_unate timing_type clear
+Cell SDFF_X1  Src CK Sink D timing_sense  timing_type hold_rising
+Cell SDFF_X1  Src CK Sink D timing_sense  timing_type setup_rising
+Cell SDFF_X1  Src CK Sink SE timing_sense  timing_type hold_rising
+Cell SDFF_X1  Src CK Sink SE timing_sense  timing_type setup_rising
+Cell SDFF_X1  Src CK Sink SI timing_sense  timing_type hold_rising
+Cell SDFF_X1  Src CK Sink SI timing_sense  timing_type setup_rising
+Cell SDFF_X1  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell SDFF_X1  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell SDFF_X1  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell SDFF_X2  Src CK Sink D timing_sense  timing_type hold_rising
+Cell SDFF_X2  Src CK Sink D timing_sense  timing_type setup_rising
+Cell SDFF_X2  Src CK Sink SE timing_sense  timing_type hold_rising
+Cell SDFF_X2  Src CK Sink SE timing_sense  timing_type setup_rising
+Cell SDFF_X2  Src CK Sink SI timing_sense  timing_type hold_rising
+Cell SDFF_X2  Src CK Sink SI timing_sense  timing_type setup_rising
+Cell SDFF_X2  Src CK Sink CK timing_sense  timing_type min_pulse_width
+Cell SDFF_X2  Src CK Sink Q timing_sense non_unate timing_type rising_edge
+Cell SDFF_X2  Src CK Sink QN timing_sense non_unate timing_type rising_edge
+Cell TBUF_X1  Src A Sink Z timing_sense positive_unate timing_type 
+Cell TBUF_X1  Src EN Sink Z timing_sense positive_unate timing_type three_state_disable
+Cell TBUF_X1  Src EN Sink Z timing_sense negative_unate timing_type three_state_enable
+Cell TBUF_X2  Src A Sink Z timing_sense positive_unate timing_type 
+Cell TBUF_X2  Src EN Sink Z timing_sense positive_unate timing_type three_state_disable
+Cell TBUF_X2  Src EN Sink Z timing_sense negative_unate timing_type three_state_enable
+Cell TBUF_X4  Src A Sink Z timing_sense positive_unate timing_type 
+Cell TBUF_X4  Src EN Sink Z timing_sense positive_unate timing_type three_state_disable
+Cell TBUF_X4  Src EN Sink Z timing_sense negative_unate timing_type three_state_enable
+Cell TBUF_X8  Src A Sink Z timing_sense positive_unate timing_type 
+Cell TBUF_X8  Src EN Sink Z timing_sense positive_unate timing_type three_state_disable
+Cell TBUF_X8  Src EN Sink Z timing_sense negative_unate timing_type three_state_enable
+Cell TBUF_X16  Src A Sink Z timing_sense positive_unate timing_type 
+Cell TBUF_X16  Src EN Sink Z timing_sense positive_unate timing_type three_state_disable
+Cell TBUF_X16  Src EN Sink Z timing_sense negative_unate timing_type three_state_enable
+Cell TINV_X1  Src EN Sink ZN timing_sense positive_unate timing_type three_state_disable
+Cell TINV_X1  Src EN Sink ZN timing_sense negative_unate timing_type three_state_enable
+Cell TINV_X1  Src I Sink ZN timing_sense negative_unate timing_type 
+Cell TLAT_X1  Src G Sink D timing_sense  timing_type hold_falling
+Cell TLAT_X1  Src G Sink D timing_sense  timing_type setup_falling
+Cell TLAT_X1  Src G Sink G timing_sense  timing_type min_pulse_width
+Cell TLAT_X1  Src D Sink Q timing_sense positive_unate timing_type 
+Cell TLAT_X1  Src G Sink Q timing_sense non_unate timing_type rising_edge
+Cell TLAT_X1  Src OE Sink Q timing_sense negative_unate timing_type three_state_disable
+Cell TLAT_X1  Src OE Sink Q timing_sensERROR : Graph with name topdoes not exist 
+Creating New Graph 
+ERROR : Graph with name topdoes not exist 

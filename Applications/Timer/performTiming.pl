@@ -9,7 +9,7 @@ my @nets = ();
 my $timer_test_case = "";
 my $make_file = 0;
 my $circuit_node_count = 0;
-my $verbose = 1;
+my $verbose = 0;
 
 sub my_print {
   my $string = shift;
@@ -241,8 +241,6 @@ sub create_nodes_of_graph {
 		     $node_name);
     }
   }	
-  create_node_cmd ($circuit, 0, "timerPinVirtualNode", "V_IN", "in");
-  create_node_cmd ($circuit, 0, "timerPinVirtualNode", "V_OUT", "out");
 }
 
 #iterate on all the timing arcs of the cell
@@ -429,11 +427,11 @@ sub read_timing_data {
   my $liberty = shift;
   my $netlist = shift;
   my $constr = shift;
-print "Reading Liberty File $liberty .... \n";
+  print "Reading Liberty File $liberty .... \n";
   my $liberty_ptr = read_liberty ( $liberty );
-print "Reading Verilog File $netlist .... \n";
+  print "Reading Verilog File $netlist .... \n";
   my $circuit = read_verilog_netlist ( $liberty_ptr, $netlist);
-print "Reading Constr File $constr .... \n";
+  print "Reading Constr File $constr .... \n";
   read_constr_data ($circuit, $constr);
 }
 
