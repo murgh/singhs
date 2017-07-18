@@ -74,7 +74,7 @@ module top(in, clk, o, out);
   NOR2_X1 _19_ (
     .A1(_05_),
     .A2(_04_),
-    .ZN(_08_)
+    .ZN(out[0])
   );
   INV_X1 K_ (.A(clk), .ZN(wclk));
   DFFRS_X1 dff (.D(out[0]), .CK(wclk), .Q(o));

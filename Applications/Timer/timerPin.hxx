@@ -47,8 +47,8 @@ class timerPinTag {
 		void setArrivalTag () { theArrival = true; }
 		void setRequiredTag () { theArrival = false; }
 
-		void setMasterTag (timerPinTagContainer * tag) { theMasterTag = tag; }
-		timerPinTagContainer * getMasterTag () { return theMasterTag; }
+		void setMasterTag (timerPinTag * tag) { theMasterTag = tag; }
+		timerPinTag * getMasterTag () { return theMasterTag; }
 
 	private:
 		//Not taking the polarity in consideration for now
@@ -56,7 +56,7 @@ class timerPinTag {
 		bool		theArrival; //Arrival tag, if false it acts as required tag
 		bool 	     	theClockPath;
 		int	     	theSourceId;
-		timerPinTagContainer * theMasterTag; //For Split Tags
+		timerPinTag   * theMasterTag; //For Split Tags
 };
 
 class timerPinTagContainer {
@@ -159,27 +159,31 @@ class timerPinInfo {
 
 	public:
 		timerPinInfo (std::string name) {
-		  thePinName = name;
-		  theIsClock = false;
-		  theIsData = false;
-		  thePinTagContainer = NULL;
-		  theArrival.clear ();
-		  theRequired.clear ();
+			thePinName = name;
+			theIsClock = false;
+			theIsData = false;
+			theIsSplitPoint = false;
+			thePinTag = NULL;
+			theOtherPinTag = NULL;
+			theArrival.clear ();
+			theRequired.clear ();
 		}
 
 		timerPinInfo (std::string name, 
-			      bool isClock, 
-			      bool isData,
-			      timerPinIdentifier identity,
-			      timerPinDirection direction) {
-		  thePinName = name;
-	  	  theIsClock = isClock;
-		  theIsData = isData;
-		  theIdentity = identity;
-		  theDirection = direction;
-		  thePinTagContainer = NULL;
-		  theArrival.clear ();
-		  theRequired.clear ();
+				bool isClock, 
+				bool isData,
+				timerPinIdentifier identity,
+				timerPinDirection direction) {
+			thePinName = name;
+			theIsClock = isClock;
+			theIsData = isData;
+			theIsSplitPoint = false;
+			theIdentity = identity;
+			theDirection = direction;
+			thePinTag = NULL;
+			theOtherPinTag = NULL;
+			theArrival.clear ();
+			theRequired.clear ();
 		}
 
 		void setIsClock () {theIsClock = true;}
@@ -194,15 +198,15 @@ class timerPinInfo {
 		//Is Clock source only if it is an IO port having clock bit true
 		bool getIsClockSrc () const { return (
 				(theIdentity == timerIOPort) && theIsClock); 
-					    }
+		}
 
 		//Data path start point if it is a data IO port OR Latch Q Pin
 		bool getIsDataStart () const { return (
-				(theIdentity == timerIOPort && theIsData)
-				                      || 
+				(theIdentity == timerIOPort && theDirection == timerInput && theIsData)
+				|| 
 				(theIdentity == timerLatchData && theDirection == timerOutput) 
-						      ); 
-					     }
+				); 
+		}
 
 		//Clock Path end point if it is a latch Clock pin or an IO out port
 		bool getIsClockEnd () const { return (
@@ -258,7 +262,9 @@ class timerPinInfo {
 		  printf ("Pin(%s) ", thePinName.c_str ());
 		  printf ("isClock(%d) isData(%d) ", theIsClock, theIsData); 
 		  printf ("type(%s) ", get_identifier_name ().c_str ()); 
-		  printf ("dir(%s)\n", get_direction ().c_str ()); 
+		  printf ("dir(%s) ", get_direction ().c_str ()); 
+		  if (theIsSplitPoint) printf ("splitPoint ");
+		  printf ("\n");
 		}
 
 		void assert_IO_Delay (timerPinTag & cTag, timerTime value, bool isInput) {
@@ -278,37 +284,25 @@ class timerPinInfo {
 		  assert_Input_Delay (cTag, time);
 		}
 
-		timerPinTagContainer * get_pin_tag_container () {
-		  return thePinTagContainer; 
+		timerPinTag * get_pin_tag () {
+		  return thePinTag; 
 		}
 
-		timerPinTagContainer * get_pin_tag_container_pvt () {
-		  if (!thePinTagContainer)
-		    thePinTagContainer = new timerPinTagContainer;
-		  return thePinTagContainer;
+		timerPinTag * get_pin_other_tag () {
+		  return theOtherPinTag; 
 		}
 
 		void assert_other_pin_tag (timerPinTag * tag) {
-		  if (!theOtherPinTagContainer)
-		    theOtherPinTagContainer = new timerPinTagContainer (); 
-		  theOtherPinTagContainer->addTag (tag);
+		  theOtherPinTag = tag;
 		}
 
 		void assert_pin_tag (timerPinTag * cTag) {
-		  get_pin_tag_container_pvt ()->addTag (cTag); 
+		  thePinTag = cTag; 
 		}
 
-		timerPinTag * getPinTag (timerPinTag & tag) {
-		  if (!thePinTagContainer)
-		    return NULL;
-		  timerPinTag * storedTag;
-		  timerPinTagContainer::Iterator itr (thePinTagContainer);
-		  while ( (storedTag = itr.next ()) ) {
-		    if (*storedTag == tag)
-		      return storedTag;
-		  }   
-		  return NULL;
-		}
+		void merge_pin_tag (timerPinTag * cont) {
+			//TODO
+		}	
 	private:
 		std::string thePinName;
 		bool	    theIsClock;
@@ -316,8 +310,8 @@ class timerPinInfo {
 		bool	    theIsSplitPoint;
 		timerPinIdentifier theIdentity;
 		timerPinDirection theDirection;
-		timerPinTagContainer * thePinTagContainer;
-		timerPinTagContainer * theOtherPinTagContainer;
+		timerPinTag * thePinTag;
+		timerPinTag * theOtherPinTag;
 		std::list<timerClockTime> theArrival; //List of arrival tags and arrival time
 		std::list<timerClockTime> theRequired;//List of required tags and required
 
