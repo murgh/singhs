@@ -33,7 +33,7 @@ class TA_Timer {
 		void TA_enumerate_clock_paths ();
 		void TA_enumerate_data_paths ();
 		void TA_Build_Required ();
-		void checkAndPerformTagSplitting (diganaVertex & timerPin, bool);
+		bool checkAndPerformTagSplitting (diganaVertex & timerPin, bool);
 		void performBFSAndPropagatePinTags (diganaVertex pin, bool);
 		void propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin);
 		void propagatePinTagsFromStart (diganaVertex & sourcePin, bool);
