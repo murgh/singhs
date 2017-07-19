@@ -1,8 +1,7 @@
 rm -rf graph.o timerAlgo.o timerDesignInfo.o timerDesignInfo_wrap.o timerDesignInfo.so
+BOOST="../../Boost/boost_1_63_0"
 swig -perl5 timerDesignInfo.i
-g++ -g -c `perl -MConfig -e 'print join(" ", @Config{qw(ccflags optimize cccdlflags)}, "-I$Config{archlib}/CORE")'` timerDesignInfo.cxx timerDesignInfo_wrap.c 
-g++ -g -c ../../Kernel/graph.cpp -o graph.o
-g++ -g -c timerAlgorithms.cxx -o timerAlgo.o
-g++ -g `perl -MConfig -e 'print $Config{lddlflags}'` graph.o timerAlgo.o timerDesignInfo.o timerDesignInfo_wrap.o -o timerDesignInfo.so
-
-
+g++ -fPIC -I $BOOST -g -c ../../Kernel/graph.cpp -o graph.o
+g++ -fPIC -I $BOOST -g -c `perl -MConfig -e 'print join(" ", @Config{qw(ccflags optimize cccdlflags)}, "-I$Config{archlib}/CORE")'` timerDesignInfo.cxx timerDesignInfo_wrap.c 
+g++ -fPIC -I $BOOST -g -c timerAlgorithms.cxx -o timerAlgo.o
+g++ -g `perl -MConfig -e 'print $Config{lddlflags}'` -fPIC graph.o timerAlgo.o timerDesignInfo.o timerDesignInfo_wrap.o -o timerDesignInfo.so

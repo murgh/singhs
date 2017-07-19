@@ -286,13 +286,13 @@ sub pair_net_node {
   }
   if ($is_source == 1) {
 	  if ($net_source_hash{$net_name}) {
-	    push $net_source_hash{$net_name}, $node_name;
+	    push @{ $net_source_hash{$net_name} }, $node_name;
 	  } else {
             $net_source_hash{$net_name} = [$node_name];
 	  }
   } else {
 	  if ($net_sink_hash{$net_name}) {
-	    push $net_sink_hash{$net_name}, $node_name;
+	    push @ { $net_sink_hash{$net_name} }, $node_name;
 	  } else {
             $net_sink_hash{$net_name} = [$node_name];
 	  }
