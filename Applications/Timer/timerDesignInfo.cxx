@@ -101,7 +101,7 @@ int add_pin (diganaGraph * circuit, char * name, int node_count) {
 void add_pin_direction_io (diganaGraph * circuit, 
 			   int id, char * dir, 
 			   int isIO, char * type) {
-	std::string pin_type = std::string (pin_type);
+	std::string pin_type = std::string (type);
 	timerPinDirection pinDir; 
 	timerPinIdentifier identity = isIO ? timerIOPort : timerPinIDNone;
 	if (identity == timerPinIDNone) {
