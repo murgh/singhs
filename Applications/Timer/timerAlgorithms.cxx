@@ -8,6 +8,7 @@ void perform_timing_analysis (diganaGraph * graph) {
 	timer->TA_enumerate_data_paths ();
 	timer->TA_Build_Required ();
 	timer->TA_compute_slack ();
+	timer->TA_print_circuit (graph);
 	timer->TA_write_paths ();
 }
 
@@ -105,19 +106,19 @@ TA_Timer::performBFSAndPropagatePinTags (diganaVertex pin, bool isClock) {
       timerPinInfo * sinkInfo = getPinInfo (sink);
 
       if (isClock && sinkInfo->getIsClockEnd ()) {
-        sinkInfo->print ();
+        //sinkInfo->print ();
         diganaGraphIterator::adjacency_iterator ckAi , ckAietr;;
 	ckAi.attach (sink.getVertexId (), sink.getParentGraph ());
     	for (; ckAi != ckAietr; ++ckAi) {
 	  diganaVertex latchData = *ckAi;
 	  timerPinInfo * latchPinInfo = getPinInfo (latchData);
 	  if (latchPinInfo->getDirection () == timerInput) {//D Pin
-            latchPinInfo->print ();
+            //latchPinInfo->print ();
             latchPinInfo->assert_other_pin_tag (sinkInfo->get_pin_tag ()); 		  
 	  } 
 	  if (latchPinInfo->getDirection () == timerOutput) {//Q Pin
 	    //Create a new pin tag
-            latchPinInfo->print ();
+            //latchPinInfo->print ();
 	    timerPinTag * pinTag = new timerPinTag (false, true, latchData.getVertexId ());
 	    pinTag->setMasterTag (sinkInfo->get_pin_tag ());
 	    latchPinInfo->assert_pin_tag (pinTag);
@@ -197,6 +198,20 @@ TA_Timer::TA_compute_slack () {
     else
       printf ("Not found the both tag sets %s\n", endPinInfo->getName ().c_str ());
 
+    endPinInfo->print ();
+  }
+
+
+}
+
+void
+TA_Timer::TA_print_circuit (diganaGraph * graph) {
+  diganaGraphIterator::vertex_iterator vitr, eVitr;
+
+  vitr.attach (graph);
+  for (; vitr != eVitr; ++vitr) {
+    diganaVertex pin = *vitr;
+    getPinInfo (pin)->print (); 
   }
 
 }

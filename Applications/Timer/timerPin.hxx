@@ -5,6 +5,8 @@
 #ifndef timerPin_H
 #define timerPin_H
 
+#define UDEF_PinTagGroupId -1
+
 class timerPinTime;
 class timerPinInfo;
 class timerPinTagContainer; 
@@ -17,6 +19,7 @@ class timerPinTag {
 		  theClockPath = clockTag;
 		  theSourceId = srcId; 
 		  theMasterTag = NULL;
+		  theUnionParent = NULL;
 		}
 
 		timerPinTag (const timerPinTag & tag) {
@@ -24,12 +27,17 @@ class timerPinTag {
 		  theClockPath = tag.theClockPath;
 		  theSourceId = tag.theSourceId; 
 		  theMasterTag = tag.theMasterTag;
+		  theUnionParent = tag.theUnionParent;
 		}
 
 		bool operator == (const timerPinTag & other) {
 		  return (
 			  theSourceId == other.theSourceId
 			 );
+		}
+
+		void print (std::string tag) {
+		 printf ("%s(%d) ", tag.c_str (), theSourceId);
 		}
 
 		int getSource () const { return theSourceId; }
@@ -50,6 +58,32 @@ class timerPinTag {
 		void setMasterTag (timerPinTag * tag) { theMasterTag = tag; }
 		timerPinTag * getMasterTag () { return theMasterTag; }
 
+		void getUnionParentAndDistance (timerPinTag *& unionP, int & distance) {
+		  distance = 0;
+		  timerPinTag * currentTag = this;
+		  unionP = currentTag;
+		  while ( (currentTag = currentTag->theUnionParent) ) {
+		    distance++;
+		    unionP = currentTag;
+		  }
+		}
+
+		static void performTagUnion (timerPinTag * tag1, timerPinTag * tag2) {
+		  if (tag1 == tag2)
+			  return;
+		  timerPinTag * tag1Parent, * tag2Parent;
+	          int tag1Distance, tag2Distance;
+	          tag1->getUnionParentAndDistance (tag1Parent, tag1Distance);
+	          tag2->getUnionParentAndDistance (tag2Parent, tag2Distance);
+		  if (tag1Parent == tag2Parent)
+			 return; 
+		  if (tag1Distance > tag2Distance) {
+		    tag2Parent->theUnionParent = tag1Parent;
+		  } else {
+		    tag1Parent->theUnionParent = tag2Parent;
+		  }
+		}
+
 	private:
 		//Not taking the polarity in consideration for now
 		//bool	     thePositivePolarity;
@@ -57,6 +91,7 @@ class timerPinTag {
 		bool 	     	theClockPath;
 		int	     	theSourceId;
 		timerPinTag   * theMasterTag; //For Split Tags
+		timerPinTag   * theUnionParent; //For Union Tags
 };
 
 class timerPinTagContainer {
@@ -264,6 +299,8 @@ class timerPinInfo {
 		  printf ("type(%s) ", get_identifier_name ().c_str ()); 
 		  printf ("dir(%s) ", get_direction ().c_str ()); 
 		  if (theIsSplitPoint) printf ("splitPoint ");
+		  if (thePinTag) thePinTag->print (std::string ("TAG"));
+		  if (theOtherPinTag) theOtherPinTag->print (std::string ("OtherTAG"));
 		  printf ("\n");
 		}
 
@@ -301,7 +338,14 @@ class timerPinInfo {
 		}
 
 		void merge_pin_tag (timerPinTag * cont) {
-			//TODO
+		  //If the tag already exists on this pinInfo
+		  //make a union of this pin tag and cont, else
+		  //just copy the tags
+		  if (thePinTag) {
+		    timerPinTag::performTagUnion (thePinTag, cont);
+		    return;
+		  }	  
+		  thePinTag = cont; 
 		}	
 	private:
 		std::string thePinName;

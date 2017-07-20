@@ -29,6 +29,7 @@ class TA_Timer {
 		}
 		diganaGraph * TA_create_timing_graph (diganaGraph *);
 		void TA_compute_slack ();
+		void TA_print_circuit (diganaGraph *);
 		void TA_write_paths ();
 		void TA_enumerate_clock_paths ();
 		void TA_enumerate_data_paths ();
