@@ -2,6 +2,7 @@
 
 int verbose = 0;
 std::map<std::string, timerClock *> timerConstraints::theClockMap;
+int timerPinTag::theTagCount = 0;
 void perform_timing_analysis (diganaGraph * graph) {
 	TA_Timer * timer = new TA_Timer (graph);
 	timer->TA_enumerate_clock_paths ();
@@ -45,6 +46,7 @@ TA_Timer::TA_create_timing_graph (diganaGraph * graph) {
     }      
   }
   if (verbose) printf ("End Creating the timing graph \n");
+  return graph;
 }
 
 //Check and perform the tag splitting.
@@ -198,10 +200,8 @@ TA_Timer::TA_compute_slack () {
     else
       printf ("Not found the both tag sets %s\n", endPinInfo->getName ().c_str ());
 
-    endPinInfo->print ();
+    //endPinInfo->print ();
   }
-
-
 }
 
 void
@@ -211,12 +211,133 @@ TA_Timer::TA_print_circuit (diganaGraph * graph) {
   vitr.attach (graph);
   for (; vitr != eVitr; ++vitr) {
     diganaVertex pin = *vitr;
-    getPinInfo (pin)->print (); 
+    //getPinInfo (pin)->print (); 
   }
 
 }
 
 void
 TA_Timer::TA_write_paths () {
+ /*
+ Go to each end point
+ Pick the end point tag
+ while (tag = tag->master)
+ {
+   push tag on stack 
+ }
+ while ( tag = pop )
+ {
+   node from tag
+   put_node_on_path (node);
+   foreach next_node adjacent to node
+   {
+     if (tag == tag_on_next_node or 
+         tag_on_top_of_stack == tag_on_next_node)
+     {
+       put_node_on_path (next_node); 	
+     }
+   }
+ }
+ 
+ */
+  FILE * file = fopen ("timing_report", "w");
+  if (file == NULL) return; 
+ 
+  std::list<diganaVertex>::iterator itr;
+  for (itr = theEndPointList.begin (); itr != theEndPointList.end (); ++itr) {
+    //std::stack<diganaVertex> stack;
+    diganaVertex endPoint = *itr;
+    computeTagPaths (file, endPoint);
+  }   
+  fclose (file); 
+}
 
+void
+TA_Timer::computeTagPaths (FILE * file, diganaVertex endPoint) {
+
+  	
+  fprintf (file, "EndPoint %s\n", getPinInfo (endPoint)->getName().c_str ());
+  std::list <std::list<timerPinTag *> *> tagPaths;
+  std::list<timerPinTag *> tagPath;
+  computeRecursiveTagPath (getPinInfo (endPoint)->get_pin_tag (), tagPath, tagPaths);
+  int count = 0;
+  std::list <std::list<timerPinTag *> * >::iterator itr;
+  for (itr = tagPaths.begin (); itr != tagPaths.end (); ++itr) {
+    std::list<diganaVertex> timingPath;
+    buildTimingPathFromTagPath (endPoint, *itr, timingPath);
+    writeTimingPath (file, timingPath, count++);
+  }
+}
+
+void
+TA_Timer::writeTimingPath (FILE * file, std::list<diganaVertex> & timingPath, int Nth) {
+  fprintf (file, "Path%d --\n", Nth);
+  std::list<diganaVertex>::iterator itr;
+  for (itr = timingPath.begin (); itr != timingPath.end (); ++itr) {
+    diganaVertex pin = *itr;
+    getPinInfo (pin)->write_timing_info (file);
+  }
+}
+
+void
+TA_Timer::computeRecursiveTagPath (timerPinTag * tag,
+				   std::list <timerPinTag *> & theTagPath,
+				   std::list <std::list<timerPinTag *> * > & tagPaths) { 
+  if (tag == NULL) {
+    //Reached the end, copy the path and push in tagPaths
+    std::list <timerPinTag *> * tagPath = new std::list <timerPinTag *>;
+    std::list <timerPinTag *>::iterator itr;
+    for (itr = theTagPath.begin (); itr != theTagPath.end (); ++itr) {
+      tagPath->push_back (*itr); 
+    } 
+    tagPaths.push_back (tagPath);
+    return;
+  }
+
+  if (tag->get_tag_container () == NULL) {//No tag set for this tag 
+    theTagPath.push_front (tag);
+    computeRecursiveTagPath (tag->getMasterTag(), theTagPath, tagPaths);
+    theTagPath.pop_front ();
+  } else { //A union tag set is there
+    timerPinTag * sibTag;
+    timerPinTagContainer::Iterator itr (tag->get_tag_container ());
+    while ( (sibTag = itr.next ()) ) {
+      theTagPath.push_front (sibTag);
+      computeRecursiveTagPath (sibTag->getMasterTag(), theTagPath, tagPaths);
+      theTagPath.pop_front ();
+    }
+  } 
+}
+
+void
+TA_Timer::buildTimingPathFromTagPath (diganaVertex endPoint,
+			    std::list<timerPinTag *> * theTagPath, 
+		 	    std::list<diganaVertex> & timingPath) {
+
+  timerPinTag * nextTag;
+  timerPinTag * tag = theTagPath->front ();
+  theTagPath->pop_front ();
+  diganaVertex pin (tag->getSource (), theTimingGraph); 
+  while ( true ) {	
+    nextTag = theTagPath->front ();
+    timingPath.push_back (pin);
+    if (pin == endPoint)
+      return; 
+    diganaGraphIterator::adjacency_iterator ai , aietr;
+    ai.attach (pin.getVertexId (), theTimingGraph);
+    for (; ai != aietr; ++ai) {
+      diganaVertex sink = *ai;
+      timerPinTag * sinkTag = getPinInfo (sink)->get_pin_tag ();    
+      if ( timerPinTag::areTagsInUnion (sinkTag, tag) ) {
+	pin = sink;
+	break;
+      }
+      if ( timerPinTag::areTagsInUnion (sinkTag, nextTag) ) {
+	pin = sink;
+	tag = nextTag; 
+        theTagPath->pop_front ();
+	break;
+      }
+    } 
+  }
 }

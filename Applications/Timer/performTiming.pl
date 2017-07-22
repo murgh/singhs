@@ -27,6 +27,16 @@ sub file_print {
   print $timer_test_case $string;
 }
 
+sub get_node_id {
+  my $node_name = shift;
+  my_print $node_name;
+  if (exists($node_name_to_id_hash{$node_name})) {
+    $node_id = $node_name_to_id_hash{$node_name};
+    return $node_id;
+  } 
+  return -1;
+}
+
 sub createClock {
   my $circuit = shift;
   my $constr = shift;
@@ -38,7 +48,7 @@ sub createClock {
   my $vars = scalar @constr_string;
   if ($vars == 4) {
     my $clock_source = $constr_string[3];
-    my $node = $node_name_to_id_hash{$clock_source};
+    my $node = get_node_id ($clock_source);
     my_print "Adding clock $clock_name $clock_source $node\n";
     timerDesignInfo::add_clock ($circuit, $clock_name, $clock_period, $node, 0);
   } else {
@@ -56,7 +66,7 @@ sub inputDelay {
   my $value = $constr_string[1];
   my $source = $constr_string[2];
 
-  my $node = $node_name_to_id_hash{$source};
+  my $node = get_node_id ($source);
   my_print "Adding input $node $source\n";
   timerDesignInfo::add_IO_delay ($circuit, $value, $node, 1);
 }
@@ -70,7 +80,7 @@ sub outputDelay {
   my $value = $constr_string[1];
   my $source = $constr_string[2];
 
-  my $node = $node_name_to_id_hash{$source};
+  my $node = get_node_id ($source);
   my_print "Adding output $node $source\n";
   timerDesignInfo::add_IO_delay ($circuit, $value, $node, 0);
 }
@@ -386,8 +396,8 @@ sub create_edge_cmd {
   my $source = shift;
   my $sink = shift;
 
-  my $src = $node_name_to_id_hash{$source};
-  my $snk = $node_name_to_id_hash{$sink};
+  my $src = get_node_id ($source);
+  my $snk = get_node_id ($sink);
   my_print "Create Edge $source $src --> $sink $snk\n";
   if ($make_file == 0) {
     timerDesignInfo::add_timing_arc ($circuit, $src, $snk);

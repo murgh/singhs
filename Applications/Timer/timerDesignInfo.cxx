@@ -46,6 +46,7 @@ diganaGraph * get_or_create_circuit (char * circuit) {
 }
 
 void add_clock (diganaGraph * circuit, char * name, int period, int nodeId, int isVirtual) {
+	if (nodeId == -1) return;
 	timerClock * clock;
 	if ( (clock = timerConstraints::is_clock_in_clock_map (name)) )
 	  return;
@@ -71,6 +72,7 @@ void add_clock (diganaGraph * circuit, char * name, int period, int nodeId, int 
 }
 
 void add_IO_delay (diganaGraph * circuit, float value, int nodeId, int input) {
+	if (nodeId == -1) return;
 	diganaVertex V = diganaVertex (nodeId, circuit);
 	timerPinProperty P = V.get_property<timerPinProperty> ("Pin_Property"); 
 	timerPinInfo * pinInfo = P.getPinInfo ();

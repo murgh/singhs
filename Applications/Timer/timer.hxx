@@ -38,6 +38,14 @@ class TA_Timer {
 		void performBFSAndPropagatePinTags (diganaVertex pin, bool);
 		void propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin);
 		void propagatePinTagsFromStart (diganaVertex & sourcePin, bool);
+		void computeRecursiveTagPath (timerPinTag * tag,
+				              std::list <timerPinTag *> & theTagPath,
+					      std::list <std::list<timerPinTag *> * > & tagPaths);
+		void computeTagPaths (FILE * file, diganaVertex vtx);
+		void writeTimingPath (FILE * file, std::list<diganaVertex> & timingPath, int);
+		void buildTimingPathFromTagPath (diganaVertex endPoint,
+						 std::list<timerPinTag *> * theTagPath,
+						 std::list<diganaVertex> & timingPath);
 		timerPinInfo * getPinInfo (diganaVertex & tPin) {
 		  timerPinProperty P = tPin.get_property<timerPinProperty> ("Pin_Property");
 		  return P.getPinInfo ();

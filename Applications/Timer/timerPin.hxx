@@ -9,91 +9,7 @@
 
 class timerPinTime;
 class timerPinInfo;
-class timerPinTagContainer; 
-
-class timerPinTag {
-
-	public:
-		timerPinTag (bool clockTag, bool arr, int srcId) {
-		  theArrival = arr;
-		  theClockPath = clockTag;
-		  theSourceId = srcId; 
-		  theMasterTag = NULL;
-		  theUnionParent = NULL;
-		}
-
-		timerPinTag (const timerPinTag & tag) {
-		  theArrival = tag.theArrival;
-		  theClockPath = tag.theClockPath;
-		  theSourceId = tag.theSourceId; 
-		  theMasterTag = tag.theMasterTag;
-		  theUnionParent = tag.theUnionParent;
-		}
-
-		bool operator == (const timerPinTag & other) {
-		  return (
-			  theSourceId == other.theSourceId
-			 );
-		}
-
-		void print (std::string tag) {
-		 printf ("%s(%d) ", tag.c_str (), theSourceId);
-		}
-
-		int getSource () const { return theSourceId; }
-		bool isClockPath () const { return theClockPath; }
-		bool isDataPath () const { return !theClockPath; }
-
-		void setClockPath () { theClockPath = true; }
-		void setDataPath () { theClockPath = false; }
-
-		bool isSplitTag () { return (theMasterTag != NULL); }
-
-		bool isArrivalTag () { return theArrival; }
-		bool isRequiredTag () { return !theArrival; }
-
-		void setArrivalTag () { theArrival = true; }
-		void setRequiredTag () { theArrival = false; }
-
-		void setMasterTag (timerPinTag * tag) { theMasterTag = tag; }
-		timerPinTag * getMasterTag () { return theMasterTag; }
-
-		void getUnionParentAndDistance (timerPinTag *& unionP, int & distance) {
-		  distance = 0;
-		  timerPinTag * currentTag = this;
-		  unionP = currentTag;
-		  while ( (currentTag = currentTag->theUnionParent) ) {
-		    distance++;
-		    unionP = currentTag;
-		  }
-		}
-
-		static void performTagUnion (timerPinTag * tag1, timerPinTag * tag2) {
-		  if (tag1 == tag2)
-			  return;
-		  timerPinTag * tag1Parent, * tag2Parent;
-	          int tag1Distance, tag2Distance;
-	          tag1->getUnionParentAndDistance (tag1Parent, tag1Distance);
-	          tag2->getUnionParentAndDistance (tag2Parent, tag2Distance);
-		  if (tag1Parent == tag2Parent)
-			 return; 
-		  if (tag1Distance > tag2Distance) {
-		    tag2Parent->theUnionParent = tag1Parent;
-		  } else {
-		    tag1Parent->theUnionParent = tag2Parent;
-		  }
-		}
-
-	private:
-		//Not taking the polarity in consideration for now
-		//bool	     thePositivePolarity;
-		bool		theArrival; //Arrival tag, if false it acts as required tag
-		bool 	     	theClockPath;
-		int	     	theSourceId;
-		timerPinTag   * theMasterTag; //For Split Tags
-		timerPinTag   * theUnionParent; //For Union Tags
-};
-
+class timerPinTag;
 class timerPinTagContainer {
 
 	public:
@@ -135,6 +51,130 @@ class timerPinTagContainer {
 	private:
 		std::list<timerPinTag *> theTagSet;
 		int			 theTagSetSize;
+}; 
+
+class timerPinTag {
+
+	public:
+		timerPinTag (bool clockTag, bool arr, int srcId) {
+		  theArrival = arr;
+		  theClockPath = clockTag;
+		  theSourceId = srcId; 
+		  theMasterTag = NULL;
+		  theUnionParent = NULL;
+		  theTagContainer = NULL;
+		  theTagId = theTagCount++;
+		}
+
+		timerPinTag (const timerPinTag & tag) {
+		  theArrival = tag.theArrival;
+		  theClockPath = tag.theClockPath;
+		  theSourceId = tag.theSourceId; 
+		  theMasterTag = tag.theMasterTag;
+		  theUnionParent = tag.theUnionParent;
+		  theTagContainer = tag.theTagContainer;
+		  theTagId = tag.theTagId;
+		}
+
+		bool operator == (const timerPinTag & other) {
+		  return (
+			  theSourceId == other.theSourceId
+			 );
+		}
+
+		void print (std::string tag) {
+		 printf ("%s(%d) ", tag.c_str (), theTagId);
+		}
+
+		int getSource () const { return theSourceId; }
+		bool isClockPath () const { return theClockPath; }
+		bool isDataPath () const { return !theClockPath; }
+
+		void setClockPath () { theClockPath = true; }
+		void setDataPath () { theClockPath = false; }
+
+		bool isSplitTag () { return (theMasterTag != NULL); }
+
+		bool isArrivalTag () { return theArrival; }
+		bool isRequiredTag () { return !theArrival; }
+
+		void setArrivalTag () { theArrival = true; }
+		void setRequiredTag () { theArrival = false; }
+
+		void setMasterTag (timerPinTag * tag) { theMasterTag = tag; }
+		timerPinTag * getMasterTag () { return theMasterTag; }
+/*
+		void getUnionParentAndDistance (timerPinTag *& unionP, int & distance) {
+		  distance = 0;
+		  timerPinTag * currentTag = this;
+		  unionP = currentTag;
+		  while ( (currentTag = currentTag->theUnionParent) ) {
+		    distance++;
+		    unionP = currentTag;
+		  }
+		}
+
+		static void performTagUnion (timerPinTag * tag1, timerPinTag * tag2) {
+		  if (tag1 == tag2)
+			  return;
+		  timerPinTag * tag1Parent, * tag2Parent;
+	          int tag1Distance, tag2Distance;
+	          tag1->getUnionParentAndDistance (tag1Parent, tag1Distance);
+	          tag2->getUnionParentAndDistance (tag2Parent, tag2Distance);
+		  if (tag1Parent == tag2Parent)
+			 return; 
+		  if (tag1Distance > tag2Distance) {
+		    tag2Parent->theUnionParent = tag1Parent;
+		  } else {
+		    tag1Parent->theUnionParent = tag2Parent;
+		  }
+		}
+*/
+		timerPinTagContainer * get_tag_container () { return theTagContainer; }
+
+		static void performTagUnion (timerPinTag * tag1, timerPinTag * tag2) {
+		  if (tag1 == tag2)
+		    return;
+		  timerPinTagContainer * tag1Cont = tag1->theTagContainer; 
+		  timerPinTagContainer * tag2Cont = tag2->theTagContainer; 
+		  //Both tag container empty
+		  if (tag1Cont == NULL && tag2Cont == NULL) {
+		    tag1Cont = new timerPinTagContainer; 
+		    tag1Cont->addTag (tag1);
+		    tag1Cont->addTag (tag2);
+		    tag1->theTagContainer = tag1Cont;
+		    tag2->theTagContainer = tag1Cont;
+		    return;
+		  }
+		  //One if the container is empty
+		  if (!tag1Cont) {
+		    tag1->theTagContainer = tag2Cont;
+		    tag2Cont->addTag (tag1);
+		    return;
+		  }
+
+		  if (!tag2Cont) {
+		    tag2->theTagContainer = tag1Cont;
+		    tag1Cont->addTag (tag2);
+		    return;
+		  }
+		}
+
+		static bool areTagsInUnion (timerPinTag * tag1, timerPinTag * tag2) {
+		  return ((tag1 == tag2) || (tag1->theTagContainer == tag2->theTagContainer));
+		}
+
+	private:
+		//Not taking the polarity in consideration for now
+		//bool	     thePositivePolarity;
+		bool		theArrival; //Arrival tag, if false it acts as required tag
+		bool 	     	theClockPath;
+		int	     	theSourceId;
+		int		theTagId;
+		timerPinTag   * theMasterTag; //For Split Tags
+		timerPinTag   * theUnionParent; //For Union Tags
+		timerPinTagContainer * theTagContainer;//Union set of tags.
+		static int	theTagCount;
 };
 
 struct timerPinTimeArgs {
@@ -302,6 +342,10 @@ class timerPinInfo {
 		  if (thePinTag) thePinTag->print (std::string ("TAG"));
 		  if (theOtherPinTag) theOtherPinTag->print (std::string ("OtherTAG"));
 		  printf ("\n");
+		}
+
+		void write_timing_info (FILE * file) {
+		  fprintf (file, "%s\n", thePinName.c_str ());
 		}
 
 		void assert_IO_Delay (timerPinTag & cTag, timerTime value, bool isInput) {
