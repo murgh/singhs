@@ -21,21 +21,34 @@ class timerPinTagContainer {
 		}
 
 		void addTag (timerPinTag * tag) {
-		  theTagSet.push_back (tag);
-		  theTagSetSize++;
+		  std::pair<std::set<timerPinTag *>::iterator, bool> ret = theTagSet.insert (tag);
+		  if (ret.second == true)
+		    theTagSetSize++;
 		}
 
 		int getTagSetSize () { return theTagSetSize; }
-		std::list<timerPinTag *> & getTagSet () { return theTagSet; }
+		std::set<timerPinTag *> & getTagSet () { return theTagSet; }
 
 	class Iterator {
 	 
 		public:
 			//Later this can be cached : TODO
-			void buildExpandedTagList (timerPinTagContainer * cont); 
+			void buildExpandedTagSet (timerPinTagContainer * cont); 
 
 			Iterator (timerPinTagContainer * cont) {
-			  buildExpandedTagList (cont);	
+			  theIterSize = 0;
+			  theTagSet.clear ();
+			  buildExpandedTagSet (cont);	
+			  std::set<timerPinTag *>::iterator itr;
+			  for (itr = theTagSet.begin (); itr != theTagSet.end (); ++itr) {
+			    theTagList.push_back (*itr);
+			  }
+			  assert (theIterSize == theTagList.size ());
+			}
+
+			~Iterator () {
+			  theTagSet.clear ();
+			  theTagList.clear ();
 			}
 
 			timerPinTag * next () {
@@ -43,17 +56,17 @@ class timerPinTagContainer {
 			    return NULL;
 			  timerPinTag * tag = theTagList.front ();
 			  theTagList.pop_front ();
-			  theTagList.push_back (tag);
 			  theIterSize--;
 			  return tag;
 			}
 
 		private:
 			int theIterSize;
+			std::set<timerPinTag *> theTagSet;
 			std::list<timerPinTag *> theTagList;
 	};
 	private:
-		std::list<timerPinTag *> theTagSet;
+		std::set<timerPinTag *>  theTagSet;
 		int			 theTagSetSize;
 };
 
@@ -179,8 +192,8 @@ class timerPinTag {
 		  while (!areInUnion && (tag1MasterTo || tag2MasterTo)) {
 		    if (tag1MasterTo == tag2 || tag2MasterTo == tag1)
 			    areInUnion = true;
-		    tag1MasterTo = tag1MasterTo->theMergeToTag;
-		    tag2MasterTo = tag2MasterTo->theMergeToTag;
+		    tag1MasterTo = (tag1MasterTo) ? tag1MasterTo->theMergeToTag : NULL;
+		    tag2MasterTo = (tag2MasterTo) ? tag2MasterTo->theMergeToTag : NULL;
 		  }
 		  return areInUnion;
 		}

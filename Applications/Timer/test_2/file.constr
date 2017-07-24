@@ -1,0 +1,5 @@
+createClock clock1 10 clk
+inputDelay 1 net_1
+inputDelay 2 net_2
+inputDelay 3 net_3
+outputDelay 3 net_4

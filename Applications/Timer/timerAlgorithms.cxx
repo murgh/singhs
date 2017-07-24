@@ -90,7 +90,8 @@ TA_Timer::propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin) {
 
   timerPinInfo::propagatePinInfo (sourcePinInfo, sinkPinInfo);
   if (sourcePinInfo->get_pin_tag () && sinkPinInfo->get_pin_tag () &&
-      (sourcePinInfo->get_pin_tag () != sinkPinInfo->get_pin_tag ())) {
+      (sourcePinInfo->get_pin_tag () != sinkPinInfo->get_pin_tag ()) &&
+      (sourcePinInfo->get_pin_tag () != sinkPinInfo->get_pin_tag ()->getMasterTag ())) {
     sinkPinInfo->get_pin_tag ()->merge_pin_tag (sourcePinInfo->get_pin_tag ());
     return;
   }
@@ -266,7 +267,7 @@ void
 TA_Timer::computeTagPaths (FILE * file, diganaVertex endPoint) {
 
   	
-  fprintf (file, "EndPoint %s\n", getPinInfo (endPoint)->getName().c_str ());
+  fprintf (file, "\n**EndPoint %s **\n", getPinInfo (endPoint)->getName().c_str ());
   std::list <std::list<timerPinTag *> *> tagPaths;
   std::list<timerPinTag *> tagPath;
   computeRecursiveTagPath (getPinInfo (endPoint)->get_pin_tag (), tagPath, tagPaths);
@@ -304,11 +305,12 @@ TA_Timer::computeRecursiveTagPath (timerPinTag * tag,
     return;
   }
 
-  if (tag->get_tag_container () == NULL) {//No tag set for this tag 
-    theTagPath.push_front (tag);
-    computeRecursiveTagPath (tag->getMasterTag(), theTagPath, tagPaths);
-    theTagPath.pop_front ();
-  } else { //A union tag set is there
+  //Process the tag
+  theTagPath.push_front (tag);
+  computeRecursiveTagPath (tag->getMasterTag(), theTagPath, tagPaths);
+  theTagPath.pop_front ();
+  //Process the union tag set contained in this set
+  if (tag->get_tag_container () != NULL) {
     timerPinTag * sibTag;
     timerPinTagContainer::Iterator itr (tag->get_tag_container ());
     while ( (sibTag = itr.next ()) ) {
@@ -354,13 +356,14 @@ TA_Timer::buildTimingPathFromTagPath (diganaVertex endPoint,
 }
 
 //For the container iterator
-void timerPinTagContainer::Iterator::buildExpandedTagList (timerPinTagContainer * cont) {
+void timerPinTagContainer::Iterator::buildExpandedTagSet (timerPinTagContainer * cont) {
   if (!cont) return;
-  std::list<timerPinTag *>::iterator itr;
+  std::set<timerPinTag *>::iterator itr;
   for (itr = cont->getTagSet ().begin (); itr != cont->getTagSet ().end (); ++itr) {
     timerPinTag * tag = *itr;
-    theTagList.push_back (tag);
-    theIterSize++;
-    buildExpandedTagList (tag->get_tag_container ());
+    std::pair<std::set<timerPinTag *>::iterator, bool> ret = theTagSet.insert (tag);
+    if (ret.second == true)
+      theIterSize++;
+    buildExpandedTagSet (tag->get_tag_container ());
   }
 }

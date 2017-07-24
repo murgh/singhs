@@ -1463,3 +1463,153 @@ Cell TLAT_X1  Src OE Sink Q timing_sense negative_unate timing_type three_state_
 Cell TLAT_X1  Src OE Sink Q timing_sensERROR : Graph with name topdoes not exist 
 Creating New Graph 
 ERROR : Graph with name topdoes not exist 
+e positive_unate timing_type three_state_enable
+Cell XNOR2_X1  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell XNOR2_X1  Src A Sink ZN timing_sense positive_unate timing_type 
+Cell XNOR2_X1  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell XNOR2_X1  Src B Sink ZN timing_sense positive_unate timing_type 
+Cell XNOR2_X2  Src A Sink ZN timing_sense negative_unate timing_type 
+Cell XNOR2_X2  Src A Sink ZN timing_sense positive_unate timing_type 
+Cell XNOR2_X2  Src B Sink ZN timing_sense negative_unate timing_type 
+Cell XNOR2_X2  Src B Sink ZN timing_sense positive_unate timing_type 
+Cell XOR2_X1  Src A Sink Z timing_sense positive_unate timing_type 
+Cell XOR2_X1  Src A Sink Z timing_sense negative_unate timing_type 
+Cell XOR2_X1  Src B Sink Z timing_sense positive_unate timing_type 
+Cell XOR2_X1  Src B Sink Z timing_sense negative_unate timing_type 
+Cell XOR2_X2  Src A Sink Z timing_sense positive_unate timing_type 
+Cell XOR2_X2  Src A Sink Z timing_sense negative_unate timing_type 
+Cell XOR2_X2  Src B Sink Z timing_sense positive_unate timing_type 
+Cell XOR2_X2  Src B Sink Z timing_sense negative_unate timing_type 
+Reading Verilog File test_1/test.v .... 
+Create node -> out[0] 0 dir --> out
+Pairing Net -> out[0] Pin -> out[0]
+Create node -> out[1] 1 dir --> out
+Pairing Net -> out[1] Pin -> out[1]
+Create node -> clk 2 dir --> in
+Pairing Net -> clk Pin -> clk
+Create node -> in[0] 3 dir --> in
+Pairing Net -> in[0] Pin -> in[0]
+Create node -> in[1] 4 dir --> in
+Pairing Net -> in[1] Pin -> in[1]
+Create node -> in[2] 5 dir --> in
+Pairing Net -> in[2] Pin -> in[2]
+Create node -> in[3] 6 dir --> in
+Pairing Net -> in[3] Pin -> in[3]
+Create node -> o 7 dir --> out
+Pairing Net -> o Pin -> o
+Create node -> _16_/A1 8 dir --> in
+Pairing Net -> _12_ Pin -> _16_/A1
+Create node -> _16_/A2 9 dir --> in
+Pairing Net -> in[0] Pin -> _16_/A2
+Create node -> _16_/ZN 10 dir --> out
+Pairing Net -> out[1] Pin -> _16_/ZN
+Create node -> dff/Q 11 dir --> out
+Pairing Net -> o Pin -> dff/Q
+Create node -> dff/D 12 dir --> in
+Pairing Net -> out[0] Pin -> dff/D
+Create node -> dff/CK 13 dir --> in
+Pairing Net -> wclk Pin -> dff/CK
+Create node -> K_/A 14 dir --> in
+Pairing Net -> clk Pin -> K_/A
+Create node -> K_/ZN 15 dir --> out
+Pairing Net -> wclk Pin -> K_/ZN
+Create node -> _19_/A1 16 dir --> in
+Pairing Net -> _05_ Pin -> _19_/A1
+Create node -> _19_/A2 17 dir --> in
+Pairing Net -> _04_ Pin -> _19_/A2
+Create node -> _19_/ZN 18 dir --> out
+Pairing Net -> out[0] Pin -> _19_/ZN
+Create node -> _14_/A1 19 dir --> in
+Pairing Net -> _09_ Pin -> _14_/A1
+Create node -> _14_/A2 20 dir --> in
+Pairing Net -> in[2] Pin -> _14_/A2
+Create node -> _14_/ZN 21 dir --> out
+Pairing Net -> _11_ Pin -> _14_/ZN
+Create node -> _18_/A1 22 dir --> in
+Pairing Net -> in[0] Pin -> _18_/A1
+Create node -> _18_/A2 23 dir --> in
+Pairing Net -> in[1] Pin -> _18_/A2
+Create node -> _18_/ZN 24 dir --> out
+Pairing Net -> _05_ Pin -> _18_/ZN
+Create node -> _17_/A1 25 dir --> in
+Pairing Net -> in[3] Pin -> _17_/A1
+Create node -> _17_/A2 26 dir --> in
+Pairing Net -> in[2] Pin -> _17_/A2
+Create node -> _17_/ZN 27 dir --> out
+Pairing Net -> _04_ Pin -> _17_/ZN
+Create node -> _13_/A 28 dir --> in
+Pairing Net -> in[3] Pin -> _13_/A
+Create node -> _13_/ZN 29 dir --> out
+Pairing Net -> _09_ Pin -> _13_/ZN
+Create node -> _15_/A1 30 dir --> in
+Pairing Net -> _11_ Pin -> _15_/A1
+Create node -> _15_/A2 31 dir --> in
+Pairing Net -> in[1] Pin -> _15_/A2
+Create node -> _15_/ZN 32 dir --> out
+Pairing Net -> _12_ Pin -> _15_/ZN
+Net - out[0]
+_19_/ZNout[0]Create Edge _19_/ZN 18 --> out[0] 0
+_19_/ZNdff/DCreate Edge _19_/ZN 18 --> dff/D 12
+Net - out[1]
+_16_/ZNout[1]Create Edge _16_/ZN 10 --> out[1] 1
+Net - clk
+clkK_/ACreate Edge clk 2 --> K_/A 14
+Net - in[0]
+in[0]_16_/A2Create Edge in[0] 3 --> _16_/A2 9
+in[0]_18_/A1Create Edge in[0] 3 --> _18_/A1 22
+Net - in[1]
+in[1]_18_/A2Create Edge in[1] 4 --> _18_/A2 23
+in[1]_15_/A2Create Edge in[1] 4 --> _15_/A2 31
+Net - in[2]
+in[2]_14_/A2Create Edge in[2] 5 --> _14_/A2 20
+in[2]_17_/A2Create Edge in[2] 5 --> _17_/A2 26
+Net - in[3]
+in[3]_17_/A1Create Edge in[3] 6 --> _17_/A1 25
+in[3]_13_/ACreate Edge in[3] 6 --> _13_/A 28
+Net - o
+dff/QoCreate Edge dff/Q 11 --> o 7
+Net - _12_
+_15_/ZN_16_/A1Create Edge _15_/ZN 32 --> _16_/A1 8
+Net - wclk
+K_/ZNdff/CKCreate Edge K_/ZN 15 --> dff/CK 13
+Net - _05_
+_18_/ZN_19_/A1Create Edge _18_/ZN 24 --> _19_/A1 16
+Net - _04_
+_17_/ZN_19_/A2Create Edge _17_/ZN 27 --> _19_/A2 17
+Net - _09_
+_13_/ZN_14_/A1Create Edge _13_/ZN 29 --> _14_/A1 19
+Net - _11_
+_14_/ZN_15_/A1Create Edge _14_/ZN 21 --> _15_/A1 30
+_16_/A1_16_/ZNCreate Edge _16_/A1 8 --> _16_/ZN 10
+_16_/A2_16_/ZNCreate Edge _16_/A2 9 --> _16_/ZN 10
+dff/CKdff/QCreate Edge dff/CK 13 --> dff/Q 11
+dff/CKdff/DCreate Edge dff/CK 13 --> dff/D 12
+dff/CKdff/CKCreate Edge dff/CK 13 --> dff/CK 13
+K_/AK_/ZNCreate Edge K_/A 14 --> K_/ZN 15
+_19_/A1_19_/ZNCreate Edge _19_/A1 16 --> _19_/ZN 18
+_19_/A2_19_/ZNCreate Edge _19_/A2 17 --> _19_/ZN 18
+_14_/A1_14_/ZNCreate Edge _14_/A1 19 --> _14_/ZN 21
+_14_/A2_14_/ZNCreate Edge _14_/A2 20 --> _14_/ZN 21
+_18_/A1_18_/ZNCreate Edge _18_/A1 22 --> _18_/ZN 24
+_18_/A2_18_/ZNCreate Edge _18_/A2 23 --> _18_/ZN 24
+_17_/A1_17_/ZNCreate Edge _17_/A1 25 --> _17_/ZN 27
+_17_/A2_17_/ZNCreate Edge _17_/A2 26 --> _17_/ZN 27
+_13_/A_13_/ZNCreate Edge _13_/A 28 --> _13_/ZN 29
+_15_/A1_15_/ZNCreate Edge _15_/A1 30 --> _15_/ZN 32
+_15_/A2_15_/ZNCreate Edge _15_/A2 31 --> _15_/ZN 32
+Reading Constr File test_1/file.constr .... 
+clkAdding clock clock1 clk 2
+in[0]Adding input 3 in[0]
+in[1]Adding input 4 in[1]
+in[2]Adding input 5 in[2]
+in[3]Adding input 6 in[3]
+out[0]Adding output 0 out[0]
+out[1]Adding output 1 out[1]
+oAdding output 7 o
+WARNING : Clock default is already defined on pin/port 
+WARNING : Clock default is already defined on pin/port 
+WARNING : Clock default is already defined on pin/port 
+WARNING : Clock default is already defined on pin/port 
+WARNING : Clock default is already defined on pin/port 
+WARNING : Clock default is already defined on pin/port 
+Performing Timing Analysis
