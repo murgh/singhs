@@ -10,6 +10,8 @@
 class timerPinTime;
 class timerPinInfo;
 class timerPinTag;
+class timerPinTagContainer;
+
 class timerPinTagContainer {
 
 	public:
@@ -29,9 +31,11 @@ class timerPinTagContainer {
 	class Iterator {
 	 
 		public:
+			//Later this can be cached : TODO
+			void buildExpandedTagList (timerPinTagContainer * cont); 
+
 			Iterator (timerPinTagContainer * cont) {
-			  theIterSize = cont->getTagSetSize ();
-			  theTagList = cont->getTagSet ();
+			  buildExpandedTagList (cont);	
 			}
 
 			timerPinTag * next () {
@@ -51,7 +55,7 @@ class timerPinTagContainer {
 	private:
 		std::list<timerPinTag *> theTagSet;
 		int			 theTagSetSize;
-}; 
+};
 
 class timerPinTag {
 
@@ -60,8 +64,8 @@ class timerPinTag {
 		  theArrival = arr;
 		  theClockPath = clockTag;
 		  theSourceId = srcId; 
+		  theMergeToTag = NULL;
 		  theMasterTag = NULL;
-		  theUnionParent = NULL;
 		  theTagContainer = NULL;
 		  theTagId = theTagCount++;
 		}
@@ -70,8 +74,8 @@ class timerPinTag {
 		  theArrival = tag.theArrival;
 		  theClockPath = tag.theClockPath;
 		  theSourceId = tag.theSourceId; 
+		  theMergeToTag = tag.theMergeToTag;
 		  theMasterTag = tag.theMasterTag;
-		  theUnionParent = tag.theUnionParent;
 		  theTagContainer = tag.theTagContainer;
 		  theTagId = tag.theTagId;
 		}
@@ -103,6 +107,10 @@ class timerPinTag {
 
 		void setMasterTag (timerPinTag * tag) { theMasterTag = tag; }
 		timerPinTag * getMasterTag () { return theMasterTag; }
+
+		//If the tag is merged to another tag this will keep the forward link
+		void setMergeToTag (timerPinTag * tag) { theMergeToTag = tag; }
+		timerPinTag * getMergeToTag () { return theMergeToTag; }
 /*
 		void getUnionParentAndDistance (timerPinTag *& unionP, int & distance) {
 		  distance = 0;
@@ -129,8 +137,6 @@ class timerPinTag {
 		    tag1Parent->theUnionParent = tag2Parent;
 		  }
 		}
-*/
-		timerPinTagContainer * get_tag_container () { return theTagContainer; }
 
 		static void performTagUnion (timerPinTag * tag1, timerPinTag * tag2) {
 		  if (tag1 == tag2)
@@ -153,16 +159,41 @@ class timerPinTag {
 		    return;
 		  }
 
+		  //One if the container is empty
 		  if (!tag2Cont) {
 		    tag2->theTagContainer = tag1Cont;
 		    tag1Cont->addTag (tag2);
 		    return;
 		  }
+
+		  //Both containers exist
 		}
 
+*/
+		timerPinTagContainer * get_tag_container () { return theTagContainer; }
+
 		static bool areTagsInUnion (timerPinTag * tag1, timerPinTag * tag2) {
-		  return ((tag1 == tag2) || (tag1->theTagContainer == tag2->theTagContainer));
+		  timerPinTag * tag1MasterTo = tag1;
+		  timerPinTag * tag2MasterTo = tag2;
+		  bool areInUnion = false;
+		  while (!areInUnion && (tag1MasterTo || tag2MasterTo)) {
+		    if (tag1MasterTo == tag2 || tag2MasterTo == tag1)
+			    areInUnion = true;
+		    tag1MasterTo = tag1MasterTo->theMergeToTag;
+		    tag2MasterTo = tag2MasterTo->theMergeToTag;
+		  }
+		  return areInUnion;
 		}
+
+		void merge_pin_tag (timerPinTag * to_merge) {
+		  //If tag container is not present create it and 
+		  //merge the tag to be merged in the container
+		  if (!theTagContainer) {
+		    theTagContainer = new timerPinTagContainer;	  
+		  }	  
+		  theTagContainer->addTag (to_merge); 
+		  to_merge->setMergeToTag (this);
+		}	
 
 	private:
 		//Not taking the polarity in consideration for now
@@ -172,7 +203,7 @@ class timerPinTag {
 		int	     	theSourceId;
 		int		theTagId;
 		timerPinTag   * theMasterTag; //For Split Tags
-		timerPinTag   * theUnionParent; //For Union Tags
+		timerPinTag   * theMergeToTag; //Tag to which this tag is merged
 		timerPinTagContainer * theTagContainer;//Union set of tags.
 		static int	theTagCount;
 };
@@ -340,6 +371,7 @@ class timerPinInfo {
 		  printf ("dir(%s) ", get_direction ().c_str ()); 
 		  if (theIsSplitPoint) printf ("splitPoint ");
 		  if (thePinTag) thePinTag->print (std::string ("TAG"));
+		  if (thePinTag && thePinTag->getMasterTag ()) thePinTag->getMasterTag()->print (std::string ("M_Tag"));
 		  if (theOtherPinTag) theOtherPinTag->print (std::string ("OtherTAG"));
 		  printf ("\n");
 		}
@@ -381,16 +413,6 @@ class timerPinInfo {
 		  thePinTag = cTag; 
 		}
 
-		void merge_pin_tag (timerPinTag * cont) {
-		  //If the tag already exists on this pinInfo
-		  //make a union of this pin tag and cont, else
-		  //just copy the tags
-		  if (thePinTag) {
-		    timerPinTag::performTagUnion (thePinTag, cont);
-		    return;
-		  }	  
-		  thePinTag = cont; 
-		}	
 	private:
 		std::string thePinName;
 		bool	    theIsClock;

@@ -73,20 +73,30 @@ TA_Timer::checkAndPerformTagSplitting (diganaVertex & sourcePin, bool isClock) {
 	   timerPinTag * masterTag = srcPinInfo->get_pin_tag ();
 	   timerPinTag * tag = new timerPinTag (isClock, true, sourcePin.getVertexId ());	
 	   tag->setMasterTag (masterTag);
-	   sinkPinInfo->assert_pin_tag (tag);
+	   if (!sinkPinInfo->get_pin_tag ()) {
+	     sinkPinInfo->assert_pin_tag (tag);
+	   } else {
+	     sinkPinInfo->get_pin_tag ()->merge_pin_tag (tag);	
+	   }
 	   timerPinInfo::propagatePinInfo (srcPinInfo, sinkPinInfo);
 	}
 	return true;
 }
 
-//Iterate over each of the source tag and put it into the sink tag set
 void
 TA_Timer::propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin) {
   timerPinInfo * sourcePinInfo = getPinInfo (sourcePin);   
   timerPinInfo * sinkPinInfo = getPinInfo (sinkPin);   
 
   timerPinInfo::propagatePinInfo (sourcePinInfo, sinkPinInfo);
-  sinkPinInfo->merge_pin_tag (sourcePinInfo->get_pin_tag ());
+  if (sourcePinInfo->get_pin_tag () && sinkPinInfo->get_pin_tag () &&
+      (sourcePinInfo->get_pin_tag () != sinkPinInfo->get_pin_tag ())) {
+    sinkPinInfo->get_pin_tag ()->merge_pin_tag (sourcePinInfo->get_pin_tag ());
+    return;
+  }
+  if (!sinkPinInfo->get_pin_tag ()) {
+    sinkPinInfo->assert_pin_tag (sourcePinInfo->get_pin_tag ());
+  }
 }
 
 //Perform the BFS through this pin and propagate the
@@ -211,7 +221,7 @@ TA_Timer::TA_print_circuit (diganaGraph * graph) {
   vitr.attach (graph);
   for (; vitr != eVitr; ++vitr) {
     diganaVertex pin = *vitr;
-    //getPinInfo (pin)->print (); 
+    getPinInfo (pin)->print (); 
   }
 
 }
@@ -319,6 +329,7 @@ TA_Timer::buildTimingPathFromTagPath (diganaVertex endPoint,
   theTagPath->pop_front ();
   diganaVertex pin (tag->getSource (), theTimingGraph); 
   while ( true ) {	
+    getPinInfo (pin)->print ();
     nextTag = theTagPath->front ();
     timingPath.push_back (pin);
     if (pin == endPoint)
@@ -339,5 +350,17 @@ TA_Timer::buildTimingPathFromTagPath (diganaVertex endPoint,
 	break;
       }
     } 
+  }
+}
+
+//For the container iterator
+void timerPinTagContainer::Iterator::buildExpandedTagList (timerPinTagContainer * cont) {
+  if (!cont) return;
+  std::list<timerPinTag *>::iterator itr;
+  for (itr = cont->getTagSet ().begin (); itr != cont->getTagSet ().end (); ++itr) {
+    timerPinTag * tag = *itr;
+    theTagList.push_back (tag);
+    theIterSize++;
+    buildExpandedTagList (tag->get_tag_container ());
   }
 }
