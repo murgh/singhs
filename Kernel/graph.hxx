@@ -395,6 +395,10 @@ class diganaVertex {
 	return *this;
    }
    
+   bool operator == (const diganaVertex & v) {
+	return (vertexID == v.vertexID && parent_graph == v.parent_graph);
+   }
+   
    template<typename Value> Value get_property (std::string name) { 
 	    
      Value val;
