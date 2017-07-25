@@ -189,6 +189,8 @@ class timerPinTag {
 		  timerPinTag * tag1MasterTo = tag1;
 		  timerPinTag * tag2MasterTo = tag2;
 		  bool areInUnion = false;
+		  //Arrival and Required tags cannot be union
+		  if (tag1->theArrival != tag2->theArrival) return areInUnion;
 		  while (!areInUnion && (tag1MasterTo || tag2MasterTo)) {
 		    if (tag1MasterTo == tag2 || tag2MasterTo == tag1)
 			    areInUnion = true;

@@ -9,7 +9,7 @@ my @nets = ();
 my $timer_test_case = "";
 my $make_file = 0;
 my $circuit_node_count = 0;
-my $verbose = 0;
+my $verbose = 1;
 
 sub my_print {
   my $string = shift;
@@ -29,7 +29,7 @@ sub file_print {
 
 sub get_node_id {
   my $node_name = shift;
-  my_print $node_name;
+  #my_print $node_name;
   if (exists($node_name_to_id_hash{$node_name})) {
     $node_id = $node_name_to_id_hash{$node_name};
     return $node_id;
@@ -399,6 +399,11 @@ sub create_edge_cmd {
   my $src = get_node_id ($source);
   my $snk = get_node_id ($sink);
   my_print "Create Edge $source $src --> $sink $snk\n";
+  #No self Edge will be created
+  if ($src == $snk) {
+    my_print "Did not create self edge\n";
+    return;
+  }
   if ($make_file == 0) {
     timerDesignInfo::add_timing_arc ($circuit, $src, $snk);
   } else {

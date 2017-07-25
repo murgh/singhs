@@ -127,7 +127,9 @@ TA_Timer::performBFSAndPropagatePinTags (diganaVertex pin, bool isClock) {
 	  timerPinInfo * latchPinInfo = getPinInfo (latchData);
 	  if (latchPinInfo->getDirection () == timerInput) {//D Pin
             //latchPinInfo->print ();
-            latchPinInfo->assert_other_pin_tag (sinkInfo->get_pin_tag ()); 		  
+	    timerPinTag * pinTag = new timerPinTag (false, false, latchData.getVertexId ());
+	    pinTag->setMasterTag (sinkInfo->get_pin_tag ());
+            latchPinInfo->assert_other_pin_tag (pinTag); 		  
 	  } 
 	  if (latchPinInfo->getDirection () == timerOutput) {//Q Pin
 	    //Create a new pin tag
