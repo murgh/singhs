@@ -7,6 +7,7 @@
 #define timerUtils
 
 typedef float timerTime;
+typedef float timerCap;
 const timerTime timerUndefDelay = -1;
 
 enum timerAnalysisType{ 
@@ -48,6 +49,16 @@ enum timerPinIdentifier{
 	timerPinVirtualNode,
 	timerPinIDNone
      };
+
+enum timerArcTimingType {
+	timerSetupRising,
+	timerSetupFalling,
+	timerHoldRising,
+	timerHoldFalling,
+	timerRisingEdge,
+	timerFallingEdge,
+	timerArcTypeNone
+};
 
 enum timerPinDirection{
 	timerInput,

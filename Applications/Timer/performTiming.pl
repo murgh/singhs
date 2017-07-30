@@ -143,7 +143,8 @@ sub create_cell_arcs {
         $related_pin = $parser->get_simple_attr_value ($timing_group, "related_pin");
         $timing_sense = $parser->get_simple_attr_value ($timing_group, "timing_sense");
 	$timing_type = $parser->get_simple_attr_value ($timing_group, "timing_type");
-        my_print "Cell $current_cell_name  Src $related_pin Sink $pin_name timing_sense $timing_sense timing_type $timing_type\n"; 
+
+        my_print "Cell $current_cell_name  Src $related_pin Sink $pin_name timing_sense $timing_sense timing_type $timing_type"; 
         $timing_arc = timerDesignInfo::add_timing_arc ($timerCell, $related_pin, $pin_name);
 	if ($timing_sense) { 
 	  timerDesignInfo::add_timing_sense ($timing_arc, $timing_sense); 	
@@ -151,6 +152,7 @@ sub create_cell_arcs {
 	if ($timing_type) {
 	  timerDesignInfo::add_timing_type ($timing_arc, $timing_type); 	
 	}
+	my_print "\n"
       }
     }
   }
@@ -316,7 +318,7 @@ sub create_interconnect_arcs {
     my_print "Net - $net\n";
     foreach my $source (@{$net_source_hash{$net}}) {
       foreach my $sink (@{$net_sink_hash{$net}}) {
-        create_edge_cmd ($circuit, $source, $sink);
+        create_edge_cmd ($circuit, $source, $sink, 0, 1);
       }
     }
   }
@@ -337,7 +339,7 @@ sub get_cell_arcs {
 	if ($timerArc) {
 #print "Creating cell arc for $lib_cell_name, $modcell_name/$source, $modcell_name/$sink\n"; 
 	   my $source_pin = timerDesignInfo::add_or_get_pin ($timerCell, $source);
-           create_edge_cmd ($circuit, "$modcell_name/$source", "$modcell_name/$sink");
+           create_edge_cmd ($circuit, "$modcell_name/$source", "$modcell_name/$sink", $timerArc, 0);
 	}
      }
    }
@@ -395,6 +397,8 @@ sub create_edge_cmd {
   my $circuit = shift;
   my $source = shift;
   my $sink = shift;
+  my $timerArc = shift;
+  my $is_net = shift;
 
   my $src = get_node_id ($source);
   my $snk = get_node_id ($sink);
@@ -405,7 +409,11 @@ sub create_edge_cmd {
     return;
   }
   if ($make_file == 0) {
-    timerDesignInfo::add_timing_arc ($circuit, $src, $snk);
+    if ($is_net) {
+      timerDesignInfo::add_timing_arc ($circuit, $src, $snk);
+    } else {
+      timerDesignInfo::add_timing_arc ($circuit, $src, $snk, $timerArc);
+    }
   } else {
     file_print " graph->add_edge ($src, $snk);\n"	  
   }

@@ -40,7 +40,7 @@ diganaGraph * get_or_create_circuit (char * circuit) {
 	  printf ("Creating New Graph \n");
  	  graph = diganaGraphMgr::getGraphMgr ().create_graph (id, diganaDirectedGraphS);
 	  graph->register_vertex_property <timerPinProperty> ("Pin_Property");
-	  graph->register_edge_property <timerPinProperty> ("Arc_Property");
+	  graph->register_edge_property <timerArcProperty> ("Arc_Property");
 	} 
 	return graph;
 }
@@ -134,8 +134,18 @@ void add_pin_direction_io (diganaGraph * circuit,
 	P.getPinInfo ()->setIdentity (identity);
 }
 
+void add_timing_arc (diganaGraph * circuit, int source, int sink, timerLibArc * arc) {
+	circuit->add_edge (source, sink);
+	diganaEdge E = diganaEdge (source, sink, circuit);        	
+	timerArcInfo * arcInfo = new timerArcInfo (arc);
+	E.put_property<timerArcProperty> ("Arc_Property", timerArcProperty (arcInfo));
+}
+
 void add_timing_arc (diganaGraph * circuit, int source, int sink) {
 	circuit->add_edge (source, sink);
+	diganaEdge E = diganaEdge (source, sink, circuit);        	
+	timerArcInfo * arcInfo = new timerArcInfo ();
+	E.put_property<timerArcProperty> ("Arc_Property", timerArcProperty (arcInfo));
 }
 
 

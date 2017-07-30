@@ -8,6 +8,83 @@ class timerLibCell;
 class timerLibPin;
 class timerLibArc;
 
+
+//Global cell delays, transition and check arc tables, for now to ease the liberty parsing
+class timerLUT {
+     public:
+       timerLUT (int size) { 
+         theLUTSize = size;
+	 theIndex1 = new float[size];
+	 theIndex2 = new float[size];
+         theLUT = new float*[size];
+	 for (int i = 0; i < size; i++) {
+	   theLUT[i] = new float[size];
+	 }
+       }
+
+       void setIndex1 (float * idx) {
+	 for (int i = 0; i < theLUTSize; i++)
+	   theIndex1[i] = idx[i];
+       }
+
+       void setIndex2 (float * idx) {
+	 for (int i = 0; i < theLUTSize; i++)
+	   theIndex2[i] = idx[i];
+       }
+
+       void setLUT (int idx1, float * idx) {
+	 for (int i = 0; i < theLUTSize; i++)
+	   theLUT [idx1][i] = idx[i];
+       }
+
+       int getSize () { return theLUTSize; }
+
+       //Get the delay or transition
+       timerTime getLUTDelay (timerTime inSlew, timerTime outLoadorSlew) {
+	 return 0.0;
+       }
+     private:	
+       int theLUTSize;
+       float * theIndex1;
+       float * theIndex2;	       
+       float ** theLUT; 
+};
+
+class timerArcLUT {
+
+  public:
+    timerArcLUT (timerArcType arcType, int size) {
+      theDelayLUT[0] = theDelayLUT[1] = NULL;
+      theTransition[0] = theTransition[1] = NULL;
+      if (arcType == timerDelayArc || arcType == timeTriggerArc) {
+	theDelayLUT[0] = new timerLUT (size);
+	theDelayLUT[1] = new timerLUT (size);
+	theTransition[0] = new timerLUT (size);
+	theTransition[1] = new timerLUT (size);
+      }	
+      if (arcType == timerCheckArc) {
+	theDelayLUT[0] = new timerLUT (size);
+	theDelayLUT[1] = new timerLUT (size);
+      }      
+    }
+
+    void populateDelayLUT (timerTransition tran, timerTime ** LUT) {
+      for (int i = 0; i < theDelayLUT[tran]->getSize (); i++)
+        theDelayLUT[tran]->setLUT (i, LUT[i]);	
+    }
+
+    void populateTransitionLUT (timerTransition tran, timerTime ** LUT) {
+      if (!theTransition[tran])
+        return;
+      for (int i = 0; i < theTransition[tran]->getSize (); i++)
+        theTransition[tran]->setLUT (i, LUT[i]);	
+    }
+
+  private:
+    timerLUT * theDelayLUT[2];
+    timerLUT * theTransition[2];
+};
+
 class timerLibPin {
 
 	public:
@@ -69,11 +146,16 @@ class timerLibPin {
 class timerLibArc {
 
 	public:
-		timerLibArc () { }
+		timerLibArc () { 
+		  theLUT = NULL; 
+		  theArcType = timerDelayArc;
+		}
 
 		timerLibArc (timerLibPin * src, timerLibPin * snk) { 
-			theSource = src;
-			theSink = snk;
+		  theSource = src;
+		  theSink = snk;
+		  theLUT = NULL;
+		  theArcType = timerDelayArc;
 		}
 
 		bool operator == (const timerLibArc & otherArc) {
@@ -87,21 +169,42 @@ class timerLibArc {
 		void setSource (timerLibPin * s) { theSource = s; }
 		void setSink (timerLibPin * s) { theSink = s; }
 		void setUnateness (timerArcUnateness u) { theUnateness = u; }
-		void setArcType (std::string at) { theArcType = at; }
+		void setArcType (std::string at) { 
+		  if (
+		      at == std::string ("setup_rising") ||
+		      at == std::string ("setup_falling") ||
+		      at == std::string ("hold_rising") ||
+		      at == std::string ("hold_falling") 
+		     )
+			theArcType = timerCheckArc;  
+		  if (
+		      at == std::string ("rising_edge") ||
+		      at == std::string ("falling_edge")
+		     )
+			theArcType = timeTriggerArc;  
+
+		  populateLUT ();
+		}
 
 		//Get APIs
 		timerLibPin * getSource () { return theSource; }
 		timerLibPin * getSink () { return theSink; }
 		timerArcUnateness getUnateness () { return theUnateness; }
-		bool isCombinational () { return false; }
-		bool isCheck () { return false; }
-		bool isTrigger () { return false; }
+		bool isCombinational () { return (theArcType == timerDelayArc); }
+		bool isCheck () { return (theArcType == timerCheckArc); }
+		bool isTrigger () { return (theArcType == timeTriggerArc); }
+
+		void populateLUT ();
+		timerTime ComputeDelay (timerTime, timerCap, timerTransition, timerTransition);
+		timerTime ComputeTransition (timerTime, timerCap, timerTransition, timerTransition);
+		timerTime ComputeCheck (timerTime, timerTime, timerTransition, timerTransition);
 
 	private:
 		timerLibPin * theSource;
 		timerLibPin * theSink;
 		timerArcUnateness theUnateness;
-	        std::string theArcType; 	
+	        timerArcType theArcType; 	
+		timerArcLUT * theLUT; 
 
 };
 

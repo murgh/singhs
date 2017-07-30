@@ -73,6 +73,7 @@ TA_Timer::checkAndPerformTagSplitting (diganaVertex & sourcePin, bool isClock) {
 	   timerPinTag * masterTag = srcPinInfo->get_pin_tag ();
 	   timerPinTag * tag = new timerPinTag (isClock, true, sourcePin.getVertexId ());	
 	   tag->setMasterTag (masterTag);
+	   tag->setForwardMergeCount (masterTag->getForwardMergeCount ());
 	   if (!sinkPinInfo->get_pin_tag ()) {
 	     sinkPinInfo->assert_pin_tag (tag);
 	   } else {

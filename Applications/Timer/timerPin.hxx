@@ -1,6 +1,7 @@
 #include "timerUtils.hxx"
 #include "timerConstraints.hxx"
 #include "timer.hxx"
+#include "timerDelay.hxx"
 
 #ifndef timerPin_H
 #define timerPin_H
@@ -81,6 +82,7 @@ class timerPinTag {
 		  theMasterTag = NULL;
 		  theTagContainer = NULL;
 		  theTagId = theTagCount++;
+		  theForwardMergeCount = 0;
 		}
 
 		timerPinTag (const timerPinTag & tag) {
@@ -91,6 +93,7 @@ class timerPinTag {
 		  theMasterTag = tag.theMasterTag;
 		  theTagContainer = tag.theTagContainer;
 		  theTagId = tag.theTagId;
+		  theForwardMergeCount = tag.theForwardMergeCount;
 		}
 
 		bool operator == (const timerPinTag & other) {
@@ -183,6 +186,22 @@ class timerPinTag {
 		}
 
 */
+		void incrementForwardMergeCount () { 
+		  theForwardMergeCount++; 
+		  triggerIncrementForwardMergeCount ();
+		}
+		
+		//Iterate on all the tags merged in it and omcrement 
+		void triggerIncrementForwardMergeCount () {
+		  if (!theTagContainer)
+		    return;
+
+                  timerPinTagContainer::Iterator itr (theTagContainer);
+		  timerPinTag * tag;
+		  while ( (tag = itr.next ()) ) 
+		    tag->incrementForwardMergeCount ();
+		}
+
 		timerPinTagContainer * get_tag_container () { return theTagContainer; }
 
 		static bool areTagsInUnion (timerPinTag * tag1, timerPinTag * tag2) {
@@ -208,7 +227,14 @@ class timerPinTag {
 		  }	  
 		  theTagContainer->addTag (to_merge); 
 		  to_merge->setMergeToTag (this);
+		  to_merge->incrementForwardMergeCount ();
 		}	
+
+		void setForwardMergeCount (int count) { theForwardMergeCount = count; }
+		int getForwardMergeCount () { return theForwardMergeCount; }
+
+		void setTimingPropagationPoint (int timingProp) { theTimingPropagationPoint = timingProp; }
+		int getTimingPropagationPoint () { return theTimingPropagationPoint; }
 
 	private:
 		//Not taking the polarity in consideration for now
@@ -217,9 +243,12 @@ class timerPinTag {
 		bool 	     	theClockPath;
 		int	     	theSourceId;
 		int		theTagId;
+		int 		theForwardMergeCount;
+		int		theTimingPropagationPoint;
 		timerPinTag   * theMasterTag; //For Split Tags
 		timerPinTag   * theMergeToTag; //Tag to which this tag is merged
 		timerPinTagContainer * theTagContainer;//Union set of tags.
+		
 		static int	theTagCount;
 };
 
@@ -239,37 +268,56 @@ class timerPinTime {
 
 	public:
 		timerPinTime () {
-		  for (int i = timerEarly; i < timerAnalysis; i++) 
-			  for (int j = timerRise; j < timerTrans; j++) 
-				  theTime [i][j] = timerUndefDelay;
+		  theClockDelayTranMap.clear ();
 		}
 
-		timerPinTime (timerTime time) {
-		  for (int i = timerEarly; i < timerAnalysis; i++)
-			  for (int j = timerRise; j < timerTrans; j++) 
-				  theTime [i][j] = time;
+		void annotateDelay (timerClock * clock, 
+				    timerAnalysisType el,
+				    timerTransition srcTran,
+				    timerTransition destTran,
+				    timerTime del) {
+		   std::map<timerClock *, std::pair <timerDelay *, timerDelay *> >::iterator itr = theClockDelayTranMap.find (clock);
+		   timerDelay * delay = NULL; 
+		   if (itr != theClockDelayTranMap.end ()) {
+		     std::pair <timerDelay *, timerDelay *> & delTranPair = itr->second;
+		     delay = delTranPair.first;
+		     if (!delay) delay = new timerDelay ();
+		     delTranPair.first = delay;
+		   } else {
+		     //Pair is not yet created
+		     std::pair <timerDelay *, timerDelay *> delTranPair (NULL, NULL);
+	             delay = new timerDelay ();
+	             delTranPair.first = delay;
+	             theClockDelayTranMap.insert (std::pair <timerClock *, std::pair <timerDelay *, timerDelay *> > (clock, delTranPair));	     
+		   }
+		   delay->annotate (el, srcTran, destTran, del);
 		}
 
-		void addPinTimeInfo (timerPinTimeArgs & arg) {
-			theTime [arg.el][arg.trans] = arg.time;
+	        void annotateTransition (timerClock * clock,
+				         timerAnalysisType el,
+				         timerTransition srcTran,
+				         timerTransition destTran,
+				         timerTime tran) {
+		   std::map<timerClock *, std::pair <timerDelay *, timerDelay *> >::iterator itr = theClockDelayTranMap.find (clock);
+		   timerDelay * transition = NULL; 
+		   if (itr != theClockDelayTranMap.end ()) {
+		     std::pair <timerDelay *, timerDelay *> & delTranPair = itr->second;
+		     transition = delTranPair.second;
+		     if (!transition) transition = new timerDelay ();
+		     delTranPair.second = transition;
+		   } else {
+		     //Pair is not yet created
+		     std::pair <timerDelay *, timerDelay *> delTranPair (NULL, NULL);
+	             transition = new timerDelay ();
+	             delTranPair.second = transition;
+	             theClockDelayTranMap.insert (std::pair <timerClock *, std::pair <timerDelay *, timerDelay *> > (clock, delTranPair));	     
+		   }
+		   transition->annotate (el, srcTran, destTran, tran);
 		}
-
-		void setTime (timerAnalysisType el, timerTransition tran, timerTime val) {
-			theTime [el][tran] = val;
-		}
-
-		timerTime getTime (timerAnalysisType el, timerTransition tran) {
-			return theTime [el][tran];
-		}
-		timerPinTime & operator = (const timerPinTime & time) {
-		  for (int i = timerEarly; i < timerAnalysis; i++) 
-			  for (int j = timerRise; j < timerTrans; j++) 
-				  theTime [i][j] = time.theTime [i][j];
-	          return *this;		
-		}	
 
 	private:
-		timerTime     theTime[timerAnalysis][timerTrans];
+		//Map of the clock delay and transitions on a tag
+		std::map<timerClock *, std::pair <timerDelay *, timerDelay *> > theClockDelayTranMap;
 };
 
 //The main timer pin info container class
@@ -286,8 +334,7 @@ class timerPinInfo {
 			theIsSplitPoint = false;
 			thePinTag = NULL;
 			theOtherPinTag = NULL;
-			theArrival.clear ();
-			theRequired.clear ();
+			theLibPin = NULL;
 		}
 
 		timerPinInfo (std::string name, 
@@ -303,8 +350,7 @@ class timerPinInfo {
 			theDirection = direction;
 			thePinTag = NULL;
 			theOtherPinTag = NULL;
-			theArrival.clear ();
-			theRequired.clear ();
+			theLibPin = NULL;
 		}
 
 		void setIsClock () {theIsClock = true;}
@@ -312,6 +358,8 @@ class timerPinInfo {
 		void setDirection (timerPinDirection dir) { theDirection = dir; }
 		void setIdentity (timerPinIdentifier id) { theIdentity = id; }
 
+		void setLibPin (timerLibPin * pin) { theLibPin = pin; }
+		timerLibPin * getLibPin () { return theLibPin; }
 
 		bool getIsClock () const { return theIsClock; }
 		bool getIsData () const { return theIsData; }
@@ -437,38 +485,21 @@ class timerPinInfo {
 		timerPinDirection theDirection;
 		timerPinTag * thePinTag;
 		timerPinTag * theOtherPinTag;
-		std::list<timerClockTime> theArrival; //List of arrival tags and arrival time
-		std::list<timerClockTime> theRequired;//List of required tags and required
+		timerLibPin * theLibPin;
 
 		void assert_Input_Delay (timerPinTag & cTag, timerTime value) {
 		  timerClockTime timerInfo;
-		  /*if ( isTagPresent (cTag, timerInfo) ) { 
-		    timerInfo.second->setTime(timerEarly, timerFall, value);		     
-		    timerInfo.second->setTime(timerEarly, timerRise, value);		     
-		    timerInfo.second->setTime(timerLate, timerFall, value);		     
-		    timerInfo.second->setTime(timerLate, timerRise, value);		     
-		    return;
-		  }*/
-		  timerPinTime * time = new timerPinTime (value);
+		  timerPinTime * time = new timerPinTime ();
 		  timerPinTag * cTagN = new timerPinTag (cTag);
 		  assert_pin_tag (cTagN);
-		  theArrival.push_front (timerClockTime (cTagN, time) );
 		  //printf ("InputDelay : %s %f\n", thePinName.c_str (), value);
 		}	
 
 		void assert_Output_Delay (timerPinTag & cTag, timerTime value) {
 		  timerClockTime timerInfo;
-		  /*if ( isTagPresent (cTag, timerInfo) ) { 
-		    timerInfo.second->setTime(timerEarly, timerFall, value);		     
-		    timerInfo.second->setTime(timerEarly, timerRise, value);		     
-		    timerInfo.second->setTime(timerLate, timerFall, value);		     
-		    timerInfo.second->setTime(timerLate, timerRise, value);		     
-		    return;
-		  }*/
-		  timerPinTime * time = new timerPinTime (value);
+		  timerPinTime * time = new timerPinTime ();
 		  timerPinTag * cTagN = new timerPinTag (cTag);
 		  assert_other_pin_tag (cTagN);
-		  theRequired.push_front (timerClockTime (cTagN, time) );
 		  //printf ("OutputDelay : %s %f\n", thePinName.c_str (), value);
 		}	
 

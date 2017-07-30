@@ -14,6 +14,8 @@
 		          timerPinIdentifier pinId,
 	       	          timerPinDirection pinDir); 
 
+        void add_timing_arc (diganaGraph * circuit, int source, int sink, timerLibArc * arc);
+
         void add_timing_arc (diganaGraph * circuit, int source, int sink);
 
         extern timerLibData *  add_or_get_library (char * libName);
@@ -61,6 +63,8 @@
 		          bool isData,
 		          timerPinIdentifier pinId,
 	       	          timerPinDirection pinDir); 
+
+        void add_timing_arc (diganaGraph * circuit, int source, int sink, timerLibArc * arc);
 
         void add_timing_arc (diganaGraph * circuit, int source, int sink);
 

@@ -1,100 +1,88 @@
 #include "timerUtils.hxx"
+#include "timerPin.hxx"
+#include "timer.hxx"
+#include "timerDelay.hxx"
 
 #ifndef TIMER_EDGE
 #define TIMER_EDGE
-
-//2 X 2 delay values for input and output
-//transition combinations
-class timerArcDelay {
-	public:
-		timerArcDelay () {
-			for (int i = 0; i < timerTrans; i++)
-				for (int j = 0; j < timerTrans; j++)
-					annotate (((timerTransition)i), 
-						  ((timerTransition)j), 
-						  timerUndefDelay); 
-		}
-
-		void annotate (timerTransition srcTran,
-			       timerTransition destTran,
-		       	       timerTime val) {
-			arcDelay[srcTran][destTran] = val;
-			if (val == timerUndefDelay)
-			  validTrans[srcTran][destTran] = true;
-			else
-			  validTrans[srcTran][destTran] = false;
-		}		
-
-		bool isValidTran (timerTransition srcTran,
-				  timerTransition destTran) {
-			return validTrans[srcTran][destTran];
-		}
-
-	private:
-		timerTime arcDelay[timerTrans][timerTrans];
-		bool	  validTrans[timerTrans][timerTrans];
-};
 
 class timerArcData {
 	public:
 		timerArcData (timerArcType aType) {
 			arcType = aType;
 		}
-		void setCheckType (timerCheckArcType check) {
-			arcSubType.checkArcType = check;
-			theIsCheck = true;
-		}
 
-		void setDelayType (timerDelayArcType delayT) {
-			arcSubType.delayArcType = delayT;
-			theIsCheck = false;
-		}
-
-		timerCheckArcType getCheckType () const {
-			return arcSubType.checkArcType;
-		}
-
-		timerDelayArcType getDelayType () const {
-			return arcSubType.delayArcType;
-		}
-
-		bool isCheckArc () const {
-			return theIsCheck;
-		}
   	private:
 	  	timerArcType arcType;
 		bool	     theIsCheck;
-	  	union {
-			timerDelayArcType delayArcType;
-			timerCheckArcType checkArcType;
-	  	} arcSubType;
 };
 
 //Main timer info container class
 class timerArcInfo {
 
 	public:
-		timerArcInfo () {
+		timerArcInfo (timerLibArc * arc) {
+		  theLibArc = arc;
+		  theTagDelayMap.clear ();
 		}
 
-		void annotateDelay (timerTransition srcTran, 
+		timerArcInfo () {
+		  theLibArc = NULL;
+		  theTagDelayMap.clear ();
+		}
+
+		void annotateDelay (timerPinTag * tag,
+				    timerAnalysisType el,
+				    timerTransition srcTran, 
 				    timerTransition destTran,
 				    timerTime val) {
-			timerDelay->annotate (srcTran, destTran, val);
+
+		   std::map<timerPinTag *, timerArcDelay *>::iterator itr = theTagDelayMap.find (tag);	
+		   timerArcDelay * delay = NULL;
+		   if (itr != theTagDelayMap.end ()) {
+		     delay = itr->second;
+		   } else {
+		     delay = new timerArcDelay;
+		     theTagDelayMap.insert (std::pair<timerPinTag *, timerArcDelay *> (tag, delay));
+		   } 
+
+		   delay->annotate (el, srcTran, destTran, val);
 		}
 
-		bool isValidTran (timerTransition srcTran,
+		bool isValidTran (timerPinTag * tag,
+				  timerAnalysisType el,
+				  timerTransition srcTran,
 				  timerTransition destTran) {
-		       return timerDelay->isValidTran (srcTran, destTran);
+		   std::map<timerPinTag *, timerArcDelay *>::iterator itr = theTagDelayMap.find (tag);	
+		   timerArcDelay * delay = NULL;
+		   if (itr != theTagDelayMap.end ()) {
+		     delay = itr->second;
+		     delay->isValidTran (el, srcTran, destTran);
+		   } else {
+		     return false;
+		   }
 		}	       
 
 	private:
-		timerArcData*	arcInfo;
-		timerArcDelay*  timerDelay;
+		timerArcData *	theArcData;
+		std::map<timerPinTag *, timerArcDelay *> theTagDelayMap;
+		timerLibArc * theLibArc; 
 };
 
 class timerArcProperty : public diganaDynamicGraphProperty {
 	public:
+		timerArcProperty (timerArcInfo * aInfo) {
+		   theArcInfo = aInfo;
+		}
+
+		timerArcProperty () {
+		   theArcInfo = NULL;
+		   	
+		}
+
+		timerArcInfo * getPinInfo () const { return theArcInfo; }
+
+	private:	
 		timerArcInfo * theArcInfo;
 };
 
