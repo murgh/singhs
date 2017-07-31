@@ -9,7 +9,7 @@ my @nets = ();
 my $timer_test_case = "";
 my $make_file = 0;
 my $circuit_node_count = 0;
-my $verbose = 1;
+my $verbose = 0;
 
 sub my_print {
   my $string = shift;
@@ -112,18 +112,24 @@ sub create_cells {
     my @cell_pin_group = $parser->get_groups_by_type ($cell, "pin");
     foreach $pin_of_cell (@cell_pin_group) {
       my $pin_name = $parser->get_group_name ($pin_of_cell);
-      my $pin_cap = $parser->get_simple_attr_value ($pin_of_cell, "capacitance");
+      my $pin_cap_pair = $parser->get_attr_with_value ($pin_of_cell, "capacitance");
       my $pin_dir = $parser->get_simple_attr_value ($pin_of_cell, "direction");
       my $clock = $parser->get_attr_with_value ($pin_of_cell, "clock");
       $timerCellPin = timerDesignInfo::add_or_get_pin ($timerCell, $pin_name);      
       if ($clock =~ /clock/ && $clock =~ /true/) {
         timerDesignInfo::mark_clock ($timerCellPin);
       }	
+      $pin_cap = get_capacitance ($pin_cap_pair); 
       my_print $pin_cap;
       timerDesignInfo::add_pin_direction ($timerCellPin, $pin_dir);
-      #timerDesignInfo::add_pin_cap ($timerCellPin, $pin_cap);
+      timerDesignInfo::add_pin_cap ($timerCellPin, $pin_cap);
     }
   }
+}
+
+sub get_capacitance {
+  my $cap_pin_pair = shift;
+  return 0;
 }
 
 sub create_cell_arcs {
