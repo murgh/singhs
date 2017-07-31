@@ -78,6 +78,7 @@ TA_Timer::checkAndPerformTagSplitting (diganaVertex & sourcePin, bool isClock) {
 	     sinkPinInfo->assert_pin_tag (tag);
 	   } else {
 	     sinkPinInfo->get_pin_tag ()->merge_pin_tag (tag);	
+	     tag->setTimingPropagationPoint (sourcePin);
 	   }
 	   timerPinInfo::propagatePinInfo (srcPinInfo, sinkPinInfo);
 	}
@@ -94,6 +95,7 @@ TA_Timer::propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin) {
       (sourcePinInfo->get_pin_tag () != sinkPinInfo->get_pin_tag ()) &&
       (sourcePinInfo->get_pin_tag () != sinkPinInfo->get_pin_tag ()->getMasterTag ())) {
     sinkPinInfo->get_pin_tag ()->merge_pin_tag (sourcePinInfo->get_pin_tag ());
+    sourcePinInfo->get_pin_tag ()->setTimingPropagationPoint (sourcePin);
     return;
   }
   if (!sinkPinInfo->get_pin_tag ()) {

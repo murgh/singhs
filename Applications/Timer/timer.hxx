@@ -11,6 +11,7 @@
 #include "timerPin.hxx"
 #include "timerConstraints.hxx"
 
+extern void add_clock (diganaGraph * circuit, char * name, int period, int nodeId, int isVirtual);
 
 void perform_timing_analysis (diganaGraph * graph);
 

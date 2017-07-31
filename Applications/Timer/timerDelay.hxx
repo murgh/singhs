@@ -81,5 +81,21 @@ class timerArcDelay : public timerDelay {
 		bool      theLateTrans[timerTrans][timerTrans];
 };
 
+//The class containing the point time/for early and late
+class timerPointTime {
+
+	public:
+		timerPointTime () { }
+
+		void annotate (timerAnalysisType el, timerTransition rf, timerTime val) {
+	    	  theTime [el][rf] = val;
+		}	
+
+		timerTime getTime (timerAnalysisType el, timerTransition rf) {
+		  return theTime [el][rf];
+		}
+	private:
+		timerTime theTime[timerAnalysis][timerTrans];
+};
 
 #endif

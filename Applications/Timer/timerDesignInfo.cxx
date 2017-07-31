@@ -64,7 +64,7 @@ void add_clock (diganaGraph * circuit, char * name, int period, int nodeId, int 
 		  std::pair<int, std::string> (nodeId, pinInfo->getName ());
 	  clock = new timerClock (name, period, info); 
 	  timerPinTag clockTag(true, true, nodeId);
-	  pinInfo->assert_Clock (clockTag, 0);//0 arrival
+	  pinInfo->assert_Clock (clockTag, clock, 0);//0 arrival
 	} else {
 	  clock = new timerClock (name, period, true); 
 	}
@@ -82,14 +82,14 @@ void add_IO_delay (diganaGraph * circuit, float value, int nodeId, int input) {
 	  return;
 	}
 	timerClock * clock;
-	if ( !(clock = timerConstraints::is_clock_in_clock_map (std::string ("default"))) ) {
+	if ( !(clock = timerConstraints::is_clock_in_clock_map (std::string ("**"))) ) {
 
-	  clock = new timerClock (std::string ("default"), 10, true);//Default virtual clock	
+	  clock = new timerClock (std::string ("**"), 10, true);//Default virtual clock	
 	  timerConstraints::add_clock_in_clock_map (clock);
 	}
 	pinInfo->setIsData ();
 	timerPinTag clockTag (false, true, nodeId);
-	pinInfo->assert_IO_Delay (clockTag, ((timerTime) value), input);
+	pinInfo->assert_IO_Delay (clockTag, clock, ((timerTime) value), input);
 }
 
 int add_pin (diganaGraph * circuit, char * name, int node_count) {

@@ -13,6 +13,63 @@ class timerPinInfo;
 class timerPinTag;
 class timerPinTagContainer;
 
+//The main class to contain the pin timing information
+//for timer contains the clock and arrival/required time
+//regarding it.
+class timerPinTime {
+
+	public:
+		timerPinTime () {
+		  theClockTimeMap.clear ();
+		}
+
+		void annotateDelay (timerClock * clock, 
+				    timerAnalysisType el,
+				    timerTransition rf,
+				    timerTime del) {
+		   std::map<timerClock *, std::pair <timerPointTime *, timerPointTime *> >::iterator itr = theClockTimeMap.find (clock);
+		   timerPointTime * delay = NULL; 
+		   if (itr != theClockTimeMap.end ()) {
+		     std::pair <timerPointTime *, timerPointTime *> & delTranPair = itr->second;
+		     delay = delTranPair.first;
+		     if (!delay) delay = new timerPointTime ();
+		     delTranPair.first = delay;
+		   } else {
+		     //Pair is not yet created
+		     std::pair <timerPointTime *, timerPointTime *> delTranPair (NULL, NULL);
+	             delay = new timerPointTime ();
+	             delTranPair.first = delay;
+	             theClockTimeMap.insert (std::pair <timerClock *, std::pair <timerPointTime *, timerPointTime *> > (clock, delTranPair));	     
+		   }
+		   delay->annotate (el, rf, del);
+		}
+
+	        void annotateTransition (timerClock * clock,
+				         timerAnalysisType el,
+				         timerTransition rf,
+				         timerTime tran) {
+		   std::map<timerClock *, std::pair <timerPointTime *, timerPointTime *> >::iterator itr = theClockTimeMap.find (clock);
+		   timerPointTime * transition = NULL; 
+		   if (itr != theClockTimeMap.end ()) {
+		     std::pair <timerPointTime *, timerPointTime *> & delTranPair = itr->second;
+		     transition = delTranPair.second;
+		     if (!transition) transition = new timerPointTime ();
+		     delTranPair.second = transition;
+		   } else {
+		     //Pair is not yet created
+		     std::pair <timerPointTime *, timerPointTime *> delTranPair (NULL, NULL);
+	             transition = new timerPointTime ();
+	             delTranPair.second = transition;
+	             theClockTimeMap.insert (std::pair <timerClock *, std::pair <timerPointTime *, timerPointTime *> > (clock, delTranPair));	     
+		   }
+		   transition->annotate (el, rf, tran);
+		}
+
+	private:
+		//Map of the clock delay and transitions on a tag
+		std::map<timerClock *, std::pair <timerPointTime *, timerPointTime *> > theClockTimeMap;
+};
+
 class timerPinTagContainer {
 
 	public:
@@ -83,6 +140,7 @@ class timerPinTag {
 		  theTagContainer = NULL;
 		  theTagId = theTagCount++;
 		  theForwardMergeCount = 0;
+		  thePinTime = NULL;
 		}
 
 		timerPinTag (const timerPinTag & tag) {
@@ -94,6 +152,7 @@ class timerPinTag {
 		  theTagContainer = tag.theTagContainer;
 		  theTagId = tag.theTagId;
 		  theForwardMergeCount = tag.theForwardMergeCount;
+		  thePinTime = tag.thePinTime;
 		}
 
 		bool operator == (const timerPinTag & other) {
@@ -233,8 +292,18 @@ class timerPinTag {
 		void setForwardMergeCount (int count) { theForwardMergeCount = count; }
 		int getForwardMergeCount () { return theForwardMergeCount; }
 
-		void setTimingPropagationPoint (int timingProp) { theTimingPropagationPoint = timingProp; }
-		int getTimingPropagationPoint () { return theTimingPropagationPoint; }
+		void setTimingPropagationPoint (diganaVertex vtx) { theTimingPropagationPoint = vtx; }
+		diganaVertex getTimingPropagationPoint () { return theTimingPropagationPoint; }
+
+		void annotatePinArrival (timerClock * clock, timerAnalysisType el, timerTransition rf, timerTime time) {
+		  if (!thePinTime) thePinTime = new timerPinTime ();
+		  thePinTime->annotateDelay (clock, el, rf, time);
+		}
+
+		void annotatePinTransition (timerClock * clock, timerAnalysisType el, timerTransition rf, timerTime transition) {
+		  if (!thePinTime) thePinTime = new timerPinTime ();
+		  thePinTime->annotateTransition (clock, el, rf, transition);
+		}
 
 	private:
 		//Not taking the polarity in consideration for now
@@ -244,81 +313,15 @@ class timerPinTag {
 		int	     	theSourceId;
 		int		theTagId;
 		int 		theForwardMergeCount;
-		int		theTimingPropagationPoint;
+		diganaVertex	theTimingPropagationPoint;
 		timerPinTag   * theMasterTag; //For Split Tags
 		timerPinTag   * theMergeToTag; //Tag to which this tag is merged
 		timerPinTagContainer * theTagContainer;//Union set of tags.
+		timerPinTime  * thePinTime;//The pin time info
 		
 		static int	theTagCount;
 };
 
-struct timerPinTimeArgs {
-	public:
-		timerTime time;
-		timerAnalysisType el;
-		timerTransition trans;
-};
-
-typedef std::pair<timerPinTag *, timerPinTime *> timerClockTime;
-
-//The main class to contain the pin timing information
-//for timer contains the clock and arrival/required time
-//regarding it.
-class timerPinTime {
-
-	public:
-		timerPinTime () {
-		  theClockDelayTranMap.clear ();
-		}
-
-		void annotateDelay (timerClock * clock, 
-				    timerAnalysisType el,
-				    timerTransition srcTran,
-				    timerTransition destTran,
-				    timerTime del) {
-		   std::map<timerClock *, std::pair <timerDelay *, timerDelay *> >::iterator itr = theClockDelayTranMap.find (clock);
-		   timerDelay * delay = NULL; 
-		   if (itr != theClockDelayTranMap.end ()) {
-		     std::pair <timerDelay *, timerDelay *> & delTranPair = itr->second;
-		     delay = delTranPair.first;
-		     if (!delay) delay = new timerDelay ();
-		     delTranPair.first = delay;
-		   } else {
-		     //Pair is not yet created
-		     std::pair <timerDelay *, timerDelay *> delTranPair (NULL, NULL);
-	             delay = new timerDelay ();
-	             delTranPair.first = delay;
-	             theClockDelayTranMap.insert (std::pair <timerClock *, std::pair <timerDelay *, timerDelay *> > (clock, delTranPair));	     
-		   }
-		   delay->annotate (el, srcTran, destTran, del);
-		}
-
-	        void annotateTransition (timerClock * clock,
-				         timerAnalysisType el,
-				         timerTransition srcTran,
-				         timerTransition destTran,
-				         timerTime tran) {
-		   std::map<timerClock *, std::pair <timerDelay *, timerDelay *> >::iterator itr = theClockDelayTranMap.find (clock);
-		   timerDelay * transition = NULL; 
-		   if (itr != theClockDelayTranMap.end ()) {
-		     std::pair <timerDelay *, timerDelay *> & delTranPair = itr->second;
-		     transition = delTranPair.second;
-		     if (!transition) transition = new timerDelay ();
-		     delTranPair.second = transition;
-		   } else {
-		     //Pair is not yet created
-		     std::pair <timerDelay *, timerDelay *> delTranPair (NULL, NULL);
-	             transition = new timerDelay ();
-	             delTranPair.second = transition;
-	             theClockDelayTranMap.insert (std::pair <timerClock *, std::pair <timerDelay *, timerDelay *> > (clock, delTranPair));	     
-		   }
-		   transition->annotate (el, srcTran, destTran, tran);
-		}
-
-	private:
-		//Map of the clock delay and transitions on a tag
-		std::map<timerClock *, std::pair <timerDelay *, timerDelay *> > theClockDelayTranMap;
-};
 
 //The main timer pin info container class
 //contains all the relevant information to
@@ -401,8 +404,6 @@ class timerPinInfo {
 		void setTagSplitPoint () { theIsSplitPoint = true; }
 		bool isTagSplitPoint () { return theIsSplitPoint; }
 
-		void addPinTimeInfo (timerClock *, timerPinTimeArgs &, bool); 
-
 		//Propagate the requisite pin info from a source pin to sink pin
 		static void 
 		propagatePinInfo (timerPinInfo * source, timerPinInfo * sink) {
@@ -443,21 +444,17 @@ class timerPinInfo {
 		  fprintf (file, "%s\n", thePinName.c_str ());
 		}
 
-		void assert_IO_Delay (timerPinTag & cTag, timerTime value, bool isInput) {
-		  if (isInput)
-	            cTag.setArrivalTag ();
-		  else
-		    cTag.setRequiredTag ();
+		void assert_IO_Delay (timerPinTag & ctag, timerClock * clock, timerTime value, bool isInput) {
 
-		  return (isInput) ? assert_Input_Delay (cTag, value) : 
-		  		     assert_Output_Delay (cTag, value);	  
+		  return (isInput) ? assert_Input_Delay (ctag, clock, value) : 
+		  		     assert_Output_Delay (ctag, clock, value);	  
 		}
 
 		void writePin (timerAnalysisType el, timerTransition tran) {
 		}
 
-		void assert_Clock (timerPinTag & cTag, timerTime time) {
-		  assert_Input_Delay (cTag, time);
+		void assert_Clock (timerPinTag & ctag, timerClock * clock, timerTime time) {
+		  assert_Input_Delay (ctag, clock, time);
 		}
 
 		timerPinTag * get_pin_tag () {
@@ -487,19 +484,19 @@ class timerPinInfo {
 		timerPinTag * theOtherPinTag;
 		timerLibPin * theLibPin;
 
-		void assert_Input_Delay (timerPinTag & cTag, timerTime value) {
-		  timerClockTime timerInfo;
-		  timerPinTime * time = new timerPinTime ();
-		  timerPinTag * cTagN = new timerPinTag (cTag);
+		void assert_Input_Delay (timerPinTag & ctag, timerClock * clock, timerTime value) {
+		  timerPinTag * cTagN = new timerPinTag (ctag); 
+		  cTagN->setArrivalTag (); 
 		  assert_pin_tag (cTagN);
+		  cTagN->annotatePinArrival (clock, timerEarly, timerRise, value);
 		  //printf ("InputDelay : %s %f\n", thePinName.c_str (), value);
 		}	
 
-		void assert_Output_Delay (timerPinTag & cTag, timerTime value) {
-		  timerClockTime timerInfo;
-		  timerPinTime * time = new timerPinTime ();
-		  timerPinTag * cTagN = new timerPinTag (cTag);
+		void assert_Output_Delay (timerPinTag & ctag, timerClock * clock, timerTime value) {
+		  timerPinTag * cTagN = new timerPinTag (ctag);
+		  cTagN->setRequiredTag (); 
 		  assert_other_pin_tag (cTagN);
+		  cTagN->annotatePinArrival (clock, timerEarly, timerRise, value);
 		  //printf ("OutputDelay : %s %f\n", thePinName.c_str (), value);
 		}	
 
