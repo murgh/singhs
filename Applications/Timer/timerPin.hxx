@@ -437,6 +437,7 @@ class timerPinInfo {
 		  if (thePinTag) thePinTag->print (std::string ("TAG"));
 		  if (thePinTag && thePinTag->getMasterTag ()) thePinTag->getMasterTag()->print (std::string ("M_Tag"));
 		  if (theOtherPinTag) theOtherPinTag->print (std::string ("OtherTAG"));
+		  if (theOtherPinTag && theOtherPinTag->getMasterTag ()) theOtherPinTag->getMasterTag ()->print (std::string ("M_OtherTAG"));
 		  printf ("\n");
 		}
 

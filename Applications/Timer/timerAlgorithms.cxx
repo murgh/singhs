@@ -4,7 +4,8 @@ int verbose = 0;
 std::map<std::string, timerClock *> timerConstraints::theClockMap;
 int timerPinTag::theTagCount = 0;
 void perform_timing_analysis (diganaGraph * graph) {
-	TA_Timer * timer = new TA_Timer (graph);
+	//TA_Timer * timer = new Timer_Algo_2 (graph);
+	TA_Timer * timer = new Timer_Algo_1 (graph);
 	timer->TA_enumerate_clock_paths ();
 	timer->TA_enumerate_data_paths ();
 	timer->TA_Build_Required ();
@@ -49,9 +50,36 @@ TA_Timer::TA_create_timing_graph (diganaGraph * graph) {
   return graph;
 }
 
+//Timer Algorithm 1
+void
+Timer_Algo_1::TA_enumerate_clock_paths () {
+}
+
+void
+Timer_Algo_1::TA_enumerate_data_paths () {
+}
+
+void
+Timer_Algo_1::TA_Build_Required () {
+}
+
+void
+Timer_Algo_1::TA_compute_slack () {
+}
+
+void
+Timer_Algo_1::TA_print_circuit (diganaGraph * graph) {
+}
+
+void
+Timer_Algo_1::TA_write_paths () {
+}
+
+//Timer Algorithm 2
+
 //Check and perform the tag splitting.
 bool
-TA_Timer::checkAndPerformTagSplitting (diganaVertex & sourcePin, bool isClock) {
+Timer_Algo_2::checkAndPerformTagSplitting (diganaVertex & sourcePin, bool isClock) {
 	diganaGraph * circuit = sourcePin.getParentGraph ();
 	diganaVertex adjPin;
 	int count = 0;
@@ -86,7 +114,7 @@ TA_Timer::checkAndPerformTagSplitting (diganaVertex & sourcePin, bool isClock) {
 }
 
 void
-TA_Timer::propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin) {
+Timer_Algo_2::propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin) {
   timerPinInfo * sourcePinInfo = getPinInfo (sourcePin);   
   timerPinInfo * sinkPinInfo = getPinInfo (sinkPin);   
 
@@ -106,7 +134,7 @@ TA_Timer::propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin) {
 //Perform the BFS through this pin and propagate the
 //tags in the cone.
 void
-TA_Timer::performBFSAndPropagatePinTags (diganaVertex pin, bool isClock) {
+Timer_Algo_2::performBFSAndPropagatePinTags (diganaVertex pin, bool isClock) {
   std::list<diganaVertex> thePinQueue;
   thePinQueue.push_back (pin);
   while ( !thePinQueue.empty () ) {
@@ -130,14 +158,14 @@ TA_Timer::performBFSAndPropagatePinTags (diganaVertex pin, bool isClock) {
 	  timerPinInfo * latchPinInfo = getPinInfo (latchData);
 	  if (latchPinInfo->getDirection () == timerInput) {//D Pin
             //latchPinInfo->print ();
-	    timerPinTag * pinTag = new timerPinTag (false, false, latchData.getVertexId ());
+	    timerPinTag * pinTag = new timerPinTag (false, false, sink.getVertexId ());
 	    pinTag->setMasterTag (sinkInfo->get_pin_tag ());
             latchPinInfo->assert_other_pin_tag (pinTag); 		  
 	  } 
 	  if (latchPinInfo->getDirection () == timerOutput) {//Q Pin
 	    //Create a new pin tag
             //latchPinInfo->print ();
-	    timerPinTag * pinTag = new timerPinTag (false, true, latchData.getVertexId ());
+	    timerPinTag * pinTag = new timerPinTag (false, true, sink.getVertexId ());
 	    pinTag->setMasterTag (sinkInfo->get_pin_tag ());
 	    latchPinInfo->assert_pin_tag (pinTag);
 	  } 
@@ -157,7 +185,7 @@ TA_Timer::performBFSAndPropagatePinTags (diganaVertex pin, bool isClock) {
 
 //For a given start point start propagating the pin tags on the cone
 void
-TA_Timer::propagatePinTagsFromStart (diganaVertex & startPin, bool isClock) {
+Timer_Algo_2::propagatePinTagsFromStart (diganaVertex & startPin, bool isClock) {
   timerPinInfo * startPinInfo = getPinInfo (startPin); 
   timerPinTag * tag = NULL; 
   if ( (tag = startPinInfo->get_pin_tag ()) == NULL ) {
@@ -171,7 +199,7 @@ TA_Timer::propagatePinTagsFromStart (diganaVertex & startPin, bool isClock) {
 //Iterate on all the sink pins of the in virtual node and
 //perform the requisite operation on clock ports.
 void
-TA_Timer::TA_enumerate_clock_paths () {
+Timer_Algo_2::TA_enumerate_clock_paths () {
   printf ("Enumerating Clock Paths ....\n");
   std::list<diganaVertex>::iterator itr;
   for (itr = theClockPortList.begin (); itr != theClockPortList.end (); ++itr) {
@@ -181,7 +209,7 @@ TA_Timer::TA_enumerate_clock_paths () {
 }
 
 void
-TA_Timer::TA_enumerate_data_paths () {
+Timer_Algo_2::TA_enumerate_data_paths () {
   printf ("Enumerating Data Paths ....\n");
   std::list<diganaVertex>::iterator itr;
   for (itr = theStartPointList.begin (); itr != theStartPointList.end (); ++itr) {
@@ -191,7 +219,7 @@ TA_Timer::TA_enumerate_data_paths () {
 }
 
 void
-TA_Timer::TA_Build_Required () {
+Timer_Algo_2::TA_Build_Required () {
   printf ("Build Required time At End Points ....\n");
   std::list<diganaVertex>::iterator itr;
   //for (itr = theEndPointList.begin (); itr != theEndPointList.end (); ++itr) {
@@ -205,7 +233,7 @@ TA_Timer::TA_Build_Required () {
 }
 
 void
-TA_Timer::TA_compute_slack () {
+Timer_Algo_2::TA_compute_slack () {
   printf ("Compute Slacks ....\n");
   std::list<diganaVertex>::iterator itr;
   for (itr = theEndPointList.begin (); itr != theEndPointList.end (); ++itr) {
@@ -221,7 +249,7 @@ TA_Timer::TA_compute_slack () {
 }
 
 void
-TA_Timer::TA_print_circuit (diganaGraph * graph) {
+Timer_Algo_2::TA_print_circuit (diganaGraph * graph) {
   diganaGraphIterator::vertex_iterator vitr, eVitr;
 
   vitr.attach (graph);
@@ -233,7 +261,7 @@ TA_Timer::TA_print_circuit (diganaGraph * graph) {
 }
 
 void
-TA_Timer::TA_write_paths () {
+Timer_Algo_2::TA_write_paths () {
  /*
  Go to each end point
  Pick the end point tag
@@ -269,34 +297,68 @@ TA_Timer::TA_write_paths () {
 }
 
 void
-TA_Timer::computeTagPaths (FILE * file, diganaVertex endPoint) {
+Timer_Algo_2::computeTagPaths (FILE * file, diganaVertex endPoint) {
 
-  	
+  bool hasRefPath = false;
+  diganaVertex refEndPoint;  
   fprintf (file, "\n**EndPoint %s **\n", getPinInfo (endPoint)->getName().c_str ());
-  std::list <std::list<timerPinTag *> *> tagPaths;
-  std::list<timerPinTag *> tagPath;
+  std::list <std::list<timerPinTag *> *> tagPaths, refTagPaths;
+  std::list<timerPinTag *> tagPath, refTagPath;
   computeRecursiveTagPath (getPinInfo (endPoint)->get_pin_tag (), tagPath, tagPaths);
+  timerPinTag * otherTag = getPinInfo (endPoint)->get_pin_other_tag ();
+  if (otherTag && otherTag->getMasterTag ())
+  {	  
+    refEndPoint = diganaVertex (otherTag->getSource (), theTimingGraph); 
+    hasRefPath = true;
+  }
+
   int count = 0;
-  std::list <std::list<timerPinTag *> * >::iterator itr;
+  char print_head [512];
+  std::list <std::list<timerPinTag *> * >::iterator itr, refItr;
   for (itr = tagPaths.begin (); itr != tagPaths.end (); ++itr) {
+    sprintf (print_head, "\nData Path %d:\n", ++count);
+    std::string pathHead = std::string (print_head);  
     std::list<diganaVertex> timingPath;
     buildTimingPathFromTagPath (endPoint, *itr, timingPath);
-    writeTimingPath (file, timingPath, count++);
+    if (hasRefPath) {
+      computeRecursiveTagPath (otherTag->getMasterTag (), refTagPath, refTagPaths);
+      for (refItr = refTagPaths.begin (); refItr != refTagPaths.end (); ++refItr) {
+         std::string otherPathHead = std::string ("Reference Path:\n");
+         std::list<diganaVertex> refTimingPath; 	    
+         buildTimingPathFromTagPath (refEndPoint, *refItr, refTimingPath);
+         writeTimingPath (file, timingPath, pathHead);
+         writeTimingPath (file, refTimingPath, otherPathHead);
+      }
+      refTagPaths.clear ();
+      continue;
+    }
+    writeTimingPath (file, timingPath, pathHead);
   }
 }
 
 void
-TA_Timer::writeTimingPath (FILE * file, std::list<diganaVertex> & timingPath, int Nth) {
-  fprintf (file, "Path%d --\n", Nth);
+Timer_Algo_2::writeTimingPath (FILE * file, std::list<diganaVertex> & timingPath, std::string header) {
+  fprintf (file, "%s", header.c_str ());
   std::list<diganaVertex>::iterator itr;
+  bool theFirstNode = true;
+  diganaVertex lastNode;
   for (itr = timingPath.begin (); itr != timingPath.end (); ++itr) {
     diganaVertex pin = *itr;
     getPinInfo (pin)->write_timing_info (file);
+    if (theFirstNode) {
+      theFirstNode = false;
+      lastNode = pin;      
+      continue;
+    } 
+    diganaEdge edge = diganaEdge (lastNode, pin);
+    timerDelayCalcArgs dcArgs;
+    getArcInfo (edge)->computeDelay (dcArgs); //Call in a loop
+    lastNode = pin;      
   }
 }
 
 void
-TA_Timer::computeRecursiveTagPath (timerPinTag * tag,
+Timer_Algo_2::computeRecursiveTagPath (timerPinTag * tag,
 				   std::list <timerPinTag *> & theTagPath,
 				   std::list <std::list<timerPinTag *> * > & tagPaths) { 
   if (tag == NULL) {
@@ -327,7 +389,7 @@ TA_Timer::computeRecursiveTagPath (timerPinTag * tag,
 }
 
 void
-TA_Timer::buildTimingPathFromTagPath (diganaVertex endPoint,
+Timer_Algo_2::buildTimingPathFromTagPath (diganaVertex endPoint,
 			    std::list<timerPinTag *> * theTagPath, 
 		 	    std::list<diganaVertex> & timingPath) {
 

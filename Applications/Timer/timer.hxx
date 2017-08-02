@@ -22,14 +22,62 @@ class TA_Path {
 
 //The timer container
 class TA_Timer {
-	
 	public:
 		TA_Timer (diganaGraph * graph) { 
 		  theTimingGraph = TA_create_timing_graph (graph);
 		}
 		~TA_Timer () {
 		}
+
+		virtual void TA_compute_slack ();
+		virtual void TA_print_circuit (diganaGraph *);
+		virtual void TA_write_paths ();
+		virtual void TA_enumerate_clock_paths ();
+		virtual void TA_enumerate_data_paths ();
+		virtual void TA_Build_Required ();
+
 		diganaGraph * TA_create_timing_graph (diganaGraph *);
+
+		timerPinInfo * getPinInfo (diganaVertex & tPin) {
+		  timerPinProperty P = tPin.get_property<timerPinProperty> ("Pin_Property");
+		  return P.getPinInfo ();
+		}	
+		timerArcInfo * getArcInfo (diganaEdge & edge) {
+		  timerArcProperty A = edge.get_property<timerArcProperty> ("Arc_Property");
+		  return A.getArcInfo ();
+		}	
+
+	friend class Timer_Algo_1;
+	friend class Timer_Algo_2;
+
+	private:
+		diganaGraph * theTimingGraph;
+		std::set<timerClock *> theTimerClockSet;
+		std::list<diganaVertex> theClockPortList;
+		std::list<diganaVertex> theStartPointList;
+		std::list<diganaVertex> theEndPointList;
+};
+
+//Algo_1 : Use pure DFS
+class Timer_Algo_1 : public TA_Timer {
+
+	public:
+		Timer_Algo_1 (diganaGraph * graph) : TA_Timer (graph) { }
+
+		void TA_compute_slack ();
+		void TA_print_circuit (diganaGraph *);
+		void TA_write_paths ();
+		void TA_enumerate_clock_paths ();
+		void TA_enumerate_data_paths ();
+		void TA_Build_Required ();
+};
+
+//Algo_2 : Use timer pin tags for tracking timing data
+class Timer_Algo_2 : public TA_Timer {
+	
+	public:
+		Timer_Algo_2 (diganaGraph * graph) : TA_Timer (graph) { }
+
 		void TA_compute_slack ();
 		void TA_print_circuit (diganaGraph *);
 		void TA_write_paths ();
@@ -44,24 +92,9 @@ class TA_Timer {
 				              std::list <timerPinTag *> & theTagPath,
 					      std::list <std::list<timerPinTag *> * > & tagPaths);
 		void computeTagPaths (FILE * file, diganaVertex vtx);
-		void writeTimingPath (FILE * file, std::list<diganaVertex> & timingPath, int);
+		void writeTimingPath (FILE * file, std::list<diganaVertex> & timingPath, std::string);
 		void buildTimingPathFromTagPath (diganaVertex endPoint,
 						 std::list<timerPinTag *> * theTagPath,
 						 std::list<diganaVertex> & timingPath);
-		timerPinInfo * getPinInfo (diganaVertex & tPin) {
-		  timerPinProperty P = tPin.get_property<timerPinProperty> ("Pin_Property");
-		  return P.getPinInfo ();
-		}	
-
-	private:
-		diganaGraph * theTimingGraph;
-		std::vector<TA_Path *> thePathCollection; 
-		std::set<timerClock *> theTimerClockSet;
-		std::list<diganaVertex> theClockPortList;
-		std::list<diganaVertex> theStartPointList;
-		std::list<diganaVertex> theEndPointList;
-		std::map<diganaVertex, 
-			 std::pair<timerPinTag*, timerPinTag*> > theEndTagPair;
-
 };
 #endif //TIMER

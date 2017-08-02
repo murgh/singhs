@@ -1,4 +1,5 @@
 #include "timerUtils.hxx"
+#include "timerDelay.hxx"
 
 #ifndef _DESIGN_
 #define _DESIGN_
@@ -195,9 +196,9 @@ class timerLibArc {
 		bool isTrigger () { return (theArcType == timeTriggerArc); }
 
 		void populateLUT ();
-		timerTime ComputeDelay (timerTime, timerCap, timerTransition, timerTransition);
-		timerTime ComputeTransition (timerTime, timerCap, timerTransition, timerTransition);
-		timerTime ComputeCheck (timerTime, timerTime, timerTransition, timerTransition);
+		void ComputeDelay (timerDelayCalcArgs &);
+		void ComputeTransition (timerDelayCalcArgs &);
+		void ComputeCheck (timerDelayCalcArgs &);
 
 	private:
 		timerLibPin * theSource;

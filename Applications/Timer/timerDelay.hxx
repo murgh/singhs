@@ -1,6 +1,7 @@
 #ifndef TIMER_DELAY
 #define TIMER_DELAY
 
+class timerDelayCalcArgs;
 
 //2 X 2 delay values for input and output
 //transition combinations
@@ -96,6 +97,38 @@ class timerPointTime {
 		}
 	private:
 		timerTime theTime[timerAnalysis][timerTrans];
+};
+
+class timerDelayCalcArgs {
+	public:
+		//Data Members all are public
+        	timerAnalysisType theEL;
+		timerTime	  theStageInputTran;
+		timerCap 	  theStageLoad;
+		timerTransition	  theSourceRF;
+		timerTransition	  theSinkRF;
+		timerTime	  theStageDelay;
+
+		timerDelayCalcArgs () {
+		  theEL = timerAnalysis;
+		  theStageInputTran = theStageLoad = theStageDelay = timerUndefDelay;
+                  theSourceRF = theSinkRF = timerTrans;
+		}
+
+		void setupStage (timerAnalysisType el, 
+			    timerTime inTran, 
+			    timerCap load, 
+			    timerTransition srcTran,
+			    timerTransition snkTran) {
+		  theEL = el;
+		  theStageInputTran = inTran;
+		  theStageLoad = load;
+		  theSourceRF = srcTran;
+		  theSinkRF = snkTran;
+		}
+
+
+
 };
 
 #endif

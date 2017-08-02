@@ -467,6 +467,12 @@ class diganaEdge {
               parent_graph (g) 
    { }
 
+   diganaEdge (diganaVertex src, diganaVertex snk) :
+	      source (src.getVertexId ()),
+      	      sink (snk.getVertexId ()),
+	      parent_graph (src.getParentGraph ())
+   { assert (src.getParentGraph () == snk.getParentGraph ()); }	      
+
    diganaEdge (const diganaEdge & e) : 
               source (e.source),
               sink (e.sink),

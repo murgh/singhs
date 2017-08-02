@@ -63,8 +63,20 @@ class timerArcInfo {
 		   }
 		}	       
 
+		void computeDelay (timerDelayCalcArgs & args) {
+		  //For net arcs : if (!theLibArc) 
+		  theLibArc->ComputeDelay (args);
+		}	
+		void computeTransition (timerDelayCalcArgs & args) {
+		  theLibArc->ComputeDelay (args);
+		}	
+		void computeCheck (timerDelayCalcArgs & args) {
+		  theLibArc->ComputeDelay (args);
+		}	
+
 	private:
 		timerArcData *	theArcData;
+		//Might not be needed here, we shall revisit
 		std::map<timerPinTag *, timerArcDelay *> theTagDelayMap;
 		timerLibArc * theLibArc; 
 };
@@ -80,7 +92,7 @@ class timerArcProperty : public diganaDynamicGraphProperty {
 		   	
 		}
 
-		timerArcInfo * getPinInfo () const { return theArcInfo; }
+		timerArcInfo * getArcInfo () const { return theArcInfo; }
 
 	private:	
 		timerArcInfo * theArcInfo;

@@ -83,15 +83,15 @@ timerLibArc::populateLUT () {
   theLUT->populateTransitionLUT (timerFall, theTransitionLUT);
 }
 
-timerTime timerLibArc::ComputeDelay (timerTime inSlew, timerCap load, timerTransition inTran, timerTransition outTran) {
-	return 0.0;
+void timerLibArc::ComputeDelay (timerDelayCalcArgs & args) {
+	args.theStageDelay = 0.0;
 }	
 
-timerTime timerLibArc::ComputeTransition (timerTime inSlew, timerCap load, timerTransition inTran, timerTransition outTran) {
-	return 0.0;
+void timerLibArc::ComputeTransition (timerDelayCalcArgs & args) {
+	args.theStageDelay = 0.0;
 }	
 
-timerTime timerLibArc::ComputeCheck (timerTime sigSlew, timerTime refSlew, timerTransition sigTran, timerTransition refTran) {
-	return 0.0;
+void timerLibArc::ComputeCheck (timerDelayCalcArgs & args) {
+	args.theStageDelay = 0.0;
 }	
 
