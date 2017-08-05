@@ -29,12 +29,12 @@ class TA_Timer {
 		~TA_Timer () {
 		}
 
-		virtual void TA_compute_slack ();
-		virtual void TA_print_circuit (diganaGraph *);
-		virtual void TA_write_paths ();
-		virtual void TA_enumerate_clock_paths ();
-		virtual void TA_enumerate_data_paths ();
-		virtual void TA_Build_Required ();
+		virtual void TA_compute_slack () { };
+		virtual void TA_print_circuit (diganaGraph *) { };
+		virtual void TA_write_paths () { };
+		virtual void TA_enumerate_clock_paths () { };
+		virtual void TA_enumerate_data_paths () { };
+		virtual void TA_Build_Required () { };
 
 		diganaGraph * TA_create_timing_graph (diganaGraph *);
 
@@ -64,12 +64,12 @@ class Timer_Algo_1 : public TA_Timer {
 	public:
 		Timer_Algo_1 (diganaGraph * graph) : TA_Timer (graph) { }
 
-		void TA_compute_slack ();
-		void TA_print_circuit (diganaGraph *);
-		void TA_write_paths ();
-		void TA_enumerate_clock_paths ();
-		void TA_enumerate_data_paths ();
-		void TA_Build_Required ();
+		virtual void TA_compute_slack ();
+		virtual void TA_print_circuit (diganaGraph *);
+		virtual void TA_write_paths ();
+		virtual void TA_enumerate_clock_paths ();
+		virtual void TA_enumerate_data_paths ();
+		virtual void TA_Build_Required ();
 		void performDFSAndPropagatePinTags (diganaVertex startPoint, bool isClock);
 		void processClockEndPoint (diganaVertex endPoint, std::list<diganaVertex> & timingPoints);
 		void processDataEndPoint (diganaVertex endPoint, std::list<diganaVertex> & timingPoints);
@@ -84,12 +84,13 @@ class Timer_Algo_2 : public TA_Timer {
 	public:
 		Timer_Algo_2 (diganaGraph * graph) : TA_Timer (graph) { }
 
-		void TA_compute_slack ();
-		void TA_print_circuit (diganaGraph *);
-		void TA_write_paths ();
-		void TA_enumerate_clock_paths ();
-		void TA_enumerate_data_paths ();
-		void TA_Build_Required ();
+		virtual void TA_compute_slack ();
+		virtual void TA_print_circuit (diganaGraph *);
+		virtual void TA_write_paths ();
+		virtual void TA_enumerate_clock_paths ();
+		virtual void TA_enumerate_data_paths ();
+		virtual void TA_Build_Required ();
+
 		bool checkAndPerformTagSplitting (diganaVertex & timerPin, bool);
 		void performBFSAndPropagatePinTags (diganaVertex pin, bool);
 		void propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin);

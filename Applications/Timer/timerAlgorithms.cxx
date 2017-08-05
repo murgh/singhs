@@ -4,8 +4,8 @@ int verbose = 0;
 std::map<std::string, timerClock *> timerConstraints::theClockMap;
 int timerPinTag::theTagCount = 0;
 void perform_timing_analysis (diganaGraph * graph) {
-	//TA_Timer * timer = new Timer_Algo_2 (graph);
-	TA_Timer * timer = new Timer_Algo_1 (graph);
+	TA_Timer * timer = new Timer_Algo_2 (graph);
+	//TA_Timer * timer = new Timer_Algo_1 (graph);
 	timer->TA_enumerate_clock_paths ();
 	timer->TA_enumerate_data_paths ();
 	timer->TA_Build_Required ();
