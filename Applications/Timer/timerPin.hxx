@@ -474,6 +474,13 @@ class timerPinInfo {
 		  thePinTag = cTag; 
 		}
 
+		void clearDFSSeen () { theDFSSeen = false; }
+		void setDFSSeen () { theDFSSeen = true; }
+		bool isDFSSeen () { return theDFSSeen; }
+
+		void setReferencePin (diganaVertex ref) { theReferencePin = ref; }
+		diganaVertex gerReferencePin () { return theReferencePin; }
+
 	private:
 		std::string thePinName;
 		bool	    theIsClock;
@@ -484,6 +491,8 @@ class timerPinInfo {
 		timerPinTag * thePinTag;
 		timerPinTag * theOtherPinTag;
 		timerLibPin * theLibPin;
+		bool		theDFSSeen;
+		diganaVertex		theReferencePin;
 
 		void assert_Input_Delay (timerPinTag & ctag, timerClock * clock, timerTime value) {
 		  timerPinTag * cTagN = new timerPinTag (ctag); 

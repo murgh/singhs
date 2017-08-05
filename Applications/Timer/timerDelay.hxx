@@ -131,4 +131,6 @@ class timerDelayCalcArgs {
 
 };
 
+void computeEdgeDelayAndPropagateArrival (timerDelayCalcArgs &, diganaEdge); 
+
 #endif

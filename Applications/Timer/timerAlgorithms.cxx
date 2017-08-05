@@ -51,12 +51,89 @@ TA_Timer::TA_create_timing_graph (diganaGraph * graph) {
 }
 
 //Timer Algorithm 1
+void 
+Timer_Algo_1::processClockEndPoint (diganaVertex endPoint, std::list<diganaVertex> & pinList) {
+  std::map<timerPinInfo *, std::list<std::list<diganaVertex> * > * >::iterator itr;
+  itr = theClockEndPointPathMap.find (getPinInfo (endPoint));
+  std::list<std::list<diganaVertex> * > * pathList;  
+  if (itr == theClockEndPointPathMap.end ()) {
+    pathList = new std::list<std::list<diganaVertex>*>;
+  } else {
+    pathList = itr->second;
+  }
+  std::list<diganaVertex> * new_path = new std::list<diganaVertex>;
+  std::list<diganaVertex>::iterator pItr = pinList.begin ();
+  diganaVertex pin;
+  for (; pItr != pinList.end (); ++pItr) {
+    pin = *pItr;
+    new_path->push_back (pin);
+  }
+  pathList->push_back (new_path);
+  diganaGraphIterator::adjacency_iterator ai , aietr;
+  ai.attach (endPoint.getVertexId (), endPoint.getParentGraph ());
+  for (; ai != aietr; ++ai) {
+     diganaVertex sink = *ai;
+     timerPinInfo * sinkPinInfo = getPinInfo (sink);
+     if ((sinkPinInfo->getIsDataStart () && !sinkPinInfo->getIsIOPort ()) //Q Pin    
+		     ||
+         (sinkPinInfo->getIsDataEnd () && !sinkPinInfo->getIsIOPort ())) //D Pin    
+       sinkPinInfo->setReferencePin (endPoint);	
+  }
+}
+
+void
+Timer_Algo_1::performDFSAndPropagatePinTags (diganaVertex startPoint, bool isClock) {
+  std::list<diganaVertex> thePinStack;
+  thePinStack.push_back (startPoint);
+  while ( !thePinStack.empty () ) {
+    bool hasValidSink = false;
+    diganaVertex source = thePinStack.back ();
+    getPinInfo (source)->print ();
+    if (isClock && getPinInfo (source)->getIsClockEnd ()) 
+      processClockEndPoint (source, thePinStack);
+
+    if (!isClock && getPinInfo (source)->getIsDataEnd ())
+      processDataEndPoint (source, thePinStack);
+    
+    diganaGraphIterator::adjacency_iterator ai , aietr;
+    ai.attach (source.getVertexId (), source.getParentGraph ());
+    for (; ai != aietr; ++ai) {
+      diganaVertex sink = *ai;
+      if ( getPinInfo (sink)->isDFSSeen () )
+	continue;      
+      thePinStack.push_back (sink);   
+      getPinInfo (sink)->setDFSSeen ();
+      diganaEdge edge = diganaEdge (source, sink);
+      timerDelayCalcArgs dcArgs;
+      computeEdgeDelayAndPropagateArrival (dcArgs, edge);
+      hasValidSink = true;
+      break;
+    }
+    if (!hasValidSink) {
+      getPinInfo (source)->clearDFSSeen ();
+      thePinStack.pop_back ();
+    }
+  }
+}
+
 void
 Timer_Algo_1::TA_enumerate_clock_paths () {
+  printf ("Enumerating Clock Paths ....\n");
+  std::list<diganaVertex>::iterator itr;
+  for (itr = theClockPortList.begin (); itr != theClockPortList.end (); ++itr) {
+    diganaVertex clockPort = *itr;
+    performDFSAndPropagatePinTags (clockPort, true/*Clock Path*/); 
+  }
 }
 
 void
 Timer_Algo_1::TA_enumerate_data_paths () {
+  printf ("Enumerating Data Paths ....\n");
+  std::list<diganaVertex>::iterator itr;
+  for (itr = theStartPointList.begin (); itr != theStartPointList.end (); ++itr) {
+    diganaVertex dataPort = *itr;
+    performDFSAndPropagatePinTags (dataPort, false/*Data Path*/); 
+  }
 }
 
 void
@@ -352,7 +429,7 @@ Timer_Algo_2::writeTimingPath (FILE * file, std::list<diganaVertex> & timingPath
     } 
     diganaEdge edge = diganaEdge (lastNode, pin);
     timerDelayCalcArgs dcArgs;
-    getArcInfo (edge)->computeDelay (dcArgs); //Call in a loop
+    computeEdgeDelayAndPropagateArrival (dcArgs, edge);
     lastNode = pin;      
   }
 }

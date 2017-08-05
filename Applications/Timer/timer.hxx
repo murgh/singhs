@@ -38,11 +38,11 @@ class TA_Timer {
 
 		diganaGraph * TA_create_timing_graph (diganaGraph *);
 
-		timerPinInfo * getPinInfo (diganaVertex & tPin) {
+		static timerPinInfo * getPinInfo (diganaVertex & tPin) {
 		  timerPinProperty P = tPin.get_property<timerPinProperty> ("Pin_Property");
 		  return P.getPinInfo ();
 		}	
-		timerArcInfo * getArcInfo (diganaEdge & edge) {
+		static timerArcInfo * getArcInfo (diganaEdge & edge) {
 		  timerArcProperty A = edge.get_property<timerArcProperty> ("Arc_Property");
 		  return A.getArcInfo ();
 		}	
@@ -70,6 +70,12 @@ class Timer_Algo_1 : public TA_Timer {
 		void TA_enumerate_clock_paths ();
 		void TA_enumerate_data_paths ();
 		void TA_Build_Required ();
+		void performDFSAndPropagatePinTags (diganaVertex startPoint, bool isClock);
+		void processClockEndPoint (diganaVertex endPoint, std::list<diganaVertex> & timingPoints);
+		void processDataEndPoint (diganaVertex endPoint, std::list<diganaVertex> & timingPoints);
+
+	private:
+		std::map<timerPinInfo *, std::list<std::list<diganaVertex> * > * > theClockEndPointPathMap;
 };
 
 //Algo_2 : Use timer pin tags for tracking timing data

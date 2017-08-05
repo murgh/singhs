@@ -95,3 +95,7 @@ void timerLibArc::ComputeCheck (timerDelayCalcArgs & args) {
 	args.theStageDelay = 0.0;
 }	
 
+void computeEdgeDelayAndPropagateArrival (timerDelayCalcArgs & args, diganaEdge edge) {
+	TA_Timer::getArcInfo (edge)->computeDelay (args); //Call in a loop
+}
+
