@@ -1,6 +1,7 @@
 #ifndef TIMER_DELAY
 #define TIMER_DELAY
 
+#include "timerPin.hxx"
 class timerDelayCalcArgs;
 
 //2 X 2 delay values for input and output
@@ -108,27 +109,38 @@ class timerDelayCalcArgs {
 		timerTransition	  theSourceRF;
 		timerTransition	  theSinkRF;
 		timerTime	  theStageDelay;
+ 		timerPinTag	* theSourceTag;
+		timerPinTag	* theSinkTag;
+		diganaVertex	  theSource;
+		diganaVertex	  theSink;
+		diganaGraph	* theTimer;
 
 		timerDelayCalcArgs () {
 		  theEL = timerAnalysis;
 		  theStageInputTran = theStageLoad = theStageDelay = timerUndefDelay;
                   theSourceRF = theSinkRF = timerTrans;
+		  theSourceTag = NULL;
+		  theSinkTag = NULL;
 		}
 
 		void setupStage (timerAnalysisType el, 
-			    timerTime inTran, 
-			    timerCap load, 
-			    timerTransition srcTran,
-			    timerTransition snkTran) {
+			    	 timerTime inTran, 
+			    	 timerCap load, 
+			    	 timerTransition srcTran,
+			    	 timerTransition snkTran,
+			    	 diganaVertex source, timerPinTag * sourceTag,
+			    	 diganaVertex sink, timerPinTag * sinkTag
+			        ) {
 		  theEL = el;
 		  theStageInputTran = inTran;
 		  theStageLoad = load;
 		  theSourceRF = srcTran;
 		  theSinkRF = snkTran;
+		  theSourceTag = sourceTag;
+		  theSinkTag = sinkTag;
+		  theSource  = source;
+		  theSink = sink;
 		}
-
-
-
 };
 
 void computeEdgeDelayAndPropagateArrival (timerDelayCalcArgs &, diganaEdge); 

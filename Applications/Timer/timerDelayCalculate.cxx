@@ -83,19 +83,128 @@ timerLibArc::populateLUT () {
   theLUT->populateTransitionLUT (timerFall, theTransitionLUT);
 }
 
-void timerLibArc::ComputeDelay (timerDelayCalcArgs & args) {
+timerTime
+timerArcInfo::getDelay (int el, 
+		        int srcRF,
+		        int destRF,
+		        timerTime sourceTran,
+		        timerCap stageLoad) {
+  return 0.0;
+}
+		        
+timerTime
+timerArcInfo::getTransition (int el, 
+		       	     int srcRF,
+		       	     int destRF,
+		       	     timerTime sourceTran,
+		       	     timerCap stageLoad) {
+  return 0.0;
+}
+		        
+void timerArcInfo::ComputeAndAnnotateDelay (timerDelayCalcArgs & args) {
+	timerPinTag * sourceTag = args.theSourceTag;
+	timerPinTag * sinkTag = args.theSinkTag;
+	diganaVertex source = args.theSource;
+	diganaVertex sink = args.theSink;
+	diganaEdge edge (source, sink);
+	timerCap stageLoad = args.theStageLoad;
+	timerTime sourceTran, sourceArr, arcDelay, arcTran;
+	
+	//Foreach clock info do iteration
+	std::list<timerClock *> tagClocks;
+        sourceTag->populateClockObjects (tagClocks);	
+	std::list<timerClock *>::iterator itr;
+	for (itr = tagClocks.begin (); itr != tagClocks.end (); ++itr) {
+	  timerClock * clock = *itr;
+	  for (int el = timerEarly; el != timerAnalysis; ++el) {
+	    for (int srcRF = timerRise; srcRF != timerTrans; ++srcRF) {
+	      for (int destRF = timerRise; destRF != timerTrans; ++destRF) {
+	        sourceTran = sourceTag->getTransition (clock, el, srcRF);
+	        sourceArr = sourceTag->getArrival (clock, el, srcRF);
+	        if (sourceTran == timerUndefTran) 
+	          continue;
+	        arcDelay = getDelay (el, srcRF, destRF, sourceTran, stageLoad);
+	        arcTran = getTransition (el, srcRF, destRF, sourceTran, stageLoad);
+
+		sinkTag->annotatePinArrival (clock, ((timerAnalysisType) el), ((timerTransition) destRF), arcDelay + sourceArr); 
+		sinkTag->annotatePinTransition (clock, ((timerAnalysisType) el), ((timerTransition) destRF), arcTran);
+	      }
+	    }
+	  }
+	}
 	args.theStageDelay = 0.0;
 }	
 
-void timerLibArc::ComputeTransition (timerDelayCalcArgs & args) {
-	args.theStageDelay = 0.0;
-}	
-
-void timerLibArc::ComputeCheck (timerDelayCalcArgs & args) {
-	args.theStageDelay = 0.0;
-}	
-
+//Based on the 
 void computeEdgeDelayAndPropagateArrival (timerDelayCalcArgs & args, diganaEdge edge) {
-	TA_Timer::getArcInfo (edge)->computeDelay (args); //Call in a loop
+	TA_Timer::getArcInfo (edge)->ComputeAndAnnotateDelay (args); //Call in a loop
+
 }
 
+void timerPinTime::annotateArrival (timerClock * clock, 
+				    timerAnalysisType el,
+				    timerTransition rf,
+				    timerTime del) {
+  std::map<timerClock *, std::pair <timerPointTime *, timerPointTime *> >::iterator itr = theClockTimeMap.find (clock);
+  timerPointTime * delay = NULL; 
+  if (itr != theClockTimeMap.end ()) {
+    std::pair <timerPointTime *, timerPointTime *> & delTranPair = itr->second;
+    delay = delTranPair.first;
+    if (!delay) delay = new timerPointTime ();
+    delTranPair.first = delay;
+  } else {
+    //Pair is not yet created
+    std::pair <timerPointTime *, timerPointTime *> delTranPair (NULL, NULL);
+    delay = new timerPointTime ();
+    delTranPair.first = delay;
+    theClockTimeMap.insert (std::pair <timerClock *, std::pair <timerPointTime *, timerPointTime *> > (clock, delTranPair));	     
+  }
+  delay->annotate (el, rf, del);
+}
+
+void timerPinTime::annotateTransition (timerClock * clock,
+				       timerAnalysisType el,
+				       timerTransition rf,
+				       timerTime tran) {
+  std::map<timerClock *, std::pair <timerPointTime *, timerPointTime *> >::iterator itr = theClockTimeMap.find (clock);
+  timerPointTime * transition = NULL; 
+  if (itr != theClockTimeMap.end ()) {
+    std::pair <timerPointTime *, timerPointTime *> & delTranPair = itr->second;
+    transition = delTranPair.second;
+    if (!transition) transition = new timerPointTime ();
+    delTranPair.second = transition;
+  } else {
+    //Pair is not yet created
+    std::pair <timerPointTime *, timerPointTime *> delTranPair (NULL, NULL);
+    transition = new timerPointTime ();
+    delTranPair.second = transition;
+    theClockTimeMap.insert (std::pair <timerClock *, std::pair <timerPointTime *, timerPointTime *> > (clock, delTranPair));	     
+  }
+  transition->annotate (el, rf, tran);
+}
+
+void timerPinTime::populateClockObjects (std::list<timerClock *> & clockList) {
+  std::map<timerClock *, std::pair <timerPointTime *, timerPointTime *> >::iterator itr;
+  for (itr = theClockTimeMap.begin (); itr != theClockTimeMap.end (); ++itr) 
+    clockList.push_back (itr->first);
+}
+
+timerTime timerPinTime::getArrival (timerClock * clock, int el, int rf) {
+  std::map<timerClock *, std::pair <timerPointTime *, timerPointTime *> >::iterator itr = theClockTimeMap.find (clock);
+  if (itr == theClockTimeMap.end ())
+    return timerUndefDelay;
+
+  std::pair <timerPointTime *, timerPointTime *> & delTranPair = itr->second;
+  if (!delTranPair.first) return timerUndefDelay;
+  return delTranPair.first->getTime (((timerAnalysisType)el), ((timerTransition)rf)); 
+}
+
+timerTime timerPinTime::getTransition (timerClock * clock, int el, int rf) { 
+  std::map<timerClock *, std::pair <timerPointTime *, timerPointTime *> >::iterator itr = theClockTimeMap.find (clock);
+  if (itr == theClockTimeMap.end ())
+    return timerUndefTran;
+
+  std::pair <timerPointTime *, timerPointTime *> & delTranPair = itr->second;
+  if (!delTranPair.second) return timerUndefDelay;
+  return delTranPair.second->getTime (((timerAnalysisType)el), ((timerTransition)rf)); 
+}

@@ -47,6 +47,9 @@ class TA_Timer {
 		  return A.getArcInfo ();
 		}	
 
+		static int getGlobalForwardMergedCount ();  
+		static void setGlobalForwardMergedCount (int val); 
+
 	friend class Timer_Algo_1;
 	friend class Timer_Algo_2;
 
@@ -56,6 +59,7 @@ class TA_Timer {
 		std::list<diganaVertex> theClockPortList;
 		std::list<diganaVertex> theStartPointList;
 		std::list<diganaVertex> theEndPointList;
+		static int theGlobalForwardMergedCount;
 };
 
 //Algo_1 : Use pure DFS

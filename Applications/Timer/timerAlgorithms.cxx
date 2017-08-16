@@ -3,6 +3,7 @@
 int verbose = 0;
 std::map<std::string, timerClock *> timerConstraints::theClockMap;
 int timerPinTag::theTagCount = 0;
+int TA_Timer::theGlobalForwardMergedCount = 0;
 void perform_timing_analysis (diganaGraph * graph) {
 	TA_Timer * timer = new Timer_Algo_2 (graph);
 	//TA_Timer * timer = new Timer_Algo_1 (graph);
@@ -16,6 +17,14 @@ void perform_timing_analysis (diganaGraph * graph) {
 
 timerPinProperty getPinProp (diganaVertex & vertex) {
 	return vertex.get_property<timerPinProperty> ("Pin_Property");
+}
+
+int TA_Timer::getGlobalForwardMergedCount () {
+	return theGlobalForwardMergedCount;
+}
+
+void TA_Timer::setGlobalForwardMergedCount (int val) {
+	theGlobalForwardMergedCount = val;
 }
 
 //Given a verilog read, convert the graph into a timing graph
@@ -182,7 +191,7 @@ Timer_Algo_2::checkAndPerformTagSplitting (diganaVertex & sourcePin, bool isCloc
 	   if (!sinkPinInfo->get_pin_tag ()) {
 	     sinkPinInfo->assert_pin_tag (tag);
 	   } else {
-	     sinkPinInfo->get_pin_tag ()->merge_pin_tag (tag);	
+	     sinkPinInfo->get_pin_tag ()->merge_pin_tag (tag, sinkPin);	
 	     tag->setTimingPropagationPoint (sourcePin);
 	   }
 	   timerPinInfo::propagatePinInfo (srcPinInfo, sinkPinInfo);
@@ -199,7 +208,7 @@ Timer_Algo_2::propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin
   if (sourcePinInfo->get_pin_tag () && sinkPinInfo->get_pin_tag () &&
       (sourcePinInfo->get_pin_tag () != sinkPinInfo->get_pin_tag ()) &&
       (sourcePinInfo->get_pin_tag () != sinkPinInfo->get_pin_tag ()->getMasterTag ())) {
-    sinkPinInfo->get_pin_tag ()->merge_pin_tag (sourcePinInfo->get_pin_tag ());
+    sinkPinInfo->get_pin_tag ()->merge_pin_tag (sourcePinInfo->get_pin_tag (), sinkPin);
     sourcePinInfo->get_pin_tag ()->setTimingPropagationPoint (sourcePin);
     return;
   }

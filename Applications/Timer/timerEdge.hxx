@@ -1,6 +1,6 @@
+#include "timer.hxx"
 #include "timerUtils.hxx"
 #include "timerPin.hxx"
-#include "timer.hxx"
 #include "timerDelay.hxx"
 
 #ifndef TIMER_EDGE
@@ -63,16 +63,19 @@ class timerArcInfo {
 		   }
 		}	       
 
-		void computeDelay (timerDelayCalcArgs & args) {
-		  //For net arcs : if (!theLibArc) 
-		  theLibArc->ComputeDelay (args);
-		}	
-		void computeTransition (timerDelayCalcArgs & args) {
-		  theLibArc->ComputeDelay (args);
-		}	
-		void computeCheck (timerDelayCalcArgs & args) {
-		  theLibArc->ComputeDelay (args);
-		}	
+		void ComputeAndAnnotateDelay (timerDelayCalcArgs & args);
+
+                timerTime getDelay (int el,
+	                            int srcRF,
+		                    int destRF,
+			            timerTime sourceTran,
+				    timerCap stageLoad);		      
+
+                timerTime getTransition (int el,
+	                            	 int srcRF,
+		                    	 int destRF,
+			            	 timerTime sourceTran,
+				    	 timerCap stageLoad);		      
 
 	private:
 		timerArcData *	theArcData;

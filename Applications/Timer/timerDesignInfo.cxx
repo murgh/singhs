@@ -1,11 +1,12 @@
+#include "timer.hxx"
 #include "timerPin.hxx"
 #include "timerEdge.hxx"
 #include "timerUtils.hxx"
 #include "timerLibData.hxx"
 #include "timerLibData.hxx"
 #include "timerConstraints.hxx"
+#include "timerDelay.hxx"
 #include "../../Kernel/graph.hxx"
-#include "timer.hxx"
 
 std::list<timerLibData *> theLibraryInfo;
 

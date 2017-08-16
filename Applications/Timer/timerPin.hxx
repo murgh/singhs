@@ -2,6 +2,7 @@
 #include "timerConstraints.hxx"
 #include "timer.hxx"
 #include "timerDelay.hxx"
+#include "timerLibData.hxx"
 
 #ifndef timerPin_H
 #define timerPin_H
@@ -12,6 +13,7 @@ class timerPinTime;
 class timerPinInfo;
 class timerPinTag;
 class timerPinTagContainer;
+class timerPointTime;
 
 //The main class to contain the pin timing information
 //for timer contains the clock and arrival/required time
@@ -23,50 +25,24 @@ class timerPinTime {
 		  theClockTimeMap.clear ();
 		}
 
-		void annotateDelay (timerClock * clock, 
+		void annotateArrival (timerClock * clock, 
 				    timerAnalysisType el,
 				    timerTransition rf,
-				    timerTime del) {
-		   std::map<timerClock *, std::pair <timerPointTime *, timerPointTime *> >::iterator itr = theClockTimeMap.find (clock);
-		   timerPointTime * delay = NULL; 
-		   if (itr != theClockTimeMap.end ()) {
-		     std::pair <timerPointTime *, timerPointTime *> & delTranPair = itr->second;
-		     delay = delTranPair.first;
-		     if (!delay) delay = new timerPointTime ();
-		     delTranPair.first = delay;
-		   } else {
-		     //Pair is not yet created
-		     std::pair <timerPointTime *, timerPointTime *> delTranPair (NULL, NULL);
-	             delay = new timerPointTime ();
-	             delTranPair.first = delay;
-	             theClockTimeMap.insert (std::pair <timerClock *, std::pair <timerPointTime *, timerPointTime *> > (clock, delTranPair));	     
-		   }
-		   delay->annotate (el, rf, del);
-		}
+				    timerTime del); 
 
 	        void annotateTransition (timerClock * clock,
 				         timerAnalysisType el,
 				         timerTransition rf,
-				         timerTime tran) {
-		   std::map<timerClock *, std::pair <timerPointTime *, timerPointTime *> >::iterator itr = theClockTimeMap.find (clock);
-		   timerPointTime * transition = NULL; 
-		   if (itr != theClockTimeMap.end ()) {
-		     std::pair <timerPointTime *, timerPointTime *> & delTranPair = itr->second;
-		     transition = delTranPair.second;
-		     if (!transition) transition = new timerPointTime ();
-		     delTranPair.second = transition;
-		   } else {
-		     //Pair is not yet created
-		     std::pair <timerPointTime *, timerPointTime *> delTranPair (NULL, NULL);
-	             transition = new timerPointTime ();
-	             delTranPair.second = transition;
-	             theClockTimeMap.insert (std::pair <timerClock *, std::pair <timerPointTime *, timerPointTime *> > (clock, delTranPair));	     
-		   }
-		   transition->annotate (el, rf, tran);
-		}
+				         timerTime tran); 
+
+		void populateClockObjects (std::list<timerClock *> & clockList);		
+
+		timerTime getArrival (timerClock * clock, int el, int rf);
+
+		timerTime getTransition (timerClock * clock, int el, int rf);
 
 	private:
-		//Map of the clock delay and transitions on a tag
+		//Map of the clock delay and transitions on a tag pin 
 		std::map<timerClock *, std::pair <timerPointTime *, timerPointTime *> > theClockTimeMap;
 };
 
@@ -162,7 +138,7 @@ class timerPinTag {
 		}
 
 		void print (std::string tag) {
-		 printf ("%s(%d) ", tag.c_str (), theTagId);
+		 printf ("%s(ID(%d) MergeCount(%d)) ", tag.c_str (), theTagId, theForwardMergeCount);
 		}
 
 		int getSource () const { return theSourceId; }
@@ -245,20 +221,24 @@ class timerPinTag {
 		}
 
 */
-		void incrementForwardMergeCount () { 
+		void incrementForwardMergeCount (diganaVertex mergePin) { 
 		  theForwardMergeCount++; 
-		  triggerIncrementForwardMergeCount ();
+		/*
+		  if (theForwardMergeCount <= TA_Timer::getGlobalForwardMergedCount ()) {
+		    theTimingPropagationPoint = mergePin;
+		  }*/ 
+		  triggerIncrementForwardMergeCount (mergePin);
 		}
 		
 		//Iterate on all the tags merged in it and omcrement 
-		void triggerIncrementForwardMergeCount () {
+		void triggerIncrementForwardMergeCount (diganaVertex mergePin) {
 		  if (!theTagContainer)
 		    return;
 
                   timerPinTagContainer::Iterator itr (theTagContainer);
 		  timerPinTag * tag;
 		  while ( (tag = itr.next ()) ) 
-		    tag->incrementForwardMergeCount ();
+		    tag->incrementForwardMergeCount (mergePin);
 		}
 
 		timerPinTagContainer * get_tag_container () { return theTagContainer; }
@@ -278,7 +258,7 @@ class timerPinTag {
 		  return areInUnion;
 		}
 
-		void merge_pin_tag (timerPinTag * to_merge) {
+		void merge_pin_tag (timerPinTag * to_merge, diganaVertex mergePin) {
 		  //If tag container is not present create it and 
 		  //merge the tag to be merged in the container
 		  if (!theTagContainer) {
@@ -286,7 +266,7 @@ class timerPinTag {
 		  }	  
 		  theTagContainer->addTag (to_merge); 
 		  to_merge->setMergeToTag (this);
-		  to_merge->incrementForwardMergeCount ();
+		  to_merge->incrementForwardMergeCount (mergePin);
 		}	
 
 		void setForwardMergeCount (int count) { theForwardMergeCount = count; }
@@ -297,13 +277,28 @@ class timerPinTag {
 
 		void annotatePinArrival (timerClock * clock, timerAnalysisType el, timerTransition rf, timerTime time) {
 		  if (!thePinTime) thePinTime = new timerPinTime ();
-		  thePinTime->annotateDelay (clock, el, rf, time);
+		  thePinTime->annotateArrival (clock, el, rf, time);
 		}
 
 		void annotatePinTransition (timerClock * clock, timerAnalysisType el, timerTransition rf, timerTime transition) {
 		  if (!thePinTime) thePinTime = new timerPinTime ();
 		  thePinTime->annotateTransition (clock, el, rf, transition);
 		}
+
+		void populateClockObjects (std::list<timerClock *> & clockList) {
+		  thePinTime->populateClockObjects (clockList);
+		}		
+
+		timerTime getArrival (timerClock * clock, int el, int rf) {
+		  return thePinTime->getArrival (clock, el, rf);
+		}
+
+		timerTime getTransition (timerClock * clock, int el, int rf) {
+		  return thePinTime->getTransition (clock, el, rf); 
+		}
+
+		void incrMergeLevel () { theMergeLevel++; }
+		int getMergeLevel () { return theMergeLevel; }
 
 	private:
 		//Not taking the polarity in consideration for now
@@ -318,7 +313,7 @@ class timerPinTag {
 		timerPinTag   * theMergeToTag; //Tag to which this tag is merged
 		timerPinTagContainer * theTagContainer;//Union set of tags.
 		timerPinTime  * thePinTime;//The pin time info
-		
+		int		theMergeLevel;//Merge level		
 		static int	theTagCount;
 };
 

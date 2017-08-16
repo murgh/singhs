@@ -9,15 +9,16 @@
 typedef float timerTime;
 typedef float timerCap;
 const timerTime timerUndefDelay = -1;
+const timerTime timerUndefTran = -1;
 
 enum timerAnalysisType{ 
-	timerEarly, 
+	timerEarly = 0, 
 	timerLate, 
 	timerAnalysis
      } ;
 
 enum timerTransition{ 
-	timerRise, 
+	timerRise = 0, 
 	timerFall, 
 	timerTrans
      } ;

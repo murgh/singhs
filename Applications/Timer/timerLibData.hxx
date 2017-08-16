@@ -8,6 +8,7 @@ class timerLibData;
 class timerLibCell;
 class timerLibPin;
 class timerLibArc;
+class timerDelayCalcArgs;
 
 
 //Global cell delays, transition and check arc tables, for now to ease the liberty parsing
@@ -196,9 +197,6 @@ class timerLibArc {
 		bool isTrigger () { return (theArcType == timeTriggerArc); }
 
 		void populateLUT ();
-		void ComputeDelay (timerDelayCalcArgs &);
-		void ComputeTransition (timerDelayCalcArgs &);
-		void ComputeCheck (timerDelayCalcArgs &);
 
 	private:
 		timerLibPin * theSource;
