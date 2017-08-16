@@ -106,8 +106,8 @@ class timerDelayCalcArgs {
         	timerAnalysisType theEL;
 		timerTime	  theStageInputTran;
 		timerCap 	  theStageLoad;
-		timerTransition	  theSourceRF;
-		timerTransition	  theSinkRF;
+		//timerTransition	  theSourceRF;
+		//timerTransition	  theSinkRF;
 		timerTime	  theStageDelay;
  		timerPinTag	* theSourceTag;
 		timerPinTag	* theSinkTag;
@@ -118,31 +118,26 @@ class timerDelayCalcArgs {
 		timerDelayCalcArgs () {
 		  theEL = timerAnalysis;
 		  theStageInputTran = theStageLoad = theStageDelay = timerUndefDelay;
-                  theSourceRF = theSinkRF = timerTrans;
+//                  theSourceRF = theSinkRF = timerTrans;
 		  theSourceTag = NULL;
 		  theSinkTag = NULL;
 		}
 
 		void setupStage (timerAnalysisType el, 
-			    	 timerTime inTran, 
-			    	 timerCap load, 
-			    	 timerTransition srcTran,
-			    	 timerTransition snkTran,
 			    	 diganaVertex source, timerPinTag * sourceTag,
-			    	 diganaVertex sink, timerPinTag * sinkTag
+			    	 diganaVertex sink, timerPinTag * sinkTag,
+				 timerCap load
 			        ) {
 		  theEL = el;
-		  theStageInputTran = inTran;
-		  theStageLoad = load;
-		  theSourceRF = srcTran;
-		  theSinkRF = snkTran;
 		  theSourceTag = sourceTag;
 		  theSinkTag = sinkTag;
 		  theSource  = source;
 		  theSink = sink;
+		  theStageLoad = load;
 		}
+
 };
 
-void computeEdgeDelayAndPropagateArrival (timerDelayCalcArgs &, diganaEdge); 
+void computeEdgeDelayAndPropagateArrival (timerDelayCalcArgs &); 
 
 #endif

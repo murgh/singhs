@@ -106,6 +106,6 @@ class Timer_Algo_2 : public TA_Timer {
 		void writeTimingPath (FILE * file, std::list<diganaVertex> & timingPath, std::string);
 		void buildTimingPathFromTagPath (diganaVertex endPoint,
 						 std::list<timerPinTag *> * theTagPath,
-						 std::list<diganaVertex> & timingPath);
+						 std::list<diganaVertex> & timingPath, timerAnalysisType el);
 };
 #endif //TIMER

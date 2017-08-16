@@ -1,4 +1,5 @@
 #include "timer.hxx"
+#include "timerPin.hxx"
 
 #define timerLUTSIZE 7
 
@@ -132,11 +133,11 @@ void timerArcInfo::ComputeAndAnnotateDelay (timerDelayCalcArgs & args) {
 	    }
 	  }
 	}
-	args.theStageDelay = 0.0;
 }	
 
 //Based on the 
-void computeEdgeDelayAndPropagateArrival (timerDelayCalcArgs & args, diganaEdge edge) {
+void computeEdgeDelayAndPropagateArrival (timerDelayCalcArgs & args) {
+	diganaEdge edge (args.theSource, args.theSink);
 	TA_Timer::getArcInfo (edge)->ComputeAndAnnotateDelay (args); //Call in a loop
 
 }
