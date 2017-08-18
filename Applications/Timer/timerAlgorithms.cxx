@@ -339,7 +339,7 @@ Timer_Algo_2::TA_print_circuit (diganaGraph * graph) {
   vitr.attach (graph);
   for (; vitr != eVitr; ++vitr) {
     diganaVertex pin = *vitr;
-    getPinInfo (pin)->print (); 
+    if (verbose) getPinInfo (pin)->print (); 
   }
 
 }
@@ -481,7 +481,7 @@ Timer_Algo_2::buildTimingPathFromTagPath (diganaVertex endPoint,
   diganaVertex pin (tag->getSource (), theTimingGraph); 
   timerDelayCalcArgs dcArgs;
   while ( true ) {	
-    getPinInfo (pin)->print ();
+    if (verbose) getPinInfo (pin)->print ();
     nextTag = theTagPath->front ();
     timingPath.push_back (pin);
     if (pin == endPoint)
@@ -494,13 +494,13 @@ Timer_Algo_2::buildTimingPathFromTagPath (diganaVertex endPoint,
       diganaVertex sink = *ai;
       timerPinTag * sinkTag = getPinInfo (sink)->get_pin_tag ();    
       if ( timerPinTag::areTagsInUnion (sinkTag, tag) ) {
-	dcArgs.setupStage (el, pin, tag, sink, sinkTag, getPinInfo (sink)->getLibPin ()->getCap ());      
+	dcArgs.setupStage (el, pin, tag, sink, sinkTag, getPinInfo (sink)->getCap ());      
         computeEdgeDelayAndPropagateArrival (dcArgs);
 	pin = sink;
 	break;
       }
       if ( timerPinTag::areTagsInUnion (sinkTag, nextTag) ) {
-	dcArgs.setupStage (el, pin, tag, sink, nextTag, getPinInfo (sink)->getLibPin ()->getCap ());      
+	dcArgs.setupStage (el, pin, tag, sink, nextTag, getPinInfo (sink)->getCap ());      
         computeEdgeDelayAndPropagateArrival (dcArgs);
 	pin = sink;
 	tag = nextTag; 

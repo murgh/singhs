@@ -65,17 +65,21 @@ class timerArcInfo {
 
 		void ComputeAndAnnotateDelay (timerDelayCalcArgs & args);
 
-                timerTime getDelay (int el,
-	                            int srcRF,
-		                    int destRF,
-			            timerTime sourceTran,
-				    timerCap stageLoad);		      
+		void ComputeCheckValue (timerDelayCalcArgs & args);
 
-                timerTime getTransition (int el,
-	                            	 int srcRF,
-		                    	 int destRF,
-			            	 timerTime sourceTran,
-				    	 timerCap stageLoad);		      
+                void getDelayAndTransition (int el,
+	                            	    int srcRF,
+		                    	    int destRF,
+			            	    timerTime sourceTran,
+				    	    timerCap stageLoad,
+					    timerTime delayAndTrans[2]);		      
+
+		void getCheckValue (int el,
+				    int sigRF,
+				    int refRF,
+				    timerTime sigTran,
+				    timerTime refTran,
+				    timerTime & check);
 
 	private:
 		timerArcData *	theArcData;

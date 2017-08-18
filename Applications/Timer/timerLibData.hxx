@@ -43,8 +43,9 @@ class timerLUT {
 
        //Get the delay or transition
        timerTime getLUTDelay (timerTime inSlew, timerTime outLoadorSlew) {
-	 return 0.0;
+	 return 1.0;
        }
+
      private:	
        int theLUTSize;
        float * theIndex1;
@@ -82,9 +83,12 @@ class timerArcLUT {
         theTransition[tran]->setLUT (i, LUT[i]);	
     }
 
+    timerLUT * getDelayLUT (timerTransition tran) { return theDelayLUT[tran]; }
+    timerLUT * getTranLUT (timerTransition tran) { return theTransition[tran]; }
+
   private:
-    timerLUT * theDelayLUT[2];
-    timerLUT * theTransition[2];
+    timerLUT * theDelayLUT[timerTrans];
+    timerLUT * theTransition[timerTrans];
 };
 
 class timerLibPin {
@@ -170,7 +174,10 @@ class timerLibArc {
 		//Set APIs
 		void setSource (timerLibPin * s) { theSource = s; }
 		void setSink (timerLibPin * s) { theSink = s; }
-		void setUnateness (timerArcUnateness u) { theUnateness = u; }
+		void setUnateness (timerArcUnateness u) { 
+		  theUnateness = u; 
+		  populateLUT ();
+		}
 		void setArcType (std::string at) { 
 		  if (
 		      at == std::string ("setup_rising") ||
@@ -185,7 +192,18 @@ class timerLibArc {
 		     )
 			theArcType = timeTriggerArc;  
 
+		  setTimingType (at);
 		  populateLUT ();
+		}
+
+		void setTimingType (std::string at) {
+		    theTimingType = timerArcTypeNone;
+		    if (at == "setup_rising") theTimingType = timerSetupRising;  
+		    if (at == "setup_falling") theTimingType = timerSetupFalling; 
+		    if (at == "hold_rising") theTimingType = timerHoldRising;
+		    if (at == "hold_falling") theTimingType = timerHoldFalling;
+		    if (at == "rising_edge") theTimingType = timerRisingEdge;
+		    if (at == "falling_edge") theTimingType = timerFallingEdge;
 		}
 
 		//Get APIs
@@ -198,12 +216,16 @@ class timerLibArc {
 
 		void populateLUT ();
 
+		timerLUT * getDelayLUT (timerTransition tran) { return theLUT->getDelayLUT (tran); } 
+		timerLUT * getTranLUT (timerTransition tran) { return theLUT->getTranLUT (tran); } 
+
 	private:
 		timerLibPin * theSource;
 		timerLibPin * theSink;
 		timerArcUnateness theUnateness;
 	        timerArcType theArcType; 	
 		timerArcLUT * theLUT; 
+		timerArcTimingType theTimingType;
 
 };
 

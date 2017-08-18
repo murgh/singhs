@@ -140,4 +140,6 @@ class timerDelayCalcArgs {
 
 void computeEdgeDelayAndPropagateArrival (timerDelayCalcArgs &); 
 
+void computeCheckValue (timerDelayCalcArgs & args);
+
 #endif

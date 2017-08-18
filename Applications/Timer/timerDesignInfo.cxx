@@ -140,6 +140,12 @@ void add_timing_arc (diganaGraph * circuit, int source, int sink, timerLibArc * 
 	diganaEdge E = diganaEdge (source, sink, circuit);        	
 	timerArcInfo * arcInfo = new timerArcInfo (arc);
 	E.put_property<timerArcProperty> ("Arc_Property", timerArcProperty (arcInfo));
+	diganaVertex srcNode = diganaVertex (source, circuit);
+	diganaVertex sinkNode = diganaVertex (sink, circuit);
+	timerPinProperty srcP = srcNode.get_property<timerPinProperty> ("Pin_Property");
+	timerPinProperty sinkP = sinkNode.get_property<timerPinProperty> ("Pin_Property");
+	srcP.getPinInfo ()->setLibPin (arc->getSource ());
+	sinkP.getPinInfo ()->setLibPin (arc->getSink ());
 }
 
 void add_timing_arc (diganaGraph * circuit, int source, int sink) {

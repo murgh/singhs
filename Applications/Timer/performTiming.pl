@@ -129,7 +129,7 @@ sub create_cells {
 
 sub get_capacitance {
   my $cap_pin_pair = shift;
-  return 0;
+  return .4;
 }
 
 sub create_cell_arcs {

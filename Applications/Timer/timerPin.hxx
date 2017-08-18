@@ -427,7 +427,7 @@ class timerPinInfo {
 		  printf ("Pin(%s) ", thePinName.c_str ());
 		  printf ("isClock(%d) isData(%d) ", theIsClock, theIsData); 
 		  printf ("type(%s) ", get_identifier_name ().c_str ()); 
-		  printf ("dir(%s) ", get_direction ().c_str ()); 
+		  printf ("dir(%s) cap(%f) ", get_direction ().c_str (), getCap ()); 
 		  if (theIsSplitPoint) printf ("splitPoint ");
 		  if (thePinTag) thePinTag->print (std::string ("TAG"));
 		  if (thePinTag && thePinTag->getMasterTag ()) thePinTag->getMasterTag()->print (std::string ("M_Tag"));
@@ -476,6 +476,17 @@ class timerPinInfo {
 		void setReferencePin (diganaVertex ref) { theReferencePin = ref; }
 		diganaVertex gerReferencePin () { return theReferencePin; }
 
+		timerCap getCap () {
+		  if (theDirection != timerOutput)
+		    return -1;
+
+		  if (theIdentity == timerIOPort) {
+		    return .4;//Standard output load for a while 
+		  } else {
+		    return theLibPin->getCap ();
+		  }	  
+		}
+
 	private:
 		std::string thePinName;
 		bool	    theIsClock;
@@ -493,7 +504,12 @@ class timerPinInfo {
 		  timerPinTag * cTagN = new timerPinTag (ctag); 
 		  cTagN->setArrivalTag (); 
 		  assert_pin_tag (cTagN);
-		  cTagN->annotatePinArrival (clock, timerEarly, timerRise, value);
+		  for (int el = timerEarly; el != timerAnalysis; ++el) {
+		    for (int rf = timerRise; rf != timerTrans; ++rf) {
+		      cTagN->annotatePinArrival (clock, ((timerAnalysisType)el), ((timerTransition)rf), value);
+		      cTagN->annotatePinTransition (clock, ((timerAnalysisType)el), ((timerTransition)rf), .004);
+		    }
+		  }
 		  //printf ("InputDelay : %s %f\n", thePinName.c_str (), value);
 		}	
 
@@ -501,7 +517,11 @@ class timerPinInfo {
 		  timerPinTag * cTagN = new timerPinTag (ctag);
 		  cTagN->setRequiredTag (); 
 		  assert_other_pin_tag (cTagN);
-		  cTagN->annotatePinArrival (clock, timerEarly, timerRise, value);
+		  for (int el = timerEarly; el != timerAnalysis; ++el) {
+		    for (int rf = timerRise; rf != timerTrans; ++rf) {
+		      cTagN->annotatePinArrival (clock, ((timerAnalysisType)el), ((timerTransition)rf), value);
+		    }
+		  }
 		  //printf ("OutputDelay : %s %f\n", thePinName.c_str (), value);
 		}	
 
