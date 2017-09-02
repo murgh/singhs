@@ -189,13 +189,29 @@ sub compute_node_count {
   my $top_mod = shift;
 
   my $count = 0;
-  foreach my $top_port ($top_mod->ports) {
-    $count++;	  
-  }
 
   foreach my $modcell ($top_mod->cells) {
     foreach my $cell_pin ($modcell->pins) {
       $count++;	  
+    }
+  }
+
+  foreach my $top_port ($top_mod->ports) {
+    my $msb = $top_mod->find_net($top_port->name)->msb;
+    my $lsb = $top_mod->find_net($top_port->name)->lsb;
+    if ($msb == $lsb) {
+	    $count++;
+    } else {
+        my $tot = $lsb + $msb;
+        if ($lsb < $msb) {
+          $len = $lsb;
+        } else {
+          $len = $msb;
+        }
+        while ($len <= $tot) {
+	  $count++;
+          $len = $len + 1;
+        }
     }
   }
 

@@ -12,6 +12,8 @@
 #include <fstream>
 #include <map>
 #include <iostream>
+#include <sstream>
+#include <iomanip> 
 
 using namespace boost;
 
@@ -335,6 +337,18 @@ class diganaUndirectedGraph : public diganaGraph {
                           diganaGraphType t, int size) :
    diganaGraph (objId, t, size) { 
      graph = diganaUndirectedGraphType (size);		
+     property_map<diganaUndirectedGraphType, vertex_name_t>::type VertexName =
+	                                                      get(vertex_name, graph);
+     property_map<diganaUndirectedGraphType, vertex_index2_t>::type VertexIdx2 =
+                                                                   get(vertex_index2, graph);	   
+     for (int i = 0; i < size; i++) {
+	std::string name = std::to_string (i);
+        boost::graph_traits <diganaUndirectedGraphType>::vertex_descriptor v = boost::vertex (i, graph);
+	VertexIdx2[v] = i;
+	VertexName[v] = name;
+	//mapVertexIdAndName (diganaGraphObjectIdentifier(VertexIdx2[v], name));
+	//setNameIdMapInvoked ();
+     }
    }
    int add_vertex (diganaGraphObjectIdentifier);
    bool check_if_edge_exists( int , int );
@@ -354,6 +368,18 @@ class diganaDirectedGraph : public diganaGraph {
                           diganaGraphType t, int size) :
    diganaGraph (objId, t, size) { 
      graph = diganaDirectedGraphType (size);
+     property_map<diganaDirectedGraphType, vertex_name_t>::type VertexName =
+	                                                      get(vertex_name, graph);
+     property_map<diganaDirectedGraphType, vertex_index2_t>::type VertexIdx2 =
+                                                              get(vertex_index2, graph);	   
+     for (int i = 0; i < size; i++) {
+	std::string name = std::to_string (i);     
+        boost::graph_traits <diganaDirectedGraphType>::vertex_descriptor v = boost::vertex (i, graph);
+	VertexIdx2[v] = i;
+	VertexName[v] = name;
+	//mapVertexIdAndName (diganaGraphObjectIdentifier(VertexIdx2[v], name));
+	//setNameIdMapInvoked ();
+     }
    }
 
    int add_vertex (diganaGraphObjectIdentifier);

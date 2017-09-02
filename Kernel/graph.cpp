@@ -10,9 +10,17 @@ template <typename T>
 string ToString(T val)
  {
     stringstream stream;
-    stream << val;
-    return stream.str();
+    stream << val;    
+    return stream.str ();
  }
+
+template <>
+string ToString(int val)
+ {
+    std::string s = std::to_string (val); 
+    return s;
+ }
+
 
 bool
 diganaGraphObjectIdentifier::operator == (const diganaGraphObjectIdentifier & operand2) const
@@ -380,7 +388,7 @@ void diganaUndirectedGraph::remove_vertex( int vertex_index ) {
    if(vertex_index > getVCount() ){
    std::cout << "Invalid vertex index " << std::endl;
    }
-boost::clear_vertex(v , graph);
+   boost::clear_vertex(v , graph);
    boost::remove_vertex(v , graph);
 }
 
@@ -405,6 +413,7 @@ diganaDirectedGraph::add_edge (diganaGraphObjectIdentifier source_id, diganaGrap
 }
 
 void diganaGraph::mapVertexIdAndName (diganaGraphObjectIdentifier id) {
+   printf ("Mapped name %s and id %d\n", id.getName ().c_str (), id.getId ());
    vertex_name_index_map.insert (std::pair<std::string, int> (id.getName (), id.getId ()));
 }
 

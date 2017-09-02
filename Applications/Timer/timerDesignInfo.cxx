@@ -48,11 +48,10 @@ diganaGraph * create_circuit (char * circuit, int size) {
 	diganaGraph * graph = diganaGraphMgr::getGraphMgr ().get_graph (id); 
 	if (!graph) {
 	  printf ("Creating New Graph \n");
- 	  graph = diganaGraphMgr::getGraphMgr ().create_graph (id, diganaDirectedGraphS);
+ 	  graph = diganaGraphMgr::getGraphMgr ().create_graph (id, diganaDirectedGraphS, size);
 	  graph->register_vertex_property <timerPinProperty> ("Pin_Property");
 	  graph->register_edge_property <timerArcProperty> ("Arc_Property");
 	} 
-	graph->add_vertex (size);
 	return graph;
 }
 
@@ -105,7 +104,7 @@ void add_IO_delay (diganaGraph * circuit, float value, int nodeId, int input) {
 
 int add_pin (diganaGraph * circuit, char * name, int node_count) {
 	static int count = 0;
-	int vId = circuit->add_vertex (node_count);
+	//int vId = circuit->add_vertex (node_count);
 	diganaVertex V = diganaVertex (node_count, circuit);
 	timerPinInfo * pinInfo = new timerPinInfo (name);
 	V.put_property<timerPinProperty> ("Pin_Property", timerPinProperty (pinInfo));
