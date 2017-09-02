@@ -198,13 +198,15 @@ class timerLibArc {
 
 		void setTimingType (std::string at) {
 		    theTimingType = timerArcTypeNone;
-		    if (at == "setup_rising") theTimingType = timerSetupRising;  
-		    if (at == "setup_falling") theTimingType = timerSetupFalling; 
-		    if (at == "hold_rising") theTimingType = timerHoldRising;
-		    if (at == "hold_falling") theTimingType = timerHoldFalling;
-		    if (at == "rising_edge") theTimingType = timerRisingEdge;
-		    if (at == "falling_edge") theTimingType = timerFallingEdge;
+		    if (at == std::string ("setup_rising")) { theTimingType = timerSetupRising; return; }
+		    if (at == std::string ("setup_falling")) { theTimingType = timerSetupFalling; return; }
+		    if (at == std::string ("hold_rising")) { theTimingType = timerHoldRising; return; }
+		    if (at == std::string ("hold_falling")) { theTimingType = timerHoldFalling; return; }
+		    if (at == std::string ("rising_edge")) { theTimingType = timerRisingEdge; return; }
+		    if (at == std::string ("falling_edge")) { theTimingType = timerFallingEdge; return; }
 		}
+
+		timerArcTimingType getTimingType () { return theTimingType; }
 
 		//Get APIs
 		timerLibPin * getSource () { return theSource; }

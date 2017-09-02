@@ -219,7 +219,7 @@ class diganaGraphMgr {
      static diganaGraphMgr graphMgrInst;
      return graphMgrInst; 
    }
-   diganaGraph * create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGraphType type);
+   diganaGraph * create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGraphType type, int size = 0);
    diganaGraph * get_graph (diganaGraphObjectIdentifier graph_Id);
    bool graph_exists (diganaGraphObjectIdentifier & graph_Id);
    mapNameToGraph::iterator get_graph_through_name(std::string graph_name);
@@ -263,10 +263,11 @@ class diganaGraph {
   public:
    //Default constructor
    diganaGraph (diganaGraphObjectIdentifier objId, 
-                diganaGraphType t) : identifier(objId) , type (t) { 
-     vertexCount = 0;
+                diganaGraphType t, int size) : identifier(objId) , type (t) { 
+     vertexCount = size;
      edgeCount = 0;
      properties = NULL;
+     theVertexNameIdxMap = false;
    }
 
    //Copy constructor
@@ -285,6 +286,8 @@ class diganaGraph {
    void mapVertexIdAndName (diganaGraphObjectIdentifier);
    void init_property () { if (!properties) properties = new diganaGraphProperty; }
    diganaGraphProperty * get_properties () { return properties; }
+   bool isNameIdMapInvoked () { return theVertexNameIdxMap; }
+   void setNameIdMapInvoked () { theVertexNameIdxMap = true; }
 
    virtual int add_vertex (diganaGraphObjectIdentifier) { return 0;}
    virtual bool check_if_edge_exists( int , int ){ return 0; };
@@ -322,14 +325,16 @@ class diganaGraph {
    int vertexCount, edgeCount;
    std::map<std::string, int> vertex_name_index_map;
    diganaGraphProperty * properties;
+   bool theVertexNameIdxMap;
 };
 
 
 class diganaUndirectedGraph : public diganaGraph {
   public:
    diganaUndirectedGraph (diganaGraphObjectIdentifier objId,
-                          diganaGraphType t) :
-   diganaGraph (objId, t) { 
+                          diganaGraphType t, int size) :
+   diganaGraph (objId, t, size) { 
+     graph = diganaUndirectedGraphType (size);		
    }
    int add_vertex (diganaGraphObjectIdentifier);
    bool check_if_edge_exists( int , int );
@@ -346,9 +351,11 @@ class diganaUndirectedGraph : public diganaGraph {
 class diganaDirectedGraph : public diganaGraph {
   public:
    diganaDirectedGraph (diganaGraphObjectIdentifier objId,
-                          diganaGraphType t) :
-   diganaGraph (objId, t) { 
+                          diganaGraphType t, int size) :
+   diganaGraph (objId, t, size) { 
+     graph = diganaDirectedGraphType (size);
    }
+
    int add_vertex (diganaGraphObjectIdentifier);
    bool check_if_edge_exists( int , int );
    void remove_vertex(int);

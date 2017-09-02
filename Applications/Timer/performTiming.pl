@@ -9,7 +9,9 @@ my @nets = ();
 my $timer_test_case = "";
 my $make_file = 0;
 my $circuit_node_count = 0;
-my $verbose = 0;
+my @input_ports = ();
+my @output_ports = ();
+my $verbose = 1;
 
 sub my_print {
   my $string = shift;
@@ -90,7 +92,7 @@ sub read_constr_data {
   my $constr = shift;
   open my $info, $constr or die "ERROR : Could not open $constr: $!"; 
   
-  my $circuit = timerDesignInfo::get_or_create_circuit ($circuit_name);
+  my $circuit = timerDesignInfo::get_circuit ($circuit_name);
   while (my $line = <$info>) {
     my @constr_string = split /\s+/, $line;
     if ($constr_string[0] eq "createClock") { createClock ($circuit, $line) }
@@ -108,6 +110,7 @@ sub create_cells {
   foreach $cell (@cell_groups) {
     my $current_cell_name = $parser->get_group_name ($cell);
     chomp ($current_cell_name);
+    print $inter_ver "module $current_cell_name ();\n";
     $timerCell = timerDesignInfo::add_or_get_cell ($library, $current_cell_name);
     my @cell_pin_group = $parser->get_groups_by_type ($cell, "pin");
     foreach $pin_of_cell (@cell_pin_group) {
@@ -123,8 +126,13 @@ sub create_cells {
       my_print $pin_cap;
       timerDesignInfo::add_pin_direction ($timerCellPin, $pin_dir);
       timerDesignInfo::add_pin_cap ($timerCellPin, $pin_cap);
+      if ($pin_dir ne "internal") {
+        print $inter_ver "  $pin_dir $pin_name;\n"
+      }
     }
+    print $inter_ver "endmodule\n\n";
   }
+  close ($inter_ver);
 }
 
 sub get_capacitance {
@@ -175,6 +183,23 @@ sub read_liberty {
   create_cells ($parser, $library, $library_group);
   create_cell_arcs ($parser, $library, $library_group);
   return $library;
+}
+
+sub compute_node_count {
+  my $top_mod = shift;
+
+  my $count = 0;
+  foreach my $top_port ($top_mod->ports) {
+    $count++;	  
+  }
+
+  foreach my $modcell ($top_mod->cells) {
+    foreach my $cell_pin ($modcell->pins) {
+      $count++;	  
+    }
+  }
+
+  return $count;
 }
 
 #read_liberty ($ARGV[0]);
@@ -383,6 +408,14 @@ sub create_node_cmd {
   my $node_name = shift;
   my $direction = shift;
 
+  if ($is_IO == 1) {
+   if ($direction eq "in") {
+     push @input_nodes, $node_name; 
+   } else {
+     push @output_nodes, $node_name; 
+   } 
+  }
+
   my_print "Create node -> $node_name $circuit_node_count dir --> $direction\n";
   $node_name_to_id_hash{$node_name} = $circuit_node_count;
   if ($make_file == 0) {
@@ -439,8 +472,11 @@ sub read_verilog_netlist {
 
   my $top_mod = $nl->find_module ("top");
 
-  my $circuit = timerDesignInfo::get_or_create_circuit ($top_mod->name); 
+  my $node_count = compute_node_count ($top_mod); 
 
+  my_print "Creating graph with $node_count nodes\n";
+
+  my $circuit = timerDesignInfo::create_circuit ($top_mod->name, $node_count); 
 
   create_nodes_of_graph ($top_mod, 
 		  	 $circuit, 

@@ -67,7 +67,7 @@ class timerArcInfo {
 
 		void ComputeCheckValue (timerDelayCalcArgs & args);
 
-                void getDelayAndTransition (int el,
+                bool getDelayAndTransition (int el,
 	                            	    int srcRF,
 		                    	    int destRF,
 			            	    timerTime sourceTran,

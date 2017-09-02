@@ -14,6 +14,8 @@ class timerPinInfo;
 class timerPinTag;
 class timerPinTagContainer;
 class timerPointTime;
+class timerPinDelay;
+class timerPinDelayContainer;
 
 //The main class to contain the pin timing information
 //for timer contains the clock and arrival/required time
@@ -333,6 +335,7 @@ class timerPinInfo {
 			thePinTag = NULL;
 			theOtherPinTag = NULL;
 			theLibPin = NULL;
+			theDelayCalcContainer = NULL;
 		}
 
 		timerPinInfo (std::string name, 
@@ -349,6 +352,7 @@ class timerPinInfo {
 			thePinTag = NULL;
 			theOtherPinTag = NULL;
 			theLibPin = NULL;
+			theDelayCalcContainer = NULL;
 		}
 
 		void setIsClock () {theIsClock = true;}
@@ -487,6 +491,11 @@ class timerPinInfo {
 		  }	  
 		}
 
+		void cleanDCInfo (); 
+		void addDCInfo (/*timerClock * clock,*/timerPinDelay * pinDelay); 
+		timerPinDelayContainer * getDCInfo () { return theDelayCalcContainer; }
+		void printDCInfo (); 
+
 	private:
 		std::string thePinName;
 		bool	    theIsClock;
@@ -499,6 +508,7 @@ class timerPinInfo {
 		timerLibPin * theLibPin;
 		bool		theDFSSeen;
 		diganaVertex		theReferencePin;
+		timerPinDelayContainer * theDelayCalcContainer;
 
 		void assert_Input_Delay (timerPinTag & ctag, timerClock * clock, timerTime value) {
 		  timerPinTag * cTagN = new timerPinTag (ctag); 
@@ -510,7 +520,7 @@ class timerPinInfo {
 		      cTagN->annotatePinTransition (clock, ((timerAnalysisType)el), ((timerTransition)rf), .004);
 		    }
 		  }
-		  //printf ("InputDelay : %s %f\n", thePinName.c_str (), value);
+		  printf ("InputDelay : %s %f\n", thePinName.c_str (), value);
 		}	
 
 		void assert_Output_Delay (timerPinTag & ctag, timerClock * clock, timerTime value) {
@@ -522,7 +532,7 @@ class timerPinInfo {
 		      cTagN->annotatePinArrival (clock, ((timerAnalysisType)el), ((timerTransition)rf), value);
 		    }
 		  }
-		  //printf ("OutputDelay : %s %f\n", thePinName.c_str (), value);
+		  printf ("OutputDelay : %s %f\n", thePinName.c_str (), value);
 		}	
 
 

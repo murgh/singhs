@@ -39,6 +39,7 @@ TA_Timer::TA_create_timing_graph (diganaGraph * graph) {
     diganaVertex pin = *vitr;
     timerPinProperty prop = getPinProp (pin);
     timerPinInfo * pinInfo = prop.getPinInfo ();
+    if (!pinInfo) {printf ("This is %d\n", pin.getVertexId ()); continue; }
     if (verbose) pinInfo->print ();
 
     if (pinInfo->getIsClockSrc ()) { 
@@ -403,20 +404,24 @@ Timer_Algo_2::computeTagPaths (FILE * file, diganaVertex endPoint) {
     sprintf (print_head, "\nData Path %d:\n", ++count);
     std::string pathHead = std::string (print_head);  
     std::list<diganaVertex> timingPath;
+    std::list<diganaEdge> reportPath;
     buildTimingPathFromTagPath (endPoint, *itr, timingPath, timerLate);
     if (hasRefPath) {
       computeRecursiveTagPath (otherTag->getMasterTag (), refTagPath, refTagPaths);
       for (refItr = refTagPaths.begin (); refItr != refTagPaths.end (); ++refItr) {
          std::string otherPathHead = std::string ("Reference Path:\n");
          std::list<diganaVertex> refTimingPath; 	    
+         std::list<diganaEdge> refReportPath; 	    
          buildTimingPathFromTagPath (refEndPoint, *refItr, refTimingPath, timerEarly);
          writeTimingPath (file, timingPath, pathHead);
          writeTimingPath (file, refTimingPath, otherPathHead);
+	 computeSlackAndWrite (file, endPoint, refEndPoint);
       }
       refTagPaths.clear ();
       continue;
     }
     writeTimingPath (file, timingPath, pathHead);
+    computeSlackAndWrite (file, endPoint, endPoint);
   }
 }
 
@@ -436,6 +441,19 @@ Timer_Algo_2::writeTimingPath (FILE * file, std::list<diganaVertex> & timingPath
     } 
     lastNode = pin;      
   }
+//  getPinInfo(lastNode)->print ();
+//  getPinInfo (lastNode)->printDCInfo ();
+}
+
+void
+Timer_Algo_2::computeSlackAndWrite (FILE * file, diganaVertex endPoint, diganaVertex refEndPoint) {
+  //Iterate on the delay objects from endpoint and refEndPoint and compute slacks for each of them 
+  timerPinDelayContainer::Iterator endItr (getPinInfo (endPoint)->getDCInfo ()),
+	  			   refEndItr (getPinInfo (refEndPoint)->getDCInfo ());  
+
+  fprintf (file, "Computing slack for Sig %s and Ref %s\n", getPinInfo (endPoint)->getName ().c_str (),
+		  				      getPinInfo (refEndPoint)->getName ().c_str ());
+  
 }
 
 void
@@ -475,12 +493,14 @@ Timer_Algo_2::buildTimingPathFromTagPath (diganaVertex endPoint,
 		 	    std::list<diganaVertex> & timingPath,
 			    timerAnalysisType el) {
 
-  timerPinTag * nextTag;
+  bool isFirstStage = true;
+  timerPinTag * nextTag, * sinkTag;
   timerPinTag * tag = theTagPath->front ();
   theTagPath->pop_front ();
   diganaVertex pin (tag->getSource (), theTimingGraph); 
+  diganaVertex lastPin;
   timerDelayCalcArgs dcArgs;
-  while ( true ) {	
+  while ( true ) {
     if (verbose) getPinInfo (pin)->print ();
     nextTag = theTagPath->front ();
     timingPath.push_back (pin);
@@ -489,25 +509,26 @@ Timer_Algo_2::buildTimingPathFromTagPath (diganaVertex endPoint,
     diganaGraphIterator::adjacency_iterator ai , aietr;
     ai.attach (pin.getVertexId (), theTimingGraph);
     for (; ai != aietr; ++ai) {
-
-
       diganaVertex sink = *ai;
-      timerPinTag * sinkTag = getPinInfo (sink)->get_pin_tag ();    
+      sinkTag = getPinInfo (sink)->get_pin_tag ();    
       if ( timerPinTag::areTagsInUnion (sinkTag, tag) ) {
-	dcArgs.setupStage (el, pin, tag, sink, sinkTag, getPinInfo (sink)->getCap ());      
-        computeEdgeDelayAndPropagateArrival (dcArgs);
+	lastPin = pin;
 	pin = sink;
 	break;
       }
       if ( timerPinTag::areTagsInUnion (sinkTag, nextTag) ) {
-	dcArgs.setupStage (el, pin, tag, sink, nextTag, getPinInfo (sink)->getCap ());      
-        computeEdgeDelayAndPropagateArrival (dcArgs);
+	lastPin = pin;
 	pin = sink;
 	tag = nextTag; 
         theTagPath->pop_front ();
 	break;
       }
     } 
+
+    //Compute Delay for the Arc
+    dcArgs.setupStage (el, lastPin, getPinInfo (lastPin)->get_pin_tag (), pin, sinkTag, getPinInfo (pin)->getCap (), isFirstStage);      
+    computeEdgeDelayAndPropagateArrival (dcArgs);
+    isFirstStage = false;
   }
 }
 

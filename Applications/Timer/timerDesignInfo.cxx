@@ -33,7 +33,16 @@ void create_node (char * circuit_name,
 	V.put_property<timerPinProperty> ("Pin_Property", timerPinProperty (pinInfo));
 }	
 
-diganaGraph * get_or_create_circuit (char * circuit) {
+diganaGraph * get_circuit (char * circuit) {
+	diganaGraphObjectIdentifier id;
+	id.setName (circuit);
+	diganaGraph * graph = diganaGraphMgr::getGraphMgr ().get_graph (id); 
+	if (!graph) 
+	  printf ("Circuit %s doesn't exist \n", circuit);
+	return graph;
+}
+
+diganaGraph * create_circuit (char * circuit, int size) {
 	diganaGraphObjectIdentifier id;
 	id.setName (circuit);
 	diganaGraph * graph = diganaGraphMgr::getGraphMgr ().get_graph (id); 
@@ -43,6 +52,7 @@ diganaGraph * get_or_create_circuit (char * circuit) {
 	  graph->register_vertex_property <timerPinProperty> ("Pin_Property");
 	  graph->register_edge_property <timerArcProperty> ("Arc_Property");
 	} 
+	graph->add_vertex (size);
 	return graph;
 }
 
@@ -94,11 +104,14 @@ void add_IO_delay (diganaGraph * circuit, float value, int nodeId, int input) {
 }
 
 int add_pin (diganaGraph * circuit, char * name, int node_count) {
+	static int count = 0;
 	int vId = circuit->add_vertex (node_count);
-	diganaVertex V = diganaVertex (vId, circuit);
+	diganaVertex V = diganaVertex (node_count, circuit);
 	timerPinInfo * pinInfo = new timerPinInfo (name);
 	V.put_property<timerPinProperty> ("Pin_Property", timerPinProperty (pinInfo));
-	return vId;
+	count++;
+	if (count % 10000 == 0) printf ("Added %d Nodes\n", count);
+	return node_count;
 }
 
 void add_pin_direction_io (diganaGraph * circuit, 
@@ -136,6 +149,7 @@ void add_pin_direction_io (diganaGraph * circuit,
 }
 
 void add_timing_arc (diganaGraph * circuit, int source, int sink, timerLibArc * arc) {
+        static int count = 0;
 	circuit->add_edge (source, sink);
 	diganaEdge E = diganaEdge (source, sink, circuit);        	
 	timerArcInfo * arcInfo = new timerArcInfo (arc);
@@ -146,6 +160,9 @@ void add_timing_arc (diganaGraph * circuit, int source, int sink, timerLibArc * 
 	timerPinProperty sinkP = sinkNode.get_property<timerPinProperty> ("Pin_Property");
 	srcP.getPinInfo ()->setLibPin (arc->getSource ());
 	sinkP.getPinInfo ()->setLibPin (arc->getSink ());
+	count++;
+	if (count % 1000 == 0)
+		printf ("Created %d Edges\n", count);
 }
 
 void add_timing_arc (diganaGraph * circuit, int source, int sink) {
@@ -249,6 +266,6 @@ void add_timing_sense (timerLibArc * arc, char * timing_sense) {
 
 void perform_timing_analysis (char * circuit) {
 	printf ("Performing Timing Analysis\n");
-	diganaGraph * graph = get_or_create_circuit (circuit);
+	diganaGraph * graph = get_circuit (circuit);
 	perform_timing_analysis (graph);
 }

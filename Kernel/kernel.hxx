@@ -18,7 +18,7 @@ class diganaKernelMgr {
 
     //Create graph API
     diganaGraph * create_graph (diganaGraphObjectIdentifier & graphId, 
-		             diganaGraphType graph_type); 
+		             diganaGraphType graph_type, int size = 0); 
 
     //Add vertex API
     int add_vertex (diganaGraphObjectIdentifier & graphId,

@@ -11,8 +11,8 @@ diganaKernelMgr::print () {
 
 diganaGraph *
 diganaKernelMgr::create_graph (diganaGraphObjectIdentifier & graph_Id,
-		               diganaGraphType graph_type) {
-  return diganaGraphMgr::getGraphMgr ().create_graph (graph_Id, graph_type); 
+		               diganaGraphType graph_type, int size = 0) {
+  return diganaGraphMgr::getGraphMgr ().create_graph (graph_Id, graph_type, size); 
 }
 
 int

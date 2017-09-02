@@ -68,6 +68,14 @@ static void populateGlobalLUTs () {
   setLUTVAL (theCheckLUT, theCheckLUTM);
 }
 
+timerTime
+computeArrival (timerTime first, timerTime second) {
+  if (first == timerUndefDelay || second == timerUndefDelay)
+    return timerUndefDelay;
+
+  return (first + second);
+}
+
 void
 timerLibArc::populateLUT () {
   if (theLUT) return;
@@ -84,7 +92,7 @@ timerLibArc::populateLUT () {
   theLUT->populateTransitionLUT (timerFall, theTransitionLUT);
 }
 
-void
+bool
 timerArcInfo::getDelayAndTransition (int el, 
 		        	     int srcRF,
 		        	     int destRF,
@@ -95,26 +103,39 @@ timerArcInfo::getDelayAndTransition (int el,
   delayAndTrans[0] = delayAndTrans[1] = timerUndefDelay;
 
   if (!theLibArc) {
-    delayAndTrans[0] = delayAndTrans[1] = 0;
-    return;
+    delayAndTrans[0] = 0;
+    delayAndTrans[1] = sourceTran;
+    if (srcRF == destRF)
+      return true;
+    else
+      return false;
   }
 
   timerLUT * delayLUT = theLibArc->getDelayLUT ( ((timerTransition) destRF) );
   timerLUT * tranLUT = theLibArc->getTranLUT ( ((timerTransition) destRF) );
   timerArcUnateness unateness = theLibArc->getUnateness ();
-  if (theLibArc->isCombinational ()) { 
+  timerArcTimingType timingType = theLibArc->getTimingType ();
+  if (theLibArc->isCombinational () || theLibArc->isTrigger ()) { 
     if (unateness == timerPosUnate) {
       if (srcRF != destRF)
-	return;
+	return false;
     } 
     
     if (unateness == timerNegUnate) {
       if (srcRF == destRF)
-	return;
+	return false;
     }
+
+    if ( (timingType == timerRisingEdge && ((timerTransition) srcRF) == timerFall) ||
+	 (timingType == timerFallingEdge && ((timerTransition) srcRF) == timerRise) ) {
+      return false;	
+    }
+
     delayAndTrans[0] =  delayLUT->getLUTDelay (sourceTran, ((timerTime) stageLoad));
     delayAndTrans[1] =  tranLUT->getLUTDelay (sourceTran, ((timerTime) stageLoad));
+    return true;
   }
+
 }
 
 void
@@ -133,6 +154,7 @@ timerArcInfo::getCheckValue (int el,
   check =  delayLUT->getLUTDelay (sigTran, refTran);
 }
 
+/*
 void timerArcInfo::ComputeAndAnnotateDelay (timerDelayCalcArgs & args) {
   timerPinTag * sourceTag = args.theSourceTag;
   timerPinTag * sinkTag = args.theSinkTag;
@@ -156,16 +178,44 @@ void timerArcInfo::ComputeAndAnnotateDelay (timerDelayCalcArgs & args) {
           if (sourceTran == timerUndefTran) 
             continue;
           getDelayAndTransition (el, srcRF, destRF, sourceTran, stageLoad, arcDelayAndTran);
-          sinkTag->annotatePinArrival (clock, ((timerAnalysisType) el), ((timerTransition) destRF), arcDelayAndTran[0] + sourceArr); 
+          sinkTag->annotatePinArrival (clock, ((timerAnalysisType) el), ((timerTransition) destRF), computeArrival (arcDelayAndTran[0], sourceArr)); 
           sinkTag->annotatePinTransition (clock, ((timerAnalysisType) el), ((timerTransition) destRF), arcDelayAndTran[1]);
         }
       }
     }
     printf ("DC : pin(%s) clock(%s) er(%f) ef(%f) lr(%f) lf(%f)\n", TA_Timer::getPinInfo (args.theSink)->getName ().c_str (), clock->getName ().c_str (), 
-							       sinkTag->getArrival (clock, 0/*early*/, 0/*rise*/),  
-							       sinkTag->getArrival (clock, 0/*early*/, 1/*fall*/),  
-							       sinkTag->getArrival (clock, 1/*late*/, 0/*rise*/),  
-							       sinkTag->getArrival (clock, 1/*late*/, 0/*fall*/));
+							       sinkTag->getArrival (clock, 0, 0),//rise,rise  
+							       sinkTag->getArrival (clock, 0, 1),//rise,fall  
+							       sinkTag->getArrival (clock, 1, 0),//fall,rise  
+							       sinkTag->getArrival (clock, 1, 0));//fall,fall
+  }
+}
+*/
+
+void timerArcInfo::ComputeAndAnnotateDelay (timerDelayCalcArgs & args) {
+  timerPinTag * sourceTag = args.theSourceTag;
+  timerPinTag * sinkTag = args.theSinkTag;
+  diganaVertex source = args.theSource;
+  diganaVertex sink = args.theSink;
+  diganaEdge edge (source, sink);
+  timerCap stageLoad = args.theStageLoad;
+  timerTime sourceTran, sourceArr, arcDelayAndTran[2];
+  timerPinDelayContainer::Iterator itr (TA_Timer::getPinInfo (args.theSource)->getDCInfo ());
+  timerPinDelay * delay, * sinkDelay;
+
+  //Iterate on the source delay object and compute for this edge
+  while ( (delay = itr.next ()) ) {
+    for (int destRF = timerRise; destRF != timerTrans; ++destRF) {
+       int srcRF = (int) (delay->getTranType ());
+       sourceTran = delay->getTran ();
+       if ( getDelayAndTransition (args.theEL, srcRF, destRF, sourceTran, stageLoad, arcDelayAndTran) ) {
+         sinkDelay = new timerPinDelay (*delay); 
+         sinkDelay->setDelay (computeArrival (delay->getDelay () , arcDelayAndTran[0]) );
+         sinkDelay->setTran (arcDelayAndTran[1]);
+	 sinkDelay->setTranType (((timerTransition) destRF));
+         TA_Timer::getPinInfo (args.theSink)->addDCInfo (sinkDelay);
+       }
+    }
   }
 }
 
@@ -177,7 +227,26 @@ void computeCheckValue (timerDelayCalcArgs & args) {
 //Based on the 
 void computeEdgeDelayAndPropagateArrival (timerDelayCalcArgs & args) {
   diganaEdge edge (args.theSource, args.theSink);
+  if (args.theFirstStage) {
+    //Build the delay container on the first stage source pin
+    std::list<timerClock *>::iterator itr;
+    std::list<timerClock *> tagClocks;
+    args.theSourceTag->populateClockObjects (tagClocks);	
+    for (itr = tagClocks.begin (); itr != tagClocks.end (); ++itr) {
+      timerClock * clock = *itr;
+      timerTime riseDel, fallDel, riseTran, fallTran;
+      for (int srcRF = 0; srcRF != timerTrans; ++srcRF) {
+        timerPinDelay * delayObj = new timerPinDelay;
+        delayObj->setDelay (args.theSourceTag->getArrival (clock, args.theEL, ((timerTransition) srcRF)));
+        delayObj->setTran (args.theSourceTag->getTransition (clock, args.theEL, ((timerTransition) srcRF)));
+	delayObj->setTranType (((timerTransition) srcRF));
+        delayObj->setClock (clock);
+        TA_Timer::getPinInfo (args.theSource)->addDCInfo (delayObj);
+      }
+    }
+  }
   TA_Timer::getArcInfo (edge)->ComputeAndAnnotateDelay (args); //Call in a loop
+  TA_Timer::getPinInfo (args.theSource)->cleanDCInfo ();
 }
 
 void timerPinTime::annotateArrival (timerClock * clock, 
@@ -247,3 +316,23 @@ timerTime timerPinTime::getTransition (timerClock * clock, int el, int rf) {
   if (!delTranPair.second) return timerUndefDelay;
   return delTranPair.second->getTime (((timerAnalysisType)el), ((timerTransition)rf)); 
 }
+
+void timerPinInfo::cleanDCInfo () { 
+  if (theDelayCalcContainer) 
+    delete theDelayCalcContainer; 
+  theDelayCalcContainer = NULL;
+}
+
+void timerPinInfo::addDCInfo (timerPinDelay * pinDelay) {
+  if (!theDelayCalcContainer)
+    theDelayCalcContainer = new timerPinDelayContainer;
+
+  theDelayCalcContainer->addPinDelay (pinDelay);
+}
+
+void timerPinInfo::printDCInfo () {
+  if (!theDelayCalcContainer) return;
+  
+  theDelayCalcContainer->print ();
+}
+

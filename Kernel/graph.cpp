@@ -28,7 +28,7 @@ diganaGraphObjectIdentifier::operator = (const diganaGraphObjectIdentifier & ope
 
 //Graph manager API to create a grpah, given the object identifier.
 diganaGraph *
-diganaGraphMgr::create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGraphType type)
+diganaGraphMgr::create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGraphType type, int size)
  {
      try {
        if (graph_exists (graph_Id)) throw 1; 
@@ -42,9 +42,9 @@ diganaGraphMgr::create_graph (diganaGraphObjectIdentifier & graph_Id, diganaGrap
      diganaGraph * graph = NULL;
 
      if (type == diganaNoGraphS || type == diganaUndirectedGraphS)
-       graph = new diganaUndirectedGraph (graph_Id, type);
+       graph = new diganaUndirectedGraph (graph_Id, type, size);
      else
-       graph = new diganaDirectedGraph (graph_Id, type);
+       graph = new diganaDirectedGraph (graph_Id, type, size);
      
      string graph_name = graph_Id.getName();
      Name_Graph_Map.insert(std::pair<std::string,diganaGraph*>(graph_name , graph ) );     
@@ -276,6 +276,7 @@ diganaUndirectedGraph::add_vertex (diganaGraphObjectIdentifier id) {
    VertexName[v] = name;
    incVCount ();
    mapVertexIdAndName (diganaGraphObjectIdentifier(VertexIdx2[v], name));
+   setNameIdMapInvoked ();
    //printf ("%s %d %x\n", name.c_str (), id.getId (), v); 
    return VertexIdx2[v];
 }
@@ -310,6 +311,10 @@ void
 diganaUndirectedGraph::add_edge (diganaGraphObjectIdentifier source_id, diganaGraphObjectIdentifier sink_id) {
    int source = getVertexId (ToString<int> (source_id.getId ()));
    int sink = getVertexId (ToString<int> (sink_id.getId ()));
+   if (!isNameIdMapInvoked ()) {
+     source = source_id.getId ();
+     sink = sink_id.getId ();
+   }
 
    boost::graph_traits <diganaUndirectedGraphType>::vertex_descriptor u =
 	                                               boost::vertex(source, graph);
@@ -343,6 +348,7 @@ diganaDirectedGraph::add_vertex (diganaGraphObjectIdentifier id) {
    VertexName[v] = name;
    incVCount ();
    mapVertexIdAndName (diganaGraphObjectIdentifier(VertexIdx2[v], name));
+   setNameIdMapInvoked ();
    return VertexIdx2[v];
 }
 
@@ -384,6 +390,10 @@ void
 diganaDirectedGraph::add_edge (diganaGraphObjectIdentifier source_id, diganaGraphObjectIdentifier sink_id) {
    int source = getVertexId (ToString<int> (source_id.getId ()));
    int sink = getVertexId (ToString<int> (sink_id.getId ()));
+   if (!isNameIdMapInvoked ()) {
+     source = source_id.getId ();
+     sink = sink_id.getId ();
+   }
 
    boost::graph_traits <diganaDirectedGraphType>::vertex_descriptor u =
 	                                               boost::vertex(source, graph);
