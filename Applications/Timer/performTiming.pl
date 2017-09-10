@@ -1,3 +1,4 @@
+#!/usr/bin/perl
 use Liberty::Parser;
 use Verilog::Netlist;
 use timerDesignInfo;
@@ -11,7 +12,7 @@ my $make_file = 0;
 my $circuit_node_count = 0;
 my @input_ports = ();
 my @output_ports = ();
-my $verbose = 1;
+my $verbose = 0;
 
 sub my_print {
   my $string = shift;
@@ -474,14 +475,35 @@ sub create_edge_cmd {
   }
 }
 
+sub pre_process_netlist_file {
+  my $verilog_file = shift;
+
+  my $verilog_file_out = "local.v";
+  open (my $in_fh, '<', $verilog_file);
+  open (my $out_fh, '>', $verilog_file_out);
+  print $out_fh "`include <inter.v>\n\n";
+  while (my $row = <$in_fh>) {
+    if ($row =~ m/module/ && $row !~ m/endmodule/) {
+       print $out_fh "module top ();\n";	
+       next;
+    }
+    print $out_fh $row;
+  }
+  close ($in_fh); 
+  close ($out_fh); 
+  return $verilog_file_out;
+}
+
 sub read_verilog_netlist {
   my $liberty = shift;
   my $verilog_file = shift;
   my $nl = new Verilog::Netlist;
 
-  foreach my $file ($verilog_file) {
-    $nl->read_file (filename => $file);
-  }
+  my $file = pre_process_netlist_file ($verilog_file);
+
+  #foreach my $file ($verilog_file) {
+  $nl->read_file (filename => $file);
+  #}
   $nl->link ();
   $nl->lint ();
   $nl->exit_if_error ();
@@ -490,7 +512,7 @@ sub read_verilog_netlist {
 
   my $node_count = compute_node_count ($top_mod); 
 
-  my_print "Creating graph with $node_count nodes\n";
+  print "Creating graph with $node_count nodes\n";
 
   my $circuit = timerDesignInfo::create_circuit ($top_mod->name, $node_count); 
 

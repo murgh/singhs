@@ -246,6 +246,7 @@ class timerPinTag {
 		timerPinTagContainer * get_tag_container () { return theTagContainer; }
 
 		static bool areTagsInUnion (timerPinTag * tag1, timerPinTag * tag2) {
+		  if (!tag1 || !tag2) return false;
 		  timerPinTag * tag1MasterTo = tag1;
 		  timerPinTag * tag2MasterTo = tag2;
 		  bool areInUnion = false;
@@ -301,6 +302,8 @@ class timerPinTag {
 
 		void incrMergeLevel () { theMergeLevel++; }
 		int getMergeLevel () { return theMergeLevel; }
+
+		int getTagId () const { return theTagId; }
 
 	private:
 		//Not taking the polarity in consideration for now
@@ -427,14 +430,16 @@ class timerPinInfo {
 		  return std::string ("NONE");
 		}
 
-		void print () {
+		void print (int i = 0) {
+			if (i == 0) return;
 		  printf ("Pin(%s) ", thePinName.c_str ());
 		  printf ("isClock(%d) isData(%d) ", theIsClock, theIsData); 
 		  printf ("type(%s) ", get_identifier_name ().c_str ()); 
 		  printf ("dir(%s) cap(%f) ", get_direction ().c_str (), getCap ()); 
 		  if (theIsSplitPoint) printf ("splitPoint ");
 		  if (thePinTag) thePinTag->print (std::string ("TAG"));
-		  if (thePinTag && thePinTag->getMasterTag ()) thePinTag->getMasterTag()->print (std::string ("M_Tag"));
+		  if (thePinTag && thePinTag->getMasterTag ()) thePinTag->getMasterTag ()->print (std::string ("M_Tag"));
+		  if (thePinTag && thePinTag->getMergeToTag ()) thePinTag->getMergeToTag ()->print (std::string ("F_Tag"));
 		  if (theOtherPinTag) theOtherPinTag->print (std::string ("OtherTAG"));
 		  if (theOtherPinTag && theOtherPinTag->getMasterTag ()) theOtherPinTag->getMasterTag ()->print (std::string ("M_OtherTAG"));
 		  printf ("\n");
@@ -520,7 +525,7 @@ class timerPinInfo {
 		      cTagN->annotatePinTransition (clock, ((timerAnalysisType)el), ((timerTransition)rf), .004);
 		    }
 		  }
-		  printf ("InputDelay : %s %f\n", thePinName.c_str (), value);
+		  //printf ("InputDelay : %s %f\n", thePinName.c_str (), value);
 		}	
 
 		void assert_Output_Delay (timerPinTag & ctag, timerClock * clock, timerTime value) {
@@ -532,7 +537,7 @@ class timerPinInfo {
 		      cTagN->annotatePinArrival (clock, ((timerAnalysisType)el), ((timerTransition)rf), value);
 		    }
 		  }
-		  printf ("OutputDelay : %s %f\n", thePinName.c_str (), value);
+		  //printf ("OutputDelay : %s %f\n", thePinName.c_str (), value);
 		}	
 
 

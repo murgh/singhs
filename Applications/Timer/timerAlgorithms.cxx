@@ -136,12 +136,15 @@ Timer_Algo_1::TA_enumerate_clock_paths () {
 
 void
 Timer_Algo_1::TA_enumerate_data_paths () {
-  printf ("Enumerating Data Paths ....\n");
+  printf ("Enumerating Data Paths");
+  int count = 0;
   std::list<diganaVertex>::iterator itr;
   for (itr = theStartPointList.begin (); itr != theStartPointList.end (); ++itr) {
     diganaVertex dataPort = *itr;
     performDFSAndPropagatePinTags (dataPort, false/*Data Path*/); 
+    if (count++ == 1000) printf (".");
   }
+  printf ("\n");
 }
 
 void
@@ -198,22 +201,28 @@ Timer_Algo_2::checkAndPerformTagSplitting (diganaVertex & sourcePin, bool isCloc
 	return true;
 }
 
-void
+bool
 Timer_Algo_2::propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin) {
   timerPinInfo * sourcePinInfo = getPinInfo (sourcePin);   
   timerPinInfo * sinkPinInfo = getPinInfo (sinkPin);   
+  bool propagateAhead = true;
 
   timerPinInfo::propagatePinInfo (sourcePinInfo, sinkPinInfo);
-  if (sourcePinInfo->get_pin_tag () && sinkPinInfo->get_pin_tag () &&
-      (sourcePinInfo->get_pin_tag () != sinkPinInfo->get_pin_tag ()) &&
-      (sourcePinInfo->get_pin_tag () != sinkPinInfo->get_pin_tag ()->getMasterTag ())) {
-    sinkPinInfo->get_pin_tag ()->merge_pin_tag (sourcePinInfo->get_pin_tag (), sinkPin);
-    sourcePinInfo->get_pin_tag ()->setTimingPropagationPoint (sourcePin);
-    return;
+
+  if (sourcePinInfo->isTagSplitPoint ()) {
+    if (sourcePinInfo->get_pin_tag () != sinkPinInfo->get_pin_tag ()->getMasterTag ())
+      propagateAhead = false;	    
+  } else {
+    if (sinkPinInfo->get_pin_tag ()) {
+      sinkPinInfo->get_pin_tag ()->merge_pin_tag (sourcePinInfo->get_pin_tag (), sinkPin);
+      sourcePinInfo->get_pin_tag ()->setTimingPropagationPoint (sourcePin);
+      propagateAhead = false;	
+    } else {
+      sinkPinInfo->assert_pin_tag (sourcePinInfo->get_pin_tag ());
+    }
   }
-  if (!sinkPinInfo->get_pin_tag ()) {
-    sinkPinInfo->assert_pin_tag (sourcePinInfo->get_pin_tag ());
-  }
+
+  return propagateAhead;
 }
 
 //Perform the BFS through this pin and propagate the
@@ -224,45 +233,53 @@ Timer_Algo_2::performBFSAndPropagatePinTags (diganaVertex pin, bool isClock) {
   thePinQueue.push_back (pin);
   while ( !thePinQueue.empty () ) {
     diganaVertex source = thePinQueue.front ();
-    //getPinInfo (source)->print ();
+    getPinInfo (source)->print ();
     thePinQueue.pop_front ();
     bool tagSplit = checkAndPerformTagSplitting (source, isClock);  
     diganaGraphIterator::adjacency_iterator ai , aietr;
     ai.attach (source.getVertexId (), source.getParentGraph ());
     for (; ai != aietr; ++ai) {
+      bool propagateFurther = false;
       diganaVertex sink = *ai;
-      if (!tagSplit) propagatePinTags (source, sink);
-      timerPinInfo * sinkInfo = getPinInfo (sink);
 
+      propagateFurther = propagatePinTags (source, sink);
+
+      timerPinInfo * sinkInfo = getPinInfo (sink);
       if (isClock && sinkInfo->getIsClockEnd ()) {
-        //sinkInfo->print ();
+        sinkInfo->print ();
         diganaGraphIterator::adjacency_iterator ckAi , ckAietr;;
 	ckAi.attach (sink.getVertexId (), sink.getParentGraph ());
     	for (; ckAi != ckAietr; ++ckAi) {
 	  diganaVertex latchData = *ckAi;
 	  timerPinInfo * latchPinInfo = getPinInfo (latchData);
 	  if (latchPinInfo->getDirection () == timerInput) {//D Pin
-            //latchPinInfo->print ();
+            latchPinInfo->print ();
 	    timerPinTag * pinTag = new timerPinTag (false, false, sink.getVertexId ());
 	    pinTag->setMasterTag (sinkInfo->get_pin_tag ());
             latchPinInfo->assert_other_pin_tag (pinTag); 		  
 	  } 
 	  if (latchPinInfo->getDirection () == timerOutput) {//Q Pin
 	    //Create a new pin tag
-            //latchPinInfo->print ();
+            latchPinInfo->print ();
 	    timerPinTag * pinTag = new timerPinTag (false, true, sink.getVertexId ());
 	    pinTag->setMasterTag (sinkInfo->get_pin_tag ());
 	    latchPinInfo->assert_pin_tag (pinTag);
 	  } 
 	}
-	//sinkInfo->print ();
+	sinkInfo->print ();
 	continue;
       }
 
       if (!isClock && sinkInfo->getIsDataEnd ()) {
-        //sinkInfo->print ();
+        sinkInfo->print ();
 	continue;
       }
+
+      if (!propagateFurther) {
+        sinkInfo->print ();
+	continue;
+      }
+
       thePinQueue.push_back (sink);
     }
   }
@@ -340,7 +357,7 @@ Timer_Algo_2::TA_print_circuit (diganaGraph * graph) {
   vitr.attach (graph);
   for (; vitr != eVitr; ++vitr) {
     diganaVertex pin = *vitr;
-    if (verbose) getPinInfo (pin)->print (); 
+    getPinInfo (pin)->print (); 
   }
 
 }
@@ -369,6 +386,8 @@ Timer_Algo_2::TA_write_paths () {
  }
  
  */
+  int count = 0;
+  printf ("Writing Paths to file timing_report\n");	
   FILE * file = fopen ("timing_report", "w");
   if (file == NULL) return; 
  
@@ -377,7 +396,9 @@ Timer_Algo_2::TA_write_paths () {
     //std::stack<diganaVertex> stack;
     diganaVertex endPoint = *itr;
     computeTagPaths (file, endPoint);
+    if (count++ == 1000) printf (".");
   }   
+  printf ("\n");
   fclose (file); 
 }
 
@@ -464,9 +485,12 @@ Timer_Algo_2::computeRecursiveTagPath (timerPinTag * tag,
     //Reached the end, copy the path and push in tagPaths
     std::list <timerPinTag *> * tagPath = new std::list <timerPinTag *>;
     std::list <timerPinTag *>::iterator itr;
+    //printf ("Begin Tag Path:\n");
     for (itr = theTagPath.begin (); itr != theTagPath.end (); ++itr) {
       tagPath->push_back (*itr); 
+      //printf ("\t%d\n", (*itr)->getTagId ());
     } 
+    //printf ("End Tag Path\n");
     tagPaths.push_back (tagPath);
     return;
   }
@@ -511,6 +535,7 @@ Timer_Algo_2::buildTimingPathFromTagPath (diganaVertex endPoint,
     for (; ai != aietr; ++ai) {
       diganaVertex sink = *ai;
       sinkTag = getPinInfo (sink)->get_pin_tag ();    
+      //getPinInfo (sink)->print ();
       if ( timerPinTag::areTagsInUnion (sinkTag, tag) ) {
 	lastPin = pin;
 	pin = sink;

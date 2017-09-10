@@ -97,7 +97,7 @@ class Timer_Algo_2 : public TA_Timer {
 
 		bool checkAndPerformTagSplitting (diganaVertex & timerPin, bool);
 		void performBFSAndPropagatePinTags (diganaVertex pin, bool);
-		void propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin);
+		bool propagatePinTags (diganaVertex & sourcePin, diganaVertex & sinkPin);
 		void propagatePinTagsFromStart (diganaVertex & sourcePin, bool);
 		void computeRecursiveTagPath (timerPinTag * tag,
 				              std::list <timerPinTag *> & theTagPath,
