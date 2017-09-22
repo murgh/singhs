@@ -1,8 +1,51 @@
-createClock clock1 10 clk
-inputDelay 1 in[0] 
-inputDelay 2 in[1] 
-inputDelay 3 in[2] 
-inputDelay 1 in[3] 
-outputDelay 1 out[0] 
-outputDelay 1 out[1] 
-outputDelay 1 o 
+createClock clock1 10 tau_clk
+
+inputDelay 2 in2_4_;
+inputDelay 2 in1_1_;
+inputDelay 2 in2_7_;
+inputDelay 2 in2_8_;
+inputDelay 2 in2_10_;
+inputDelay 2 in1_7_;
+inputDelay 2 bs;
+inputDelay 2 in1_5_;
+inputDelay 2 in1_9_;
+inputDelay 2 in2_3_;
+inputDelay 2 in1_6_;
+inputDelay 2 in2_9_;
+inputDelay 2 in1_8_;
+inputDelay 2 in2_6_;
+inputDelay 2 in1_3_;
+inputDelay 2 in2_5_;
+inputDelay 2 in1_10_;
+inputDelay 2 hold;
+inputDelay 2 in1_4_;
+inputDelay 2 in1_2_;
+inputDelay 2 na;
+
+
+outputDelay 3 ris_1_;
+outputDelay 3 ris_18_;
+outputDelay 3 ris_9_;
+outputDelay 3 ris_8_;
+outputDelay 3 ris_4_;
+outputDelay 3 ris_15_;
+outputDelay 3 ris_7_;
+outputDelay 3 ris_29_;
+outputDelay 3 ris_11_;
+outputDelay 3 ris_14_;
+outputDelay 3 ris_17_;
+outputDelay 3 ris_5_;
+outputDelay 3 ris_3_;
+outputDelay 3 ris_2_;
+outputDelay 3 ris_0_;
+outputDelay 3 ris_20_;
+outputDelay 3 ris_10_;
+outputDelay 3 ris_19_;
+outputDelay 3 ris_23_;
+outputDelay 3 ris_16_;
+outputDelay 3 ris_13_;
+outputDelay 3 ris_22_;
+outputDelay 3 ris_21_;
+outputDelay 3 ris_6_;
+outputDelay 3 ris_12_;
+

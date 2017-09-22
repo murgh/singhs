@@ -40,7 +40,9 @@
 
         void add_timing_sense (timerLibArc * arc, char * timing_sense); 
 
-        diganaGraph * get_or_create_circuit (char * circuit);
+        diganaGraph * create_circuit (char * circuit, int size);
+
+        diganaGraph * get_circuit (char * circuit);
 
         int add_pin (diganaGraph * circuit, char * name, int node_count);
 
@@ -90,7 +92,9 @@
 
         void add_timing_type (timerLibArc * arc, char * timing_type);
 
-        diganaGraph * get_or_create_circuit (char * circuit);
+        diganaGraph * create_circuit (char * circuit, int size);
+
+        diganaGraph * get_circuit (char * circuit);
 
         void add_pin_direction_io (diganaGraph * circuit, int id, char * dir, int isIO, char * p);
 

@@ -1,0 +1,162 @@
+
+**EndPoint out[0] **
+
+Data Path 1:
+in[0]
+b1/A
+b1/Z
+b2/A
+b2/Z
+b5/A
+b5/Z
+and1/A1
+and1/ZN
+b7/A
+b7/Z
+out[0]
+Computing slack for Sig out[0] and Ref out[0]
+
+Data Path 2:
+clk
+c1/A
+c1/Z
+c2/A
+c2/Z
+dff1/CK
+dff1/Q
+b6/A
+b6/Z
+and1/A2
+and1/ZN
+b7/A
+b7/Z
+out[0]
+Computing slack for Sig out[0] and Ref out[0]
+
+**EndPoint out[1] **
+
+Data Path 1:
+clk
+c5/A
+c5/Z
+dff3/CK
+dff3/Q
+b9/A
+b9/Z
+and3/A2
+and3/ZN
+out[1]
+Computing slack for Sig out[1] and Ref out[1]
+
+Data Path 2:
+clk
+c3/A
+c3/Z
+c4/A
+c4/Z
+dff2/CK
+dff2/Q
+b8/A
+b8/Z
+and3/A1
+and3/ZN
+out[1]
+Computing slack for Sig out[1] and Ref out[1]
+
+**EndPoint dff3/D **
+
+Data Path 1:
+in[0]
+b1/A
+b1/Z
+b4/A
+b4/Z
+b12/A
+b12/Z
+and2/A1
+and2/ZN
+dff3/D
+Reference Path:
+clk
+c5/A
+c5/Z
+dff3/CK
+Computing slack for Sig dff3/D and Ref dff3/CK
+
+Data Path 2:
+in[1]
+b10/A
+b10/Z
+b11/A
+b11/Z
+and2/A2
+and2/ZN
+dff3/D
+Reference Path:
+clk
+c5/A
+c5/Z
+dff3/CK
+Computing slack for Sig dff3/D and Ref dff3/CK
+
+**EndPoint dff2/D **
+
+Data Path 1:
+in[0]
+b1/A
+b1/Z
+b2/A
+b2/Z
+b5/A
+b5/Z
+and1/A1
+and1/ZN
+dff2/D
+Reference Path:
+clk
+c3/A
+c3/Z
+c4/A
+c4/Z
+dff2/CK
+Computing slack for Sig dff2/D and Ref dff2/CK
+
+Data Path 2:
+clk
+c1/A
+c1/Z
+c2/A
+c2/Z
+dff1/CK
+dff1/Q
+b6/A
+b6/Z
+and1/A2
+and1/ZN
+dff2/D
+Reference Path:
+clk
+c3/A
+c3/Z
+c4/A
+c4/Z
+dff2/CK
+Computing slack for Sig dff2/D and Ref dff2/CK
+
+**EndPoint dff1/D **
+
+Data Path 1:
+in[0]
+b1/A
+b1/Z
+b3/A
+b3/Z
+dff1/D
+Reference Path:
+clk
+c1/A
+c1/Z
+c2/A
+c2/Z
+dff1/CK
+Computing slack for Sig dff1/D and Ref dff1/CK

@@ -484,7 +484,7 @@ sub pre_process_netlist_file {
   print $out_fh "`include <inter.v>\n\n";
   while (my $row = <$in_fh>) {
     if ($row =~ m/module/ && $row !~ m/endmodule/) {
-       print $out_fh "module top ();\n";	
+       print $out_fh "module top ( ";	
        next;
     }
     print $out_fh $row;
