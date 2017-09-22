@@ -413,7 +413,7 @@ diganaDirectedGraph::add_edge (diganaGraphObjectIdentifier source_id, diganaGrap
 }
 
 void diganaGraph::mapVertexIdAndName (diganaGraphObjectIdentifier id) {
-   printf ("Mapped name %s and id %d\n", id.getName ().c_str (), id.getId ());
+   //printf ("Mapped name %s and id %d\n", id.getName ().c_str (), id.getId ());
    vertex_name_index_map.insert (std::pair<std::string, int> (id.getName (), id.getId ()));
 }
 

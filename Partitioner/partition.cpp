@@ -356,7 +356,7 @@ void diganaKL::implement_kl(std::string graph_name) {
 
 // sample implementation 
 
-/*
+
 int main(){
 
   diganaGraphObjectIdentifier id;
@@ -383,4 +383,4 @@ int main(){
 return 0;
 
 
-}*/						
+}
