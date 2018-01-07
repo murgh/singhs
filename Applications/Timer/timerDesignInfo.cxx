@@ -159,6 +159,7 @@ void add_timing_arc (diganaGraph * circuit, int source, int sink, timerLibArc * 
 	timerPinProperty sinkP = sinkNode.get_property<timerPinProperty> ("Pin_Property");
 	srcP.getPinInfo ()->setLibPin (arc->getSource ());
 	sinkP.getPinInfo ()->setLibPin (arc->getSink ());
+	sinkP.getPinInfo ()->addSourceVertex (source);
 	count++;
 	if (count % 1000 == 0)
 		printf ("Created %d Edges\n", count);
@@ -166,6 +167,9 @@ void add_timing_arc (diganaGraph * circuit, int source, int sink, timerLibArc * 
 
 void add_timing_arc (diganaGraph * circuit, int source, int sink) {
 	circuit->add_edge (source, sink);
+	diganaVertex sinkNode = diganaVertex (sink, circuit);
+	timerPinProperty sinkP = sinkNode.get_property<timerPinProperty> ("Pin_Property");
+	sinkP.getPinInfo ()->addSourceVertex (source);
 	diganaEdge E = diganaEdge (source, sink, circuit);        	
 	timerArcInfo * arcInfo = new timerArcInfo ();
 	E.put_property<timerArcProperty> ("Arc_Property", timerArcProperty (arcInfo));
@@ -259,6 +263,15 @@ void add_timing_sense (timerLibArc * arc, char * timing_sense) {
 		arc->setUnateness (timerNegUnate);
 	else
 		arc->setUnateness (timerNonUnate);
+}
+
+void addReportObject (int from, int through, int to) {
+	TARepObj * obj = new TARepObj;
+	obj->from = from;
+	obj->through = through;
+	obj->to = to;
+	obj->next = NULL;
+	TA_Timer::addRepObj (obj);
 }
 
 //Timer Report Call

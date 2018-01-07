@@ -85,6 +85,7 @@ class timerPinTagContainer {
 			~Iterator () {
 			  theTagSet.clear ();
 			  theTagList.clear ();
+			  theIterSize = 0;
 			}
 
 			timerPinTag * next () {
@@ -119,6 +120,8 @@ class timerPinTag {
 		  theTagId = theTagCount++;
 		  theForwardMergeCount = 0;
 		  thePinTime = NULL;
+		  theRootId = theTagId;
+		  theIsDormant = false;
 		}
 
 		timerPinTag (const timerPinTag & tag) {
@@ -131,6 +134,7 @@ class timerPinTag {
 		  theTagId = tag.theTagId;
 		  theForwardMergeCount = tag.theForwardMergeCount;
 		  thePinTime = tag.thePinTime;
+		  theIsDormant = tag.theIsDormant;
 		}
 
 		bool operator == (const timerPinTag & other) {
@@ -158,7 +162,11 @@ class timerPinTag {
 		void setArrivalTag () { theArrival = true; }
 		void setRequiredTag () { theArrival = false; }
 
-		void setMasterTag (timerPinTag * tag) { theMasterTag = tag; }
+		void setMasterTag (timerPinTag * tag) 
+		{ 
+			theMasterTag = tag;
+		        theRootId = theMasterTag->theRootId;	
+		}
 		timerPinTag * getMasterTag () { return theMasterTag; }
 
 		//If the tag is merged to another tag this will keep the forward link
@@ -264,12 +272,22 @@ class timerPinTag {
 		void merge_pin_tag (timerPinTag * to_merge, diganaVertex mergePin) {
 		  //If tag container is not present create it and 
 		  //merge the tag to be merged in the container
+		  if (to_merge == this) return;
+		  timerPinTag * temp = to_merge->theMasterTag;
+		  while ( temp ) {
+		    if (temp == this) {
+			to_merge->setDormant ();
+			break;
+		    }
+		    temp = temp->theMasterTag;
+		  }
+
 		  if (!theTagContainer) {
 		    theTagContainer = new timerPinTagContainer;	  
 		  }	  
 		  theTagContainer->addTag (to_merge); 
 		  to_merge->setMergeToTag (this);
-		  to_merge->incrementForwardMergeCount (mergePin);
+		  //to_merge->incrementForwardMergeCount (mergePin);
 		}	
 
 		void setForwardMergeCount (int count) { theForwardMergeCount = count; }
@@ -305,6 +323,12 @@ class timerPinTag {
 
 		int getTagId () const { return theTagId; }
 
+		void setRootId (int id) { theRootId = id; }
+		int getRootId () const { return theRootId; }
+
+		void setDormant () { theIsDormant = true; }
+		bool isDormant () { return theIsDormant; }
+
 	private:
 		//Not taking the polarity in consideration for now
 		//bool	     thePositivePolarity;
@@ -312,7 +336,9 @@ class timerPinTag {
 		bool 	     	theClockPath;
 		int	     	theSourceId;
 		int		theTagId;
+		int		theRootId;
 		int 		theForwardMergeCount;
+		bool		theIsDormant;
 		diganaVertex	theTimingPropagationPoint;
 		timerPinTag   * theMasterTag; //For Split Tags
 		timerPinTag   * theMergeToTag; //Tag to which this tag is merged
@@ -339,6 +365,7 @@ class timerPinInfo {
 			theOtherPinTag = NULL;
 			theLibPin = NULL;
 			theDelayCalcContainer = NULL;
+			theSourceVertices.clear ();
 		}
 
 		timerPinInfo (std::string name, 
@@ -356,7 +383,10 @@ class timerPinInfo {
 			theOtherPinTag = NULL;
 			theLibPin = NULL;
 			theDelayCalcContainer = NULL;
+			theSourceVertices.clear ();
 		}
+
+		void addSourceVertex (int src) { theSourceVertices.insert (src); }
 
 		void setIsClock () {theIsClock = true;}
 		void setIsData () {theIsData = true;}
@@ -436,6 +466,7 @@ class timerPinInfo {
 		  printf ("isClock(%d) isData(%d) ", theIsClock, theIsData); 
 		  printf ("type(%s) ", get_identifier_name ().c_str ()); 
 		  printf ("dir(%s) cap(%f) ", get_direction ().c_str (), getCap ()); 
+		  if (thePinTag) printf (" %s ", thePinTag->isDormant () ? "dormant" : "non_dormant");
 		  if (theIsSplitPoint) printf ("splitPoint ");
 		  if (thePinTag) thePinTag->print (std::string ("TAG"));
 		  if (thePinTag && thePinTag->getMasterTag ()) thePinTag->getMasterTag ()->print (std::string ("M_Tag"));
@@ -501,6 +532,8 @@ class timerPinInfo {
 		timerPinDelayContainer * getDCInfo () { return theDelayCalcContainer; }
 		void printDCInfo (); 
 
+		std::set<int> & getSourceVertexSet () { return theSourceVertices; }
+
 	private:
 		std::string thePinName;
 		bool	    theIsClock;
@@ -514,6 +547,7 @@ class timerPinInfo {
 		bool		theDFSSeen;
 		diganaVertex		theReferencePin;
 		timerPinDelayContainer * theDelayCalcContainer;
+		std::set<int>	theSourceVertices;
 
 		void assert_Input_Delay (timerPinTag & ctag, timerClock * clock, timerTime value) {
 		  timerPinTag * cTagN = new timerPinTag (ctag); 
@@ -542,6 +576,7 @@ class timerPinInfo {
 
 
 };
+
 
 class timerPinProperty : public diganaDynamicGraphProperty {
 	public:

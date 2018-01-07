@@ -330,9 +330,8 @@ diganaUndirectedGraph::add_edge (diganaGraphObjectIdentifier source_id, diganaGr
    boost::graph_traits <diganaUndirectedGraphType>::vertex_descriptor v = 
 	                                               boost::vertex(sink, graph);
 
-   boost::add_edge (u, v, graph);
-   boost::graph_traits <diganaUndirectedGraphType>::edge_descriptor e = 
-                                                  boost::edge(u, v, graph).first;
+   if (!boost::edge(u, v, graph).second)
+     boost::add_edge (u, v, graph);
 }
 
 //Addvertex for Directed Graph
@@ -409,7 +408,8 @@ diganaDirectedGraph::add_edge (diganaGraphObjectIdentifier source_id, diganaGrap
    boost::graph_traits <diganaDirectedGraphType>::vertex_descriptor v = 
 	                                               boost::vertex(sink, graph);
 
-   boost::add_edge (u, v, graph);
+   if (!boost::edge(u, v, graph).second)
+     boost::add_edge (u, v, graph);
 }
 
 void diganaGraph::mapVertexIdAndName (diganaGraphObjectIdentifier id) {

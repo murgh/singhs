@@ -1606,6 +1606,8 @@ SWIGEXPORT void SWIG_init (CV *cv, CPerlObj *);
 
         void add_IO_delay (diganaGraph * circuit, float value, int source, int input); 
 
+        void addReportObject (int from, int through, int to);
+
 
 SWIGINTERN swig_type_info*
 SWIG_pchar_descriptor(void)
@@ -3108,6 +3110,53 @@ XS(_wrap_add_IO_delay) {
 }
 
 
+XS(_wrap_addReportObject) {
+  {
+    int arg1 ;
+    int arg2 ;
+    int arg3 ;
+    int val1 ;
+    int ecode1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: addReportObject(from,through,to);");
+    }
+    ecode1 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "addReportObject" "', argument " "1"" of type '" "int""'");
+    } 
+    arg1 = (int)(val1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "addReportObject" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = (int)(val2);
+    ecode3 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "addReportObject" "', argument " "3"" of type '" "int""'");
+    } 
+    arg3 = (int)(val3);
+    addReportObject(arg1,arg2,arg3);
+    ST(argvi) = sv_newmortal();
+    
+    
+    
+    XSRETURN(argvi);
+  fail:
+    
+    
+    
+    SWIG_croak_null();
+  }
+}
+
+
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
@@ -3185,6 +3234,7 @@ static swig_command_info swig_commands[] = {
 {"timerDesignInfoc::get_pin_type", _wrap_get_pin_type},
 {"timerDesignInfoc::add_clock", _wrap_add_clock},
 {"timerDesignInfoc::add_IO_delay", _wrap_add_IO_delay},
+{"timerDesignInfoc::addReportObject", _wrap_addReportObject},
 {0,0}
 };
 /* -----------------------------------------------------------------------------

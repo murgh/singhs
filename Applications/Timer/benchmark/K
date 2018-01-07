@@ -1,0 +1,64 @@
+Starting with 22 ranks
+Creating graph with 532 nodes and 40683 edges
+ERROR : Graph with name Graphdoes not exist 
+185 503
+351 522
+269 525
+248 525
+201 518
+456 527
+192 512
+404 513
+218 529
+330 520
+Done with graph creation start_points 511 end_points 29
+Forward Mark
+Looking at 185 -> 531
+Looking at 185 -> 525
+Backward Mark
+DFS
+Forward Mark
+Looking at 351 -> 531
+Looking at 351 -> 524
+Backward Mark
+DFS
+Forward Mark
+Looking at 269 -> 531
+Looking at 269 -> 516
+Backward Mark
+DFS
+Forward Mark
+Looking at 248 -> 529
+Looking at 248 -> 528
+Backward Mark
+DFS
+Forward Mark
+Looking at 201 -> 529
+Looking at 201 -> 527
+Backward Mark
+DFS
+Forward Mark
+Looking at 456 -> 531
+Looking at 456 -> 525
+Backward Mark
+DFS
+Forward Mark
+Looking at 192 -> 530
+Looking at 192 -> 522
+Backward Mark
+DFS
+Forward Mark
+Looking at 404 -> 530
+Looking at 404 -> 527
+Backward Mark
+DFS
+Forward Mark
+Looking at 218 -> 527
+Looking at 218 -> 524
+Backward Mark
+DFS
+Forward Mark
+Looking at 330 -> 529
+Looking at 330 -> 521
+Backward Mark
+DFS

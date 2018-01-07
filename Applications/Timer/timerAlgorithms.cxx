@@ -1,11 +1,71 @@
 #include "timer.hxx"
 #include "timerUtils.hxx"
+#include "sys/types.h"
+#include "sys/sysinfo.h"
+#include <unistd.h>
+#include <ios>
+#include <iostream>
+#include <fstream>
+#include <string>
+
+#define PRINT_VM(S, V, R) \
+            process_mem_usage (V, R); \
+            printf ("The %s VM(%f) RES(%f)\n", S, V, R);
+
+#define END "CoreOutputReg_reg_31_/D"
+
+void process_mem_usage(double& vm_usage, double& resident_set)
+{
+   using std::ios_base;
+  using std::ifstream;
+  using std::string;
+
+  vm_usage     = 0.0;
+  resident_set = 0.0;
+
+  ifstream stat_stream("/proc/self/stat",ios_base::in);
+
+  string pid, comm, state, ppid, pgrp, session, tty_nr;
+  string tpgid, flags, minflt, cminflt, majflt, cmajflt;
+  string utime, stime, cutime, cstime, priority, nice;
+  string O, itrealvalue, starttime;  
+
+  unsigned long vsize;
+  long rss;
+
+  stat_stream >> pid >> comm >> state >> ppid >> pgrp >> session >> tty_nr
+	      >> tpgid >> flags >> minflt >> cminflt >> majflt >> cmajflt
+	      >> utime >> stime >> cutime >> cstime >> priority >> nice
+	      >> O >> itrealvalue >> starttime >> vsize >> rss; // don't care about the rest
+
+  stat_stream.close();
+
+  long page_size_kb = sysconf(_SC_PAGE_SIZE) / 1024; // in case x86-64 is configured to use 2MB pages
+  vm_usage     = vsize / 1024.0;
+  resident_set = rss * page_size_kb;   
+}
+
+void cleanTagPath (std::list <timerPinTag **> & list) {
+  std::list <timerPinTag **>::iterator itr = list.begin ();
+  timerPinTag ** path;
+  for (itr = list.begin (); itr != list.end (); ++itr) {
+    path = *itr;
+    free (path);
+  }
+  list.clear ();
+}
 
 int verbose = 0;
+struct sysinfo memInfo;
+long long globalMem = memInfo.totalram - memInfo.freeram;
 std::map<std::string, timerClock *> timerConstraints::theClockMap;
 int timerPinTag::theTagCount = 0;
 int TA_Timer::theGlobalForwardMergedCount = 0;
+TARepObj * TA_Timer::RepObj = NULL;
 void perform_timing_analysis (diganaGraph * graph) {
+	double v1, v2, r1, r2;
+        process_mem_usage (v1, r1);
+	sysinfo (&memInfo);
 	TA_Timer * timer = new Timer_Algo_2 (graph);
 	//TA_Timer * timer = new Timer_Algo_1 (graph);
 	timer->TA_enumerate_clock_paths ();
@@ -14,6 +74,8 @@ void perform_timing_analysis (diganaGraph * graph) {
 	timer->TA_compute_slack ();
 	timer->TA_print_circuit (graph);
 	timer->TA_write_paths ();
+        process_mem_usage (v2, r2);
+	printf ("*** Timing Analysis Done Virtual_MEM(%f) Residual_Mem(%f)***\n", v2-v1, r2-r1);
 }
 
 timerPinProperty getPinProp (diganaVertex & vertex) {
@@ -26,6 +88,26 @@ int TA_Timer::getGlobalForwardMergedCount () {
 
 void TA_Timer::setGlobalForwardMergedCount (int val) {
 	theGlobalForwardMergedCount = val;
+}
+
+void
+TA_Timer::getFanOutEndPointSet (diganaVertex tPin, std::set<int> & endSet) {
+  std::list<diganaVertex> thePinQueue;
+  thePinQueue.push_back (tPin);
+  while ( !thePinQueue.empty () ) {
+    diganaVertex source = thePinQueue.front ();	  
+    thePinQueue.pop_front ();
+    bool no_sink = true; 
+    diganaGraphIterator::adjacency_iterator ai , aietr;
+    ai.attach (source.getVertexId (), source.getParentGraph ()); 
+    for (; ai != aietr; ++ai) {
+      diganaVertex sink = *ai;
+      thePinQueue.push_back (sink);        
+      no_sink = false;
+    }
+    if (no_sink)
+      endSet.insert (source.getVertexId ());
+  } 
 }
 
 //Given a verilog read, convert the graph into a timing graph
@@ -136,6 +218,7 @@ Timer_Algo_1::TA_enumerate_clock_paths () {
 
 void
 Timer_Algo_1::TA_enumerate_data_paths () {
+	return;
   printf ("Enumerating Data Paths");
   int count = 0;
   std::list<diganaVertex>::iterator itr;
@@ -146,6 +229,12 @@ Timer_Algo_1::TA_enumerate_data_paths () {
   }
   printf ("\n");
 }
+
+void
+Timer_Algo_1::getFanInStartPointSet (diganaVertex tPin, std::set<int> & startSet) {
+
+}
+
 
 void
 Timer_Algo_1::TA_Build_Required () {
@@ -163,7 +252,50 @@ void
 Timer_Algo_1::TA_write_paths () {
 }
 
+void
+Timer_Algo_1::TA_Report_Paths (FILE * file) {
+
+}
+
+void
+Timer_Algo_1::TA_Report_To (TARepObj * obj, FILE * file) {
+
+}
+
+void
+Timer_Algo_1::TA_Report_Through (TARepObj * obj, FILE * file) {
+
+}
+
+void
+Timer_Algo_1::TA_Report_From_Through_To (TARepObj * obj, FILE * file) {
+
+}
+
 //Timer Algorithm 2
+
+int
+Timer_Algo_2::getFanInStartTagSet (timerPinTag * tag, std::set<timerPinTag *> & startSet) {
+  if (tag == NULL) {/*Start Tag*/
+    return 0;
+  }
+
+  if (!tag->isDormant ())
+    if (!getFanInStartTagSet (tag->getMasterTag(), startSet))
+      startSet.insert (tag);
+
+  if (tag->get_tag_container () != NULL) {
+    timerPinTag * sibTag;
+    timerPinTagContainer::Iterator itr (tag->get_tag_container ());
+    while ( (sibTag = itr.next ()) ) {
+      if (!sibTag->isDormant ()) {
+        if (!getFanInStartTagSet (sibTag->getMasterTag(), startSet))
+ 	  startSet.insert (sibTag);
+      }
+    }
+  }
+  return 1;
+}
 
 //Check and perform the tag splitting.
 bool
@@ -341,10 +473,10 @@ Timer_Algo_2::TA_compute_slack () {
   for (itr = theEndPointList.begin (); itr != theEndPointList.end (); ++itr) {
     diganaVertex endPoint = *itr;
     timerPinInfo * endPinInfo = getPinInfo (endPoint);
-    if ((endPinInfo->get_pin_tag () && endPinInfo->get_pin_other_tag ()))
-      printf ("Found the both tag sets %s\n", endPinInfo->getName ().c_str ());
-    else
-      printf ("Not found the both tag sets %s\n", endPinInfo->getName ().c_str ());
+    //if ((endPinInfo->get_pin_tag () && endPinInfo->get_pin_other_tag ()))
+      //printf ("Found the both tag sets %s\n", endPinInfo->getName ().c_str ());
+    //else
+      //printf ("Not found the both tag sets %s\n", endPinInfo->getName ().c_str ());
 
     //endPinInfo->print ();
   }
@@ -386,31 +518,66 @@ Timer_Algo_2::TA_write_paths () {
  }
  
  */
-  int count = 0;
   printf ("Writing Paths to file timing_report\n");	
   FILE * file = fopen ("timing_report", "w");
   if (file == NULL) return; 
- 
-  std::list<diganaVertex>::iterator itr;
-  for (itr = theEndPointList.begin (); itr != theEndPointList.end (); ++itr) {
-    //std::stack<diganaVertex> stack;
-    diganaVertex endPoint = *itr;
-    computeTagPaths (file, endPoint);
-    if (count++ == 1000) printf (".");
-  }   
+
+  if (RepObj) {
+    TARepObj * t = RepObj;
+    do {
+      fprintf (file, "\n");
+      if (t->from == -1 && t->through == -1 && t->to != -1) {
+	//To	
+	TA_Report_To (t, file);	
+      }
+
+      if (t->from == -1 && t->through != -1 && t->to == -1) {
+	//Through 
+	TA_Report_Through (t, file);
+      }
+      
+      if (t->from != -1 && t->through != -1 && t->to != -1) {
+	//From Through To
+	TA_Report_From_Through_To (t, file);
+      }
+    } while ( (t = t->next) );
+  } else {
+    //Full end slack computation 
+    int count = 0;
+    std::list<diganaVertex>::iterator itr;
+    for (itr = theEndPointList.begin (); itr != theEndPointList.end (); ++itr) {
+      double virt, res;
+      diganaVertex endPoint = *itr;
+    //  if (strcmp (getPinInfo (endPoint)->getName().c_str (), END) != 0)
+    //    continue;	    
+      int v = 0; 
+      process_mem_usage (virt, res);
+      printf ("The VM(%f) RES(%f)\n", virt, res);
+      computeTagPaths (file, endPoint, v);
+      process_mem_usage (virt, res);
+      printf ("**EndPoint %s path_count = %d VM(%f) RES(%f)**\n", getPinInfo (endPoint)->getName().c_str (), v, virt, res); 
+
+      if (count++ == 1000) printf (".");
+    }   
+  }
   printf ("\n");
   fclose (file); 
 }
 
-void
-Timer_Algo_2::computeTagPaths (FILE * file, diganaVertex endPoint) {
+int
+Timer_Algo_2::computeTagPaths (FILE * file, diganaVertex endPoint, 
+				int & pathCount,
+				std::set<timerPinTag *> * pruneFromSet,
+				std::set<int> * pruneThroughSet) {
 
   bool hasRefPath = false;
   diganaVertex refEndPoint;  
-  fprintf (file, "\n**EndPoint %s **\n", getPinInfo (endPoint)->getName().c_str ());
-  std::list <std::list<timerPinTag *> *> tagPaths, refTagPaths;
+  double v, r;
+  
+  std::list <timerPinTag **> tagPaths, refTagPaths;
   std::list<timerPinTag *> tagPath, refTagPath;
   computeRecursiveTagPath (getPinInfo (endPoint)->get_pin_tag (), tagPath, tagPaths);
+  tagPath.clear ();
   timerPinTag * otherTag = getPinInfo (endPoint)->get_pin_other_tag ();
   if (otherTag && otherTag->getMasterTag ())
   {	  
@@ -418,17 +585,40 @@ Timer_Algo_2::computeTagPaths (FILE * file, diganaVertex endPoint) {
     hasRefPath = true;
   }
 
-  int count = 0;
   char print_head [512];
-  std::list <std::list<timerPinTag *> * >::iterator itr, refItr;
+  std::list <timerPinTag **>::iterator itr, refItr;
   for (itr = tagPaths.begin (); itr != tagPaths.end (); ++itr) {
-    sprintf (print_head, "\nData Path %d:\n", ++count);
+    if (pruneFromSet) {
+      timerPinTag * startTag = (*itr)[0];
+      std::set<timerPinTag *>::iterator itrTag = pruneFromSet->find (startTag);
+      if (itrTag == pruneFromSet->end ())
+	continue;
+    }
+    sprintf (print_head, "\nData Path %d:\n", ++pathCount);
     std::string pathHead = std::string (print_head);  
     std::list<diganaVertex> timingPath;
     std::list<diganaEdge> reportPath;
     buildTimingPathFromTagPath (endPoint, *itr, timingPath, timerLate);
+    if (pruneThroughSet) {
+      bool foundThrough = false;
+      std::list<diganaVertex>::iterator i;
+      std::set<int>::iterator it;
+      for (i = timingPath.begin (); i != timingPath.end (); ++i) {
+        it = pruneThroughSet->find ( (*i).getVertexId () );
+        if (it != pruneThroughSet->end () ) {
+	  foundThrough = true;	
+	  break;
+	}
+      }
+      if (!foundThrough) {
+	timingPath.clear ();      
+	--pathCount;
+	continue;
+      }
+    }
     if (hasRefPath) {
       computeRecursiveTagPath (otherTag->getMasterTag (), refTagPath, refTagPaths);
+      refTagPath.clear ();
       for (refItr = refTagPaths.begin (); refItr != refTagPaths.end (); ++refItr) {
          std::string otherPathHead = std::string ("Reference Path:\n");
          std::list<diganaVertex> refTimingPath; 	    
@@ -437,13 +627,17 @@ Timer_Algo_2::computeTagPaths (FILE * file, diganaVertex endPoint) {
          writeTimingPath (file, timingPath, pathHead);
          writeTimingPath (file, refTimingPath, otherPathHead);
 	 computeSlackAndWrite (file, endPoint, refEndPoint);
+	 refTimingPath.clear ();
       }
-      refTagPaths.clear ();
+      cleanTagPath (refTagPaths);
       continue;
     }
     writeTimingPath (file, timingPath, pathHead);
     computeSlackAndWrite (file, endPoint, endPoint);
+    timingPath.clear ();
   }
+  cleanTagPath (tagPaths);
+  return pathCount;
 }
 
 void
@@ -469,6 +663,7 @@ Timer_Algo_2::writeTimingPath (FILE * file, std::list<diganaVertex> & timingPath
 void
 Timer_Algo_2::computeSlackAndWrite (FILE * file, diganaVertex endPoint, diganaVertex refEndPoint) {
   //Iterate on the delay objects from endpoint and refEndPoint and compute slacks for each of them 
+  return;
   timerPinDelayContainer::Iterator endItr (getPinInfo (endPoint)->getDCInfo ()),
 	  			   refEndItr (getPinInfo (refEndPoint)->getDCInfo ());  
 
@@ -480,53 +675,71 @@ Timer_Algo_2::computeSlackAndWrite (FILE * file, diganaVertex endPoint, diganaVe
 void
 Timer_Algo_2::computeRecursiveTagPath (timerPinTag * tag,
 				   std::list <timerPinTag *> & theTagPath,
-				   std::list <std::list<timerPinTag *> * > & tagPaths) { 
+				   std::list <timerPinTag **> & tagPaths) { 
   if (tag == NULL) {
     //Reached the end, copy the path and push in tagPaths
-    std::list <timerPinTag *> * tagPath = new std::list <timerPinTag *>;
+    int size = theTagPath.size (), i = 0;
+    timerPinTag ** path = (timerPinTag **) malloc (sizeof (timerPinTag *) * size+1);
     std::list <timerPinTag *>::iterator itr;
     //printf ("Begin Tag Path:\n");
-    for (itr = theTagPath.begin (); itr != theTagPath.end (); ++itr) {
-      tagPath->push_back (*itr); 
+    for (i = 0, itr = theTagPath.begin (); itr != theTagPath.end (); ++itr) {
+      *(path + i++) = *itr;
       //printf ("\t%d\n", (*itr)->getTagId ());
     } 
+    *(path + i) = NULL;
     //printf ("End Tag Path\n");
-    tagPaths.push_back (tagPath);
+    tagPaths.push_back (path);
     return;
   }
 
-  //Process the tag
-  theTagPath.push_front (tag);
-  computeRecursiveTagPath (tag->getMasterTag(), theTagPath, tagPaths);
-  theTagPath.pop_front ();
+  //Process the tag if its not dormant
+  if (!tag->isDormant ())
+  {
+    theTagPath.push_front (tag);
+    computeRecursiveTagPath (tag->getMasterTag(), theTagPath, tagPaths);
+    theTagPath.pop_front ();
+    //printf ("Working\n");
+  } else {
+    printf ("Dormant\n");
+  }
   //Process the union tag set contained in this set
   if (tag->get_tag_container () != NULL) {
     timerPinTag * sibTag;
     timerPinTagContainer::Iterator itr (tag->get_tag_container ());
     while ( (sibTag = itr.next ()) ) {
-      theTagPath.push_front (sibTag);
-      computeRecursiveTagPath (sibTag->getMasterTag(), theTagPath, tagPaths);
-      theTagPath.pop_front ();
+      if (!sibTag->isDormant ())
+      {
+        theTagPath.push_front (sibTag);
+        computeRecursiveTagPath (sibTag->getMasterTag(), theTagPath, tagPaths);
+        theTagPath.pop_front ();
+	//printf ("Working\n");
+      }
+      else
+       printf ("Dormant\n");
     }
-  } 
+  }
 }
 
 void
 Timer_Algo_2::buildTimingPathFromTagPath (diganaVertex endPoint,
-			    std::list<timerPinTag *> * theTagPath, 
-		 	    std::list<diganaVertex> & timingPath,
-			    timerAnalysisType el) {
+			                  timerPinTag ** theTagPath, 
+		 	    		  std::list<diganaVertex> & timingPath,
+			    		  timerAnalysisType el) {
 
   bool isFirstStage = true;
+  int tagPos = 0;
   timerPinTag * nextTag, * sinkTag;
-  timerPinTag * tag = theTagPath->front ();
-  theTagPath->pop_front ();
+  //- timerPinTag * tag = theTagPath->front ();
+  //- theTagPath->pop_front ();
+  timerPinTag * tag = theTagPath[tagPos];
+  tagPos++;
   diganaVertex pin (tag->getSource (), theTimingGraph); 
   diganaVertex lastPin;
   timerDelayCalcArgs dcArgs;
   while ( true ) {
     if (verbose) getPinInfo (pin)->print ();
-    nextTag = theTagPath->front ();
+    //- nextTag = theTagPath->front ();
+    nextTag = theTagPath[tagPos];
     timingPath.push_back (pin);
     if (pin == endPoint)
       return; 
@@ -545,16 +758,75 @@ Timer_Algo_2::buildTimingPathFromTagPath (diganaVertex endPoint,
 	lastPin = pin;
 	pin = sink;
 	tag = nextTag; 
-        theTagPath->pop_front ();
+        //- theTagPath->pop_front ();
+	tagPos++;
 	break;
       }
     } 
 
     //Compute Delay for the Arc
-    dcArgs.setupStage (el, lastPin, getPinInfo (lastPin)->get_pin_tag (), pin, sinkTag, getPinInfo (pin)->getCap (), isFirstStage);      
-    computeEdgeDelayAndPropagateArrival (dcArgs);
-    isFirstStage = false;
+  //  dcArgs.setupStage (el, lastPin, getPinInfo (lastPin)->get_pin_tag (), pin, sinkTag, getPinInfo (pin)->getCap (), isFirstStage);      
+  //  computeEdgeDelayAndPropagateArrival (dcArgs);
+  //  isFirstStage = false;
   }
+}
+
+void
+Timer_Algo_2::TA_Report_To (TARepObj * obj, FILE * file) {
+  
+  int pathCount = 0;
+  diganaVertex endPoint = diganaVertex (obj->to, theTimingGraph); 
+  fprintf (file, "*** To %s ***\n", getPinInfo (endPoint)->getName ().c_str ());
+  //process_mem_usage (virt, res);
+  computeTagPaths (file, endPoint, pathCount);
+}
+
+void
+Timer_Algo_2::TA_Report_Through (TARepObj * obj, FILE * file) {
+  
+  diganaVertex throughPoint = diganaVertex (obj->through, theTimingGraph);
+  fprintf (file, "*** Through %s ***\n", getPinInfo (throughPoint)->getName ().c_str ());
+  std::set<int> endSet;
+  std::set<timerPinTag *> startSet;
+  std::set<int> throughSet;
+  getFanOutEndPointSet (throughPoint, endSet);
+  getFanInStartTagSet (getPinInfo (throughPoint)->get_pin_tag (), startSet);
+  throughSet.insert (obj->through);
+  int pathCount = 0; 
+  std::set<int>::iterator endI;
+  for (endI = endSet.begin (); endI != endSet.end (); ++endI) {
+    diganaVertex endPoint = diganaVertex ((*endI), theTimingGraph);	  
+    computeTagPaths (file, endPoint, pathCount, &startSet, &throughSet);
+  } 
+
+  endSet.clear ();
+  startSet.clear ();
+  throughSet.clear ();
+}
+
+void
+Timer_Algo_2::TA_Report_From_Through_To (TARepObj * obj, FILE * file) {
+
+  int pathCount = 0;
+  diganaVertex endPoint = diganaVertex (obj->to, theTimingGraph);
+  diganaVertex throughPoint = diganaVertex (obj->through, theTimingGraph);
+  diganaVertex startPoint = diganaVertex (obj->from, theTimingGraph);
+  fprintf (file, "*** From %s Through %s To %s ***\n", getPinInfo (startPoint)->getName ().c_str (),
+		  				       getPinInfo (throughPoint)->getName ().c_str (),
+						       getPinInfo (endPoint)->getName ().c_str ());
+  std::set<timerPinTag *> startSet;
+  std::set<int> throughSet;
+  getFanInStartTagSet (getPinInfo (startPoint)->get_pin_tag (), startSet);
+  throughSet.insert ( throughPoint.getVertexId () );
+  
+  computeTagPaths (file, endPoint, pathCount, &startSet, &throughSet);
+  startSet.clear ();
+
+}
+
+void
+Timer_Algo_2::TA_Report_Paths (FILE * file) {
+
 }
 
 //For the container iterator
@@ -563,9 +835,21 @@ void timerPinTagContainer::Iterator::buildExpandedTagSet (timerPinTagContainer *
   std::set<timerPinTag *>::iterator itr;
   for (itr = cont->getTagSet ().begin (); itr != cont->getTagSet ().end (); ++itr) {
     timerPinTag * tag = *itr;
+    if (tag->isDormant ())
+      continue;	    
     std::pair<std::set<timerPinTag *>::iterator, bool> ret = theTagSet.insert (tag);
     if (ret.second == true)
       theIterSize++;
     buildExpandedTagSet (tag->get_tag_container ());
+  }
+}
+
+timerSourceVertexIterator::timerSourceVertexIterator (diganaVertex v) {
+  theTimingGraph = v.getParentGraph ();
+  vecPos = 0;
+  std::set<int>::iterator it;
+  for (it = getPinProp (v).getPinInfo ()->getSourceVertexSet ().begin ();
+       it != getPinProp (v).getPinInfo ()->getSourceVertexSet ().end (); ++it) {
+    theSourceVertices[vecPos++] = *it;
   }
 }

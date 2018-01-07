@@ -3,6 +3,6 @@ inputDelay 1 in[0]
 inputDelay 2 in[1] 
 inputDelay 3 in[2] 
 inputDelay 1 in[3] 
-outputDelay 1 out[0] 
-outputDelay 1 out[1] 
-outputDelay 1 o 
+outputDelay 1 out[0]
+outputDelay 1 out[1]
+outputDelay 1 o

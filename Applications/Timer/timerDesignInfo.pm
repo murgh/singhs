@@ -70,6 +70,7 @@ package timerDesignInfo;
 *get_pin_type = *timerDesignInfoc::get_pin_type;
 *add_clock = *timerDesignInfoc::add_clock;
 *add_IO_delay = *timerDesignInfoc::add_IO_delay;
+*addReportObject = *timerDesignInfoc::addReportObject;
 
 # ------- VARIABLE STUBS --------
 

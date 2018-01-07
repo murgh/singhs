@@ -19,7 +19,7 @@ sub my_print {
   if ($verbose == 0) { 
     return;
   }  
-  print $string;
+  print "$string\n";
 }
 
 sub file_print {
@@ -32,7 +32,7 @@ sub file_print {
 
 sub get_node_id {
   my $node_name = shift;
-  #my_print $node_name;
+  my_print $node_name;
   if (exists($node_name_to_id_hash{$node_name})) {
     $node_id = $node_name_to_id_hash{$node_name};
     return $node_id;
@@ -484,7 +484,7 @@ sub pre_process_netlist_file {
   print $out_fh "`include <inter.v>\n\n";
   while (my $row = <$in_fh>) {
     if ($row =~ m/module/ && $row !~ m/endmodule/) {
-       print $out_fh "module top ( ";	
+       print $out_fh "module top;\n";	
        next;
     }
     print $out_fh $row;
@@ -576,13 +576,58 @@ sub write_timer_testcase {
   file_print " perform_timing_analysis (graph);\n return 0;\n}"; 
 }
 
+sub read_report {
+  
+  my $report = shift;
+  if ($report ne "") {
+     open (my $fh, '<', $report) 
+	     or die "Could not open file '$report'";
+     while (my $row = <$fh>) {
+	@tokens = split(/\s+/, $row);
+	my $from = -1;
+	my $through = -1;
+	my $to = -1;
+	foreach my $token (@tokens) {
+	  if ($token eq "From") {
+	    $from = -2;
+	    next;
+	  }
+	  if ($token eq "Through") {
+	    $through = -2;
+	    next;
+	  }
+	  if ($token eq "To") {
+	    $to = -2;
+	    next;
+	  }
+	  if ($from == -2) {
+	    $from = get_node_id($token); 
+	    next;
+          }
+	  if ($through == -2) {
+	    $through = get_node_id($token); 
+	    next;
+          }
+	  if ($to == -2) {
+	    $to = get_node_id($token); 
+	    next;
+          }
+	}		
+	timerDesignInfo::addReportObject ($from, $through, $to);
+     }
+     close $fh;
+  }
+}
+
 sub perform_timing {
    	
   my $liberty = shift;
   my $netlist = shift;
   my $constr = shift;
+  my $report = shift;
   if ($make_file == 0) { 
 	read_timing_data ($liberty, $netlist, $constr);
+	read_report ($report); 
 	timerDesignInfo::perform_timing_analysis ("top");
   } else {
 	open ($timer_test_case, ">timer_test.cxx"); 
@@ -598,6 +643,7 @@ sub parse_options {
   my $liberty_index = -1;
   my $netlist_index = -1;
   my $constr_index = -1;
+  my $report_index = -1;
   foreach my $i (0 .. $#ARGV) {
     if ($ARGV[$i] eq "-lib") {
       $liberty_index = $i + 1;	
@@ -608,17 +654,25 @@ sub parse_options {
     if ($ARGV[$i] eq "-constr") {
       $constr_index = $i + 1;	
     }
+    if ($ARGV[$i] eq "-report") {
+      $report_index = $i + 1;	
+    }
   }
   if ($liberty_index == -1 || $netlist_index == -1 ||
       $#ARGV < $option_count - 1) {
     print "ERROR : performTiming usage :\n";
-    print "performTiming \n-lib <Liberty FIle needed for lib>\n-netlist <Verilog Netlist containing netlist connectivity of the design>\n-constr <Constraint File containing the clock and input delay information>\n";    
+    print "performTiming \n-lib <Liberty FIle needed for lib>\n-netlist <Verilog Netlist containing netlist connectivity of the design>\n-constr <Constraint File containing the clock and input delay information>\n-report <file containing commands
+    >";    
     return;
   }
   my $netlist = $ARGV[$netlist_index];
   my $liberty = $ARGV[$liberty_index];
   my $constr = $ARGV[$constr_index]; 
-  perform_timing ($liberty, $netlist, $constr);    	  
+  my $report = "";
+  if ($report_index != -1) {
+    $report = $ARGV[$report_index];
+  }  
+  perform_timing ($liberty, $netlist, $constr, $report);    	  
             	
 }
 

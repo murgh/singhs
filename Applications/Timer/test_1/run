@@ -1,0 +1,1 @@
+perl performTiming.pl -lib NangateOpenCellLibrary_fast.lib -netlist test_1/test.v -constr test_1/file.constr -report test_1/report.cmd

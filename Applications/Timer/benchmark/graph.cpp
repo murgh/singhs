@@ -7,8 +7,9 @@
 #define MAX_PER_RANK 30
 #define MIN_RANKS 20    /* Ranks: How 'tall' the DAG should be.  */
 #define MAX_RANKS 30
-#define PERCENT 30     /* Chance of having an Edge.  */
-#define FTP_ThP 10
+#define PERCENT 3     /* Chance of having an Edge.  */
+#define FTP_ThP 100
+#define DEGREE 20
 
 
 class node_p_t2 {
@@ -77,7 +78,7 @@ void create_ftp_list (std::list<std::pair<int, int> > & ftp_list, std::vector<in
     int start_id = rand () % start_size;
     int end_id = rand () % end_size;
     ftp_list.push_back (std::pair<int, int> (start_l[start_id], end_l[end_id]));
-    printf ("%d %d\n", start_l[start_id], end_l[end_id]);
+    //printf ("%d %d\n", start_l[start_id], end_l[end_id]);
   }
 }
 
@@ -103,10 +104,13 @@ void forward_mark_cone (diganaGraph * graph, int node, std::list<int> & end_poin
     ai.attach (cNode, graph);
     for (; ai != aietr; ++ai) {
       diganaVertex sink = *ai;
-      if (P.getP ()->prop_algo1->cone_colour != 0) {
+      node_p S;
+      //printf ("Looking at %d -> %d\n", cNode, sink.getVertexId ());
+      get_property(graph, sink.getVertexId (), S);
+      if (S.getP ()->prop_algo1->cone_colour != 0) {
         Q.push_back (sink.getVertexId ());
       } else {
-	printf ("Seems like a loop\n");
+	//printf ("Seems like a loop\n");
       }
     }
   }
@@ -182,13 +186,13 @@ algo1_FTP (diganaGraph * graph, std::list<std::pair<int, int> > & FTP)
   std::list<int> dummy, paths;
   std::list<std::pair<int, int> >::iterator itr;
   for (itr = FTP.begin (); itr != FTP.end (); ++itr) {
+    printf ("Iter ..\n");
     std::pair<int, int> pairp = *itr;
     clean_marking (graph);
-    printf ("Forward Mark\n");
+    //printf ("Forward Mark\n");
     forward_mark_cone (graph, pairp.first, dummy);
-    printf ("Backward Mark\n");
+    //printf ("Backward Mark\n");
     backward_mark_cone (graph, pairp.second, dummy);
-    printf ("DFS\n");
     PerformDFS (graph, pairp.first, paths);
     paths.clear ();
     dummy.clear (); 
@@ -218,15 +222,17 @@ int main (void)
 		for (j = 0; j < nodes; j++)
 			for (k = 0; k < new_nodes; k++)
 				if ( (rand () % 100) < PERCENT) { 
-					edges.push_front (std::pair<int, int> (j, k + nodes));
+					edges.push_back (std::pair<int, int> (j, k + nodes));
 				}
 		nodes += new_nodes; /* Accumulate into old node set.  */
 	}
 	printf ("Creating graph with %d nodes and %lu edges\n", nodes, edges.size ());
 	bool * start = new bool [nodes];
 	bool * end = new bool [nodes];
+	int * degree = new int [nodes];
 	memset (start, true, nodes);
 	memset (end, true, nodes);
+	memset (degree, 0, nodes); 
 	diganaGraph * graph = diganaGraphMgr::getGraphMgr ().create_graph (id, diganaDirectedGraphS, nodes); 
 	std::vector<int> start_l, end_l;
 	graph->register_vertex_property <node_p> ("node_prop");
@@ -241,6 +247,8 @@ int main (void)
 	std::list<std::pair<int, int> >::iterator itr = edges.begin ();
 	for (itr = edges.begin (); itr != edges.end (); ++itr) {
 		std::pair<int, int> p = *itr;
+		//if (degree[p.first] == DEGREE) 
+		  //continue;
 		graph->add_edge (p.first, p.second);
 		start[p.second] = false;
 		end[p.first] = false;
@@ -248,6 +256,7 @@ int main (void)
 		get_property (graph, p.second, sinkP);
 		node_p_t * P = sinkP.getP ();
 		P->prop_algo1->input_list.push_back (p.first);
+		degree[p.first]++;
 	}
 
         for (i = 0; i < nodes; i++) {

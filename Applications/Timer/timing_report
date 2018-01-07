@@ -1,162 +1,128 @@
 
-**EndPoint out[0] **
+*** From in[0] Through _18_/ZN To out[0] ***
 
 Data Path 1:
 in[0]
-b1/A
-b1/Z
-b2/A
-b2/Z
-b5/A
-b5/Z
-and1/A1
-and1/ZN
-b7/A
-b7/Z
+_18_/A1
+_18_/ZN
+_19_/A1
+_19_/ZN
 out[0]
-Computing slack for Sig out[0] and Ref out[0]
 
-Data Path 2:
-clk
-c1/A
-c1/Z
-c2/A
-c2/Z
-dff1/CK
-dff1/Q
-b6/A
-b6/Z
-and1/A2
-and1/ZN
-b7/A
-b7/Z
-out[0]
-Computing slack for Sig out[0] and Ref out[0]
+*** From in[2] Through _18_/ZN To out[0] ***
 
-**EndPoint out[1] **
-
-Data Path 1:
-clk
-c5/A
-c5/Z
-dff3/CK
-dff3/Q
-b9/A
-b9/Z
-and3/A2
-and3/ZN
-out[1]
-Computing slack for Sig out[1] and Ref out[1]
-
-Data Path 2:
-clk
-c3/A
-c3/Z
-c4/A
-c4/Z
-dff2/CK
-dff2/Q
-b8/A
-b8/Z
-and3/A1
-and3/ZN
-out[1]
-Computing slack for Sig out[1] and Ref out[1]
-
-**EndPoint dff3/D **
+*** Through _18_/A1 ***
 
 Data Path 1:
 in[0]
-b1/A
-b1/Z
-b4/A
-b4/Z
-b12/A
-b12/Z
-and2/A1
-and2/ZN
-dff3/D
+_18_/A1
+_18_/ZN
+_19_/A1
+_19_/ZN
+out[0]
+
+Data Path 2:
+in[0]
+_18_/A1
+_18_/ZN
+_19_/A1
+_19_/ZN
+dff/D
 Reference Path:
 clk
-c5/A
-c5/Z
-dff3/CK
-Computing slack for Sig dff3/D and Ref dff3/CK
+K_/A
+K_/ZN
+dff/CK
+
+*** Through _15_/A1 ***
+
+Data Path 1:
+in[2]
+_14_/A2
+_14_/ZN
+_15_/A1
+_15_/ZN
+_16_/A1
+_16_/ZN
+out[1]
+
+Data Path 2:
+in[3]
+_13_/A
+_13_/ZN
+_14_/A1
+_14_/ZN
+_15_/A1
+_15_/ZN
+_16_/A1
+_16_/ZN
+out[1]
+
+*** Through _15_/A2 ***
+
+Data Path 1:
+in[1]
+_15_/A2
+_15_/ZN
+_16_/A1
+_16_/ZN
+out[1]
+
+*** From in[0] Through _18_/ZN To dff/D ***
+
+Data Path 1:
+in[0]
+_18_/A1
+_18_/ZN
+_19_/A1
+_19_/ZN
+dff/D
+Reference Path:
+clk
+K_/A
+K_/ZN
+dff/CK
+
+*** Through _18_/ZN ***
+
+Data Path 1:
+in[0]
+_18_/A1
+_18_/ZN
+_19_/A1
+_19_/ZN
+out[0]
 
 Data Path 2:
 in[1]
-b10/A
-b10/Z
-b11/A
-b11/Z
-and2/A2
-and2/ZN
-dff3/D
-Reference Path:
-clk
-c5/A
-c5/Z
-dff3/CK
-Computing slack for Sig dff3/D and Ref dff3/CK
+_18_/A2
+_18_/ZN
+_19_/A1
+_19_/ZN
+out[0]
 
-**EndPoint dff2/D **
-
-Data Path 1:
+Data Path 3:
 in[0]
-b1/A
-b1/Z
-b2/A
-b2/Z
-b5/A
-b5/Z
-and1/A1
-and1/ZN
-dff2/D
+_18_/A1
+_18_/ZN
+_19_/A1
+_19_/ZN
+dff/D
 Reference Path:
 clk
-c3/A
-c3/Z
-c4/A
-c4/Z
-dff2/CK
-Computing slack for Sig dff2/D and Ref dff2/CK
+K_/A
+K_/ZN
+dff/CK
 
-Data Path 2:
-clk
-c1/A
-c1/Z
-c2/A
-c2/Z
-dff1/CK
-dff1/Q
-b6/A
-b6/Z
-and1/A2
-and1/ZN
-dff2/D
+Data Path 4:
+in[1]
+_18_/A2
+_18_/ZN
+_19_/A1
+_19_/ZN
+dff/D
 Reference Path:
 clk
-c3/A
-c3/Z
-c4/A
-c4/Z
-dff2/CK
-Computing slack for Sig dff2/D and Ref dff2/CK
-
-**EndPoint dff1/D **
-
-Data Path 1:
-in[0]
-b1/A
-b1/Z
-b3/A
-b3/Z
-dff1/D
-Reference Path:
-clk
-c1/A
-c1/Z
-c2/A
-c2/Z
-dff1/CK
-Computing slack for Sig dff1/D and Ref dff1/CK
+K_/A
+K_/ZN
+dff/CK

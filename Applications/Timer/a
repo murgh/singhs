@@ -1,3 +1,180 @@
-***Info : Added Library NangateOpenCellLibrary_fast.lib
-***Info : Added Library Cell AND2_X1
-Lib Cell = 0x99fe0d8 AND2_X1
+ERROR : Graph with name topdoes not exist 
+Creating New Graph 
+ERROR : Graph with name topdoes not exist 
+Created 1000 Edges
+Created 2000 Edges
+Created 3000 Edges
+Created 4000 Edges
+Created 5000 Edges
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+WARNING : Clock ** is already defined on pin/port 
+Performing Timing Analysis
+Enumerating Clock Paths ....
+Enumerating Data Paths ....
+Build Reading Liberty File test_tau2015_cordic_core_eval/file.lib .... 
+Reading Verilog File test_tau2015_cordic_core_eval/test.v .... 
+Creating graph with 9670 nodes
+Reading Constr File test_tau2015_cordic_core_eval/file.constr .... 
+Cannot identify the constraint 
+
+Required time At End Points ....
+Compute Slacks ....
+Writing Paths to file timing_report
+The VM(106448.000000) RES(63836.000000)
+**EndPoint Config_Reg_reg_18_/D path_count = 83 VM(107108.000000) RES(64364.000000)**
+
