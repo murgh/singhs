@@ -1,0 +1,1 @@
+perl performTiming.pl -lib test_tau2015_cordic_core_eval/file.lib -netlist test_tau2015_cordic_core_eval/test.v -constr test_tau2015_cordic_core_eval/file.constr -report test_tau2015_cordic_core_eval/report.cmd 

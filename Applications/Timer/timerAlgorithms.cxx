@@ -66,8 +66,8 @@ void perform_timing_analysis (diganaGraph * graph) {
 	double v1, v2, r1, r2;
         process_mem_usage (v1, r1);
 	sysinfo (&memInfo);
-	TA_Timer * timer = new Timer_Algo_2 (graph);
-	//TA_Timer * timer = new Timer_Algo_1 (graph);
+	//TA_Timer * timer = new Timer_Algo_2 (graph);
+	TA_Timer * timer = new Timer_Algo_1 (graph);
 	timer->TA_enumerate_clock_paths ();
 	timer->TA_enumerate_data_paths ();
 	timer->TA_Build_Required ();
@@ -90,6 +90,16 @@ void TA_Timer::setGlobalForwardMergedCount (int val) {
 	theGlobalForwardMergedCount = val;
 }
 
+void TA_Timer::clearRepConeMarking () {
+  diganaGraphIterator::vertex_iterator vitr, eVitr;
+
+  vitr.attach (theTimingGraph);
+  for (; vitr != eVitr; ++vitr) { 
+    diganaVertex vertex = *vitr;
+    getPinInfo (vertex)->clearRepConeMarking ();
+  }
+}
+
 void
 TA_Timer::getFanOutEndPointSet (diganaVertex tPin, std::set<int> & endSet) {
   std::list<diganaVertex> thePinQueue;
@@ -108,6 +118,26 @@ TA_Timer::getFanOutEndPointSet (diganaVertex tPin, std::set<int> & endSet) {
     if (no_sink)
       endSet.insert (source.getVertexId ());
   } 
+}
+
+void
+TA_Timer::getFanInStartPointSet (diganaVertex tPin, std::set<int> & startSet) {
+  std::list<diganaVertex> thePinQueue;
+  thePinQueue.push_back (tPin);
+  while ( !thePinQueue.empty () ) {
+    diganaVertex sink = thePinQueue.front ();	  
+    thePinQueue.pop_front ();
+    bool no_source = true; 
+    timerSourceVertexIterator ai (tPin);
+    while (!ai.end ()) {
+      diganaVertex source = ai.next ();
+      thePinQueue.push_back (source);        
+      no_source = false;
+    }
+    if (no_source)
+      startSet.insert (sink.getVertexId ());
+  } 
+
 }
 
 //Given a verilog read, convert the graph into a timing graph
@@ -231,12 +261,6 @@ Timer_Algo_1::TA_enumerate_data_paths () {
 }
 
 void
-Timer_Algo_1::getFanInStartPointSet (diganaVertex tPin, std::set<int> & startSet) {
-
-}
-
-
-void
 Timer_Algo_1::TA_Build_Required () {
 }
 
@@ -254,21 +278,29 @@ Timer_Algo_1::TA_write_paths () {
 
 void
 Timer_Algo_1::TA_Report_Paths (FILE * file) {
+  if (file == NULL) return;
 
+  if (!RepObj) {
+
+  } else {
+
+  } 
 }
 
 void
 Timer_Algo_1::TA_Report_To (TARepObj * obj, FILE * file) {
-
+  clearRepConeMarking ();
 }
 
 void
 Timer_Algo_1::TA_Report_Through (TARepObj * obj, FILE * file) {
+  clearRepConeMarking ();
 
 }
 
 void
 Timer_Algo_1::TA_Report_From_Through_To (TARepObj * obj, FILE * file) {
+  clearRepConeMarking ();
 
 }
 

@@ -366,6 +366,7 @@ class timerPinInfo {
 			theLibPin = NULL;
 			theDelayCalcContainer = NULL;
 			theSourceVertices.clear ();
+			clearRepConeMarking ();
 		}
 
 		timerPinInfo (std::string name, 
@@ -384,6 +385,7 @@ class timerPinInfo {
 			theLibPin = NULL;
 			theDelayCalcContainer = NULL;
 			theSourceVertices.clear ();
+			clearRepConeMarking ();
 		}
 
 		void addSourceVertex (int src) { theSourceVertices.insert (src); }
@@ -534,6 +536,10 @@ class timerPinInfo {
 
 		std::set<int> & getSourceVertexSet () { return theSourceVertices; }
 
+		void setInRepCone () { theIsInReportCone = true; }
+		bool isInRepCone () { return theIsInReportCone; }
+		void clearRepConeMarking () { theIsInReportCone = false; }
+
 	private:
 		std::string thePinName;
 		bool	    theIsClock;
@@ -548,6 +554,7 @@ class timerPinInfo {
 		diganaVertex		theReferencePin;
 		timerPinDelayContainer * theDelayCalcContainer;
 		std::set<int>	theSourceVertices;
+		bool		theIsInReportCone;
 
 		void assert_Input_Delay (timerPinTag & ctag, timerClock * clock, timerTime value) {
 		  timerPinTag * cTagN = new timerPinTag (ctag); 

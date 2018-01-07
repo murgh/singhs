@@ -63,6 +63,7 @@ class TA_Timer {
 		diganaGraph * TA_create_timing_graph (diganaGraph *);
 
 		void getFanOutEndPointSet (diganaVertex tPin, std::set<int> & endSet);
+		void getFanInStartPointSet (diganaVertex tPin, std::set<int> & startSet);
 
 		static timerPinInfo * getPinInfo (diganaVertex & tPin) {
 		  timerPinProperty P = tPin.get_property<timerPinProperty> ("Pin_Property");
@@ -93,6 +94,8 @@ class TA_Timer {
 		   }
 
 		}
+
+		void clearRepConeMarking ();
 
 	friend class Timer_Algo_1;
 	friend class Timer_Algo_2;
@@ -126,7 +129,6 @@ class Timer_Algo_1 : public TA_Timer {
 		virtual void TA_Report_To (TARepObj * obj, FILE * file);
 		virtual void TA_Report_Through (TARepObj * obj, FILE * file);
 		virtual void TA_Report_From_Through_To (TARepObj * obj, FILE * file);
-		void getFanInStartPointSet (diganaVertex tPin, std::set<int> & startSet);
 
 	private:
 		std::map<timerPinInfo *, std::list<std::list<diganaVertex> * > * > theClockEndPointPathMap;
