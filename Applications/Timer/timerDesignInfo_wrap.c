@@ -1596,7 +1596,7 @@ SWIGEXPORT void SWIG_init (CV *cv, CPerlObj *);
 
         void add_pin_direction_io (diganaGraph * circuit, int id, char * dir, int isIO, char * p);
 
-        void perform_timing_analysis (char * circuit);
+        void perform_timing_analysis (char * circuit, int algo);
 
         extern char * getLibName (timerLibData *);
 
@@ -2871,26 +2871,36 @@ XS(_wrap_add_pin_direction) {
 XS(_wrap_perform_timing_analysis) {
   {
     char *arg1 = (char *) 0 ;
+    int arg2 ;
     int res1 ;
     char *buf1 = 0 ;
     int alloc1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
     int argvi = 0;
     dXSARGS;
     
-    if ((items < 1) || (items > 1)) {
-      SWIG_croak("Usage: perform_timing_analysis(circuit);");
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: perform_timing_analysis(circuit,algo);");
     }
     res1 = SWIG_AsCharPtrAndSize(ST(0), &buf1, NULL, &alloc1);
     if (!SWIG_IsOK(res1)) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "perform_timing_analysis" "', argument " "1"" of type '" "char *""'");
     }
     arg1 = (char *)(buf1);
-    perform_timing_analysis(arg1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "perform_timing_analysis" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = (int)(val2);
+    perform_timing_analysis(arg1,arg2);
     ST(argvi) = sv_newmortal();
     if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
+    
     XSRETURN(argvi);
   fail:
     if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
+    
     SWIG_croak_null();
   }
 }

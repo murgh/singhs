@@ -6,6 +6,11 @@
 #ifndef timerUtils
 #define timerUtils
 
+
+long get_nanos(void); 
+void process_mem_usage(double& vm_usage, double& resident_set);
+
+
 typedef float timerTime;
 typedef float timerCap;
 const timerTime timerUndefDelay = -1;

@@ -25,8 +25,12 @@ BUF_X1 db26 (.A(w25), .Z(w26));
 AND2_X1 dbAnd2 (.A1(w23), .A2(w22), .ZN(w27));
 AND2_X1 dbAnd3 (.A1(w26), .A2(w27), .ZN(out[1]));
 
+BUF_X1 db27 (.A(out[0]), .Z(w28));
+DFFRS_X1 dff3 (.D(w28), .CK(wc3), .Q(w29));
+BUF_X1 db28 (.A(w29), .Z(out[0]));
 /*Clock Path*/
 BUF_X1 cb1 (.A(clk), .Z(wc1));
 BUF_X1 cb2 (.A(clk), .Z(wc2));
+BUF_X1 cb3 (.A(clk), .Z(wc3));
 
 endmodule

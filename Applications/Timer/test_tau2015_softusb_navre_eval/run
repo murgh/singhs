@@ -1,0 +1,1 @@
+perl performTiming.pl -lib test_tau2015_softusb_navre_eval/test.lib -netlist test_tau2015_softusb_navre_eval/test.v -constr test_tau2015_softusb_navre_eval/file.constr -algo 2 

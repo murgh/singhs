@@ -1,0 +1,1 @@
+perl performTiming.pl -lib test_tau2015_crc32d16N/test.lib -netlist test_tau2015_crc32d16N/test.v -constr test_tau2015_crc32d16N/file.constr -algo 1

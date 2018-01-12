@@ -625,10 +625,11 @@ sub perform_timing {
   my $netlist = shift;
   my $constr = shift;
   my $report = shift;
+  my $algo = shift;
   if ($make_file == 0) { 
 	read_timing_data ($liberty, $netlist, $constr);
 	read_report ($report); 
-	timerDesignInfo::perform_timing_analysis ("top");
+	timerDesignInfo::perform_timing_analysis ("top", $algo);
   } else {
 	open ($timer_test_case, ">timer_test.cxx"); 
 	write_timer_testcase ($liberty, $netlist, $constr);
@@ -644,6 +645,7 @@ sub parse_options {
   my $netlist_index = -1;
   my $constr_index = -1;
   my $report_index = -1;
+  my $algorithm_index = -1;
   foreach my $i (0 .. $#ARGV) {
     if ($ARGV[$i] eq "-lib") {
       $liberty_index = $i + 1;	
@@ -657,11 +659,14 @@ sub parse_options {
     if ($ARGV[$i] eq "-report") {
       $report_index = $i + 1;	
     }
+    if ($ARGV[$i] eq "-algo") {
+      $algorithm_index = $i + 1;	
+    }
   }
   if ($liberty_index == -1 || $netlist_index == -1 ||
       $#ARGV < $option_count - 1) {
     print "ERROR : performTiming usage :\n";
-    print "performTiming \n-lib <Liberty FIle needed for lib>\n-netlist <Verilog Netlist containing netlist connectivity of the design>\n-constr <Constraint File containing the clock and input delay information>\n-report <file containing commands
+    print "performTiming \n-lib <Liberty FIle needed for lib>\n-netlist <Verilog Netlist containing netlist connectivity of the design>\n-constr <Constraint File containing the clock and input delay information>\n-report <file containing commands\n-algo 1(generic)or2(tag_propagation)
     >";    
     return;
   }
@@ -672,7 +677,11 @@ sub parse_options {
   if ($report_index != -1) {
     $report = $ARGV[$report_index];
   }  
-  perform_timing ($liberty, $netlist, $constr, $report);    	  
+  my $algo = 2;
+  if ($algorithm_index != -1) {
+    $algo = $ARGV[$algorithm_index];
+  }
+  perform_timing ($liberty, $netlist, $constr, $report, $algo);
             	
 }
 

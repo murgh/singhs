@@ -48,7 +48,7 @@
 
         void add_pin_direction_io (diganaGraph * circuit, int id, char * dir, int isIO, char * p);
 
-        void perform_timing_analysis (char * circuit);
+        void perform_timing_analysis (char * circuit, int algo);
 
         extern char * getLibName (timerLibData *);
 
@@ -102,7 +102,7 @@
 
         void add_pin_direction (timerLibPin * pin, char * dir);
 
-        void perform_timing_analysis (char * circuit);
+        void perform_timing_analysis (char * circuit, int algo);
 
         timerLibArc * get_timing_arc (timerLibCell * cell, char * source, char * sink);
 

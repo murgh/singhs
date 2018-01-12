@@ -169,6 +169,8 @@ void add_timing_arc (diganaGraph * circuit, int source, int sink) {
 	circuit->add_edge (source, sink);
 	diganaVertex sinkNode = diganaVertex (sink, circuit);
 	timerPinProperty sinkP = sinkNode.get_property<timerPinProperty> ("Pin_Property");
+	diganaVertex srcNode = diganaVertex (source, circuit);
+	timerPinProperty srcP = srcNode.get_property<timerPinProperty> ("Pin_Property");
 	sinkP.getPinInfo ()->addSourceVertex (source);
 	diganaEdge E = diganaEdge (source, sink, circuit);        	
 	timerArcInfo * arcInfo = new timerArcInfo ();
@@ -276,8 +278,8 @@ void addReportObject (int from, int through, int to) {
 
 //Timer Report Call
 
-void perform_timing_analysis (char * circuit) {
+void perform_timing_analysis (char * circuit, int algo) {
 	printf ("Performing Timing Analysis\n");
 	diganaGraph * graph = get_circuit (circuit);
-	perform_timing_analysis (graph);
+	perform_timing_analysis (graph, algo);
 }

@@ -14,40 +14,19 @@
 
 #define END "CoreOutputReg_reg_31_/D"
 
-void process_mem_usage(double& vm_usage, double& resident_set)
-{
-   using std::ios_base;
-  using std::ifstream;
-  using std::string;
-
-  vm_usage     = 0.0;
-  resident_set = 0.0;
-
-  ifstream stat_stream("/proc/self/stat",ios_base::in);
-
-  string pid, comm, state, ppid, pgrp, session, tty_nr;
-  string tpgid, flags, minflt, cminflt, majflt, cmajflt;
-  string utime, stime, cutime, cstime, priority, nice;
-  string O, itrealvalue, starttime;  
-
-  unsigned long vsize;
-  long rss;
-
-  stat_stream >> pid >> comm >> state >> ppid >> pgrp >> session >> tty_nr
-	      >> tpgid >> flags >> minflt >> cminflt >> majflt >> cmajflt
-	      >> utime >> stime >> cutime >> cstime >> priority >> nice
-	      >> O >> itrealvalue >> starttime >> vsize >> rss; // don't care about the rest
-
-  stat_stream.close();
-
-  long page_size_kb = sysconf(_SC_PAGE_SIZE) / 1024; // in case x86-64 is configured to use 2MB pages
-  vm_usage     = vsize / 1024.0;
-  resident_set = rss * page_size_kb;   
-}
-
 void cleanTagPath (std::list <timerPinTag **> & list) {
   std::list <timerPinTag **>::iterator itr = list.begin ();
   timerPinTag ** path;
+  for (itr = list.begin (); itr != list.end (); ++itr) {
+    path = *itr;
+    free (path);
+  }
+  list.clear ();
+}
+
+void cleanVtxPaths (std::list<int *> & list) {
+  std::list <int *>::iterator itr = list.begin ();
+  int * path;
   for (itr = list.begin (); itr != list.end (); ++itr) {
     path = *itr;
     free (path);
@@ -62,12 +41,15 @@ std::map<std::string, timerClock *> timerConstraints::theClockMap;
 int timerPinTag::theTagCount = 0;
 int TA_Timer::theGlobalForwardMergedCount = 0;
 TARepObj * TA_Timer::RepObj = NULL;
-void perform_timing_analysis (diganaGraph * graph) {
-	double v1, v2, r1, r2;
+void perform_timing_analysis (diganaGraph * graph, int algo) {
+	double v1, v2, r1, r2 ;
+	clock_t start;
+	start = clock ();
         process_mem_usage (v1, r1);
 	sysinfo (&memInfo);
-	//TA_Timer * timer = new Timer_Algo_2 (graph);
-	TA_Timer * timer = new Timer_Algo_1 (graph);
+	TA_Timer * timer = NULL;
+	if (algo == 1) timer = new Timer_Algo_1 (graph);
+	if (algo == 2) timer = new Timer_Algo_2 (graph);
 	timer->TA_enumerate_clock_paths ();
 	timer->TA_enumerate_data_paths ();
 	timer->TA_Build_Required ();
@@ -75,7 +57,9 @@ void perform_timing_analysis (diganaGraph * graph) {
 	timer->TA_print_circuit (graph);
 	timer->TA_write_paths ();
         process_mem_usage (v2, r2);
-	printf ("*** Timing Analysis Done Virtual_MEM(%f) Residual_Mem(%f)***\n", v2-v1, r2-r1);
+	start = clock () - start;
+	float cl = ((float)start)/CLOCKS_PER_SEC;
+	printf ("*** Timing Analysis Done Time (%f sec) Virtual_MEM(%f) Residual_Mem(%f)***\n", cl, v2-v1, r2-r1);
 }
 
 timerPinProperty getPinProp (diganaVertex & vertex) {
@@ -85,6 +69,24 @@ timerPinProperty getPinProp (diganaVertex & vertex) {
 int TA_Timer::getGlobalForwardMergedCount () {
 	return theGlobalForwardMergedCount;
 }
+
+bool
+TA_Timer::getOtherPinForDPin (diganaVertex endPin, diganaVertex & otherPin) {
+  timerSourceVertexIterator ai (endPin);
+
+  diganaVertex source;
+  while (!ai.end ()) {
+    source = ai.next ();	  
+    if (getPinInfo(source)->getIsClockEnd () && 
+        getPinInfo(source)->getIdentity () == timerLatchClock) {
+      otherPin = source;
+      return true;      
+    } else
+      continue;
+  } 
+  return false;
+}
+
 
 void TA_Timer::setGlobalForwardMergedCount (int val) {
 	theGlobalForwardMergedCount = val;
@@ -101,11 +103,12 @@ void TA_Timer::clearRepConeMarking () {
 }
 
 void
-TA_Timer::getFanOutEndPointSet (diganaVertex tPin, std::set<int> & endSet) {
+TA_Timer::getFanOutEndPointSet (diganaVertex tPin, std::set<int> & endSet, bool markCone) {
   std::list<diganaVertex> thePinQueue;
   thePinQueue.push_back (tPin);
   while ( !thePinQueue.empty () ) {
     diganaVertex source = thePinQueue.front ();	  
+    if (markCone) getPinInfo (source)->setInRepCone ();
     thePinQueue.pop_front ();
     bool no_sink = true; 
     diganaGraphIterator::adjacency_iterator ai , aietr;
@@ -121,14 +124,15 @@ TA_Timer::getFanOutEndPointSet (diganaVertex tPin, std::set<int> & endSet) {
 }
 
 void
-TA_Timer::getFanInStartPointSet (diganaVertex tPin, std::set<int> & startSet) {
+TA_Timer::getFanInStartPointSet (diganaVertex tPin, std::set<int> & startSet, bool markCone) {
   std::list<diganaVertex> thePinQueue;
   thePinQueue.push_back (tPin);
   while ( !thePinQueue.empty () ) {
     diganaVertex sink = thePinQueue.front ();	  
+    if (markCone) getPinInfo (sink)->setInRepCone ();
     thePinQueue.pop_front ();
     bool no_source = true; 
-    timerSourceVertexIterator ai (tPin);
+    timerSourceVertexIterator ai (sink);
     while (!ai.end ()) {
       diganaVertex source = ai.next ();
       thePinQueue.push_back (source);        
@@ -174,6 +178,56 @@ TA_Timer::TA_create_timing_graph (diganaGraph * graph) {
 }
 
 //Timer Algorithm 1
+
+void
+Timer_Algo_1::tracePathFrom (diganaVertex pin, 
+			     std::list<int> & currPath,
+			     std::list<int *> & pathList,
+			     bool isClockPath) {
+  
+  diganaGraphIterator::adjacency_iterator ai , aietr;
+  ai.attach (pin.getVertexId (), pin.getParentGraph ()); 
+  bool no_sink = true;
+  if ( !((isClockPath && getPinInfo (pin)->getIsClockEnd ()) ||
+         (!isClockPath && getPinInfo (pin)->getIsDataEnd ()) ) ) {
+
+    for (; ai != aietr; ++ai) {
+       no_sink = false;
+       diganaVertex sink = *ai;
+       if (!getPinInfo (sink)->isInRepCone ())
+	     continue;
+       currPath.push_back (sink.getVertexId ());
+       tracePathFrom (sink, currPath, pathList, isClockPath);
+       currPath.pop_back ();
+    }
+  }
+
+  if (no_sink) {
+    int size = currPath.size (), i = 0;
+    int * path = (int *) malloc (sizeof (int) * (size +1));
+    path [size] = -1;
+    std::list<int>::iterator it;
+    for (i = 0, it = currPath.begin (); it != currPath.end (); ++it, ++i) {
+      path[i] = *it; 
+    }
+    pathList.push_back (path);
+  }
+}
+
+void
+Timer_Algo_1::traceFromSetPaths (std::set<int> & startSet, 
+				 std::list<int *> & pathList, 
+				 bool isClockPath) {
+  std::list<int> path;
+  std::set<int>::iterator itr;
+  for (itr = startSet.begin (); itr != startSet.end (); ++itr) {
+    diganaVertex start = diganaVertex (*itr, theTimingGraph);
+    path.push_back(start.getVertexId ());
+    tracePathFrom (start, path, pathList, isClockPath);    
+    path.clear ();
+  }
+}
+
 void 
 Timer_Algo_1::processClockEndPoint (diganaVertex endPoint, std::list<diganaVertex> & pinList) {
   std::map<timerPinInfo *, std::list<std::list<diganaVertex> * > * >::iterator itr;
@@ -239,6 +293,7 @@ Timer_Algo_1::performDFSAndPropagatePinTags (diganaVertex startPoint, bool isClo
 void
 Timer_Algo_1::TA_enumerate_clock_paths () {
   printf ("Enumerating Clock Paths ....\n");
+  return;
   std::list<diganaVertex>::iterator itr;
   for (itr = theClockPortList.begin (); itr != theClockPortList.end (); ++itr) {
     diganaVertex clockPort = *itr;
@@ -248,8 +303,8 @@ Timer_Algo_1::TA_enumerate_clock_paths () {
 
 void
 Timer_Algo_1::TA_enumerate_data_paths () {
-	return;
-  printf ("Enumerating Data Paths");
+  printf ("Enumerating Data Paths...\n");
+  return;
   int count = 0;
   std::list<diganaVertex>::iterator itr;
   for (itr = theStartPointList.begin (); itr != theStartPointList.end (); ++itr) {
@@ -274,6 +329,82 @@ Timer_Algo_1::TA_print_circuit (diganaGraph * graph) {
 
 void
 Timer_Algo_1::TA_write_paths () {
+  printf ("Writing Paths to file timing_report\n");
+  FILE * file = fopen ("timing_report", "w");
+  if (file == NULL) return;
+
+  TA_Report_Paths (file);
+}
+
+void
+Timer_Algo_1::writeTimingPath (FILE * file, int * timingPath, std::string header) {
+  fprintf (file, "%s", header.c_str ());
+  bool theFirstNode = true;
+  int i = 0;
+  while (timingPath[i] != -1) {
+    diganaVertex pin = diganaVertex (timingPath[i], theTimingGraph);
+    i++;
+    getPinInfo (pin)->write_timing_info (file);
+  }
+}
+
+int
+Timer_Algo_1::TA_Report_Data_Path (FILE * file, int * path, int & pathCount) {
+  char print_head [512];
+  int i = 0;
+  diganaVertex endPoint = getEndPoint (path);
+  //Is the end point a D Latch
+  if (getPinInfo(endPoint)->getIsDataEnd () && getPinInfo(endPoint)->getIdentity () == timerLatchData) {
+    diganaVertex clockPin;
+    getOtherPinForDPin (endPoint, clockPin);
+    std::set<int> clockStartSet;
+    std::list<int *> clockPath;
+    getFanInStartPointSet (clockPin, clockStartSet, true); 
+    traceFromSetPaths (clockStartSet, clockPath, true /*Clock*/);
+    clearRepConeMarking ();
+    std::list<int *>::iterator cItr;
+    for (cItr = clockPath.begin (); cItr != clockPath.end (); ++cItr) {
+      int * cPath = *cItr;
+      sprintf (print_head, "\nData Path %d:\n", ++pathCount);
+      writeTimingPath (file, path, print_head);	
+      std::string otherPathHead = std::string ("Reference Path:\n");
+      writeTimingPath (file, cPath, otherPathHead);
+    }	 
+    clockStartSet.clear ();
+    cleanVtxPaths (clockPath);
+  } else {
+    sprintf (print_head, "\nData Path %d:\n", ++pathCount);
+    writeTimingPath (file, path, print_head);	
+  }	    
+  return pathCount;
+}
+
+int
+Timer_Algo_1::TA_Report_End_Path (FILE * file, diganaVertex endPoint, bool do_marking) {
+  int pathCount = 0;
+  std::set<int> startSet;
+  std::list<int *> dataPath, clockPath;
+  getFanInStartPointSet (endPoint, startSet, do_marking); 
+  traceFromSetPaths (startSet, dataPath, false/*data*/);//Gather All Data Path To this end Point
+  clearRepConeMarking ();
+  std::list<int *>::iterator itr;
+  for (itr = dataPath.begin (); itr != dataPath.end (); ++itr) {
+    TA_Report_Data_Path (file, *itr, pathCount);	  
+  }
+  return pathCount;
+}
+
+diganaVertex
+Timer_Algo_1::getEndPoint (int * path) {
+
+  int i=0;
+  while (path[i++] != -1);
+  return diganaVertex (path[i-2], theTimingGraph);
+}
+
+diganaVertex
+Timer_Algo_1::getStartPoint (int * path) {
+  return diganaVertex (path[0], theTimingGraph);
 }
 
 void
@@ -281,8 +412,33 @@ Timer_Algo_1::TA_Report_Paths (FILE * file) {
   if (file == NULL) return;
 
   if (!RepObj) {
-
+    std::list<diganaVertex>::iterator itr;
+    int pathCount = 0;
+    for (itr = theEndPointList.begin (); itr != theEndPointList.end (); ++itr) {
+       diganaVertex endPoint = *itr;
+       printf ("End point %s ", getPinInfo (endPoint)->getName ().c_str ()); 
+       clearRepConeMarking ();
+       printf ("Path Count %d\n", TA_Report_End_Path (file, endPoint));
+    }
   } else {
+    TARepObj * t = RepObj;
+    do {
+      fprintf (file, "\n");
+      if (t->from == -1 && t->through == -1 && t->to != -1) {
+	//To	
+	TA_Report_To (t, file);	
+      }
+
+      if (t->from == -1 && t->through != -1 && t->to == -1) {
+	//Through 
+	TA_Report_Through (t, file);
+      }
+      
+      if (t->from != -1 && t->through != -1 && t->to != -1) {
+	//From Through To
+	TA_Report_From_Through_To (t, file);
+      }
+    } while ( (t = t->next) );
 
   } 
 }
@@ -290,18 +446,84 @@ Timer_Algo_1::TA_Report_Paths (FILE * file) {
 void
 Timer_Algo_1::TA_Report_To (TARepObj * obj, FILE * file) {
   clearRepConeMarking ();
+  diganaVertex endPoint = diganaVertex (obj->to, theTimingGraph);
+  fprintf (file, "*** To %s ***\n", getPinInfo (endPoint)->getName ().c_str ());
+  TA_Report_End_Path (file, endPoint);
 }
 
 void
 Timer_Algo_1::TA_Report_Through (TARepObj * obj, FILE * file) {
   clearRepConeMarking ();
-
+  int pathCount = 0;
+  diganaVertex throughPin = diganaVertex (obj->through, theTimingGraph);
+  fprintf (file, "*** Through %s ***\n", getPinInfo (throughPin)->getName ().c_str ());
+  std::set<int> startSet, endSet;
+  std::list<int *> dataPath;
+  //Cone Marking
+  getFanInStartPointSet (throughPin, startSet, true);
+  getFanOutEndPointSet (throughPin, endSet, true);
+  traceFromSetPaths (startSet, dataPath, false/*data*/);//Gather All Data Path To this end Point
+  clearRepConeMarking ();
+  std::list<int*>::iterator itr;
+  for (itr = dataPath.begin (); itr != dataPath.end (); ++itr) {
+    TA_Report_Data_Path (file, *itr, pathCount);
+  }
+  startSet.clear();
+  endSet.clear ();
+  cleanVtxPaths (dataPath);
 }
 
 void
 Timer_Algo_1::TA_Report_From_Through_To (TARepObj * obj, FILE * file) {
   clearRepConeMarking ();
+  int pathCount = 0;
+  diganaVertex startPoint = diganaVertex (obj->from, theTimingGraph);
+  diganaVertex throughPin = diganaVertex (obj->through, theTimingGraph);
+  diganaVertex endPoint = diganaVertex (obj->to, theTimingGraph);
+  fprintf (file, "*** From %s Through %s To %s ***\n", getPinInfo (startPoint)->getName ().c_str (),
+		  				       getPinInfo (throughPin)->getName ().c_str (),
+						       getPinInfo (endPoint)->getName ().c_str ());
+  std::set<int> startSet, endSet;
+  std::list<int *> dataPath;
+  //Cone Marking
+  getFanInStartPointSet (throughPin, startSet, true);
+  getFanOutEndPointSet (throughPin, endSet, true);
+  traceFromSetPaths (startSet, dataPath, false/*data*/);//Gather All Data Path To this end Point
+  clearRepConeMarking ();
+  std::list<int*>::iterator itr;
+  for (itr = dataPath.begin (); itr != dataPath.end (); ++itr) {
+    if (!isValidFromToPath (*itr, startPoint, endPoint)) continue;
+    TA_Report_Data_Path (file, *itr, pathCount);
+  }
+  startSet.clear();
+  endSet.clear ();
+  cleanVtxPaths (dataPath);
 
+}
+
+bool
+Timer_Algo_1::isValidFromToPath (int * path, diganaVertex & startPoint, diganaVertex & endPoint) {
+
+  diganaVertex pathEnd = getEndPoint (path);
+  diganaVertex pathStart = getStartPoint (path);
+
+  if (endPoint != pathEnd)
+    return false;
+
+  if (getPinInfo (startPoint)->getIsIOPort () && pathStart != startPoint)
+    return false;
+
+  if (getPinInfo (startPoint)->getIdentity () == timerLatchClock) {
+    int i = 0;
+    while (path[i] != -1) {
+      if (path[i] == startPoint.getVertexId ())
+	     return true; 
+      i++;
+    }
+    return false;
+  }
+
+  return true;
 }
 
 //Timer Algorithm 2
@@ -583,8 +805,6 @@ Timer_Algo_2::TA_write_paths () {
     //  if (strcmp (getPinInfo (endPoint)->getName().c_str (), END) != 0)
     //    continue;	    
       int v = 0; 
-      process_mem_usage (virt, res);
-      printf ("The VM(%f) RES(%f)\n", virt, res);
       computeTagPaths (file, endPoint, v);
       process_mem_usage (virt, res);
       printf ("**EndPoint %s path_count = %d VM(%f) RES(%f)**\n", getPinInfo (endPoint)->getName().c_str (), v, virt, res); 
@@ -594,6 +814,20 @@ Timer_Algo_2::TA_write_paths () {
   }
   printf ("\n");
   fclose (file); 
+}
+
+void
+Timer_Algo_2::printTagPath (std::list <timerPinTag **> & tagPaths) {
+  std::list <timerPinTag **>::iterator itr;
+  for (itr = tagPaths.begin (); itr != tagPaths.end (); ++itr) {
+    timerPinTag ** path = (*itr);
+    int i = 0;
+    while (path[i] != NULL) {
+      printf ("%d ", path[i]->getTagId ());
+      i++;
+    }
+    printf ("\n");
+  }
 }
 
 int
@@ -610,6 +844,7 @@ Timer_Algo_2::computeTagPaths (FILE * file, diganaVertex endPoint,
   std::list<timerPinTag *> tagPath, refTagPath;
   computeRecursiveTagPath (getPinInfo (endPoint)->get_pin_tag (), tagPath, tagPaths);
   tagPath.clear ();
+  //printTagPath (tagPaths);
   timerPinTag * otherTag = getPinInfo (endPoint)->get_pin_other_tag ();
   if (otherTag && otherTag->getMasterTag ())
   {	  
@@ -764,6 +999,7 @@ Timer_Algo_2::buildTimingPathFromTagPath (diganaVertex endPoint,
   //- timerPinTag * tag = theTagPath->front ();
   //- theTagPath->pop_front ();
   timerPinTag * tag = theTagPath[tagPos];
+  if (!tag) return;
   tagPos++;
   diganaVertex pin (tag->getSource (), theTimingGraph); 
   diganaVertex lastPin;
@@ -821,7 +1057,7 @@ Timer_Algo_2::TA_Report_Through (TARepObj * obj, FILE * file) {
   std::set<int> endSet;
   std::set<timerPinTag *> startSet;
   std::set<int> throughSet;
-  getFanOutEndPointSet (throughPoint, endSet);
+  getFanOutEndPointSet (throughPoint, endSet, false);
   getFanInStartTagSet (getPinInfo (throughPoint)->get_pin_tag (), startSet);
   throughSet.insert (obj->through);
   int pathCount = 0; 
@@ -862,13 +1098,26 @@ Timer_Algo_2::TA_Report_Paths (FILE * file) {
 }
 
 //For the container iterator
+timerPinTagContainer::Iterator::Iterator (timerPinTagContainer * cont) {
+  theIterSize = 0;
+  theTagSet.clear ();
+  buildExpandedTagSet (cont);	
+  std::set<timerPinTag *>::iterator itr;
+  for (itr = theTagSet.begin (); itr != theTagSet.end (); ++itr) {
+    if ( (*itr)->isDormant ()) {
+     theIterSize--;
+     continue;
+    }
+    theTagList.push_back (*itr);
+  }
+  assert (theIterSize == theTagList.size ());
+}
+
 void timerPinTagContainer::Iterator::buildExpandedTagSet (timerPinTagContainer * cont) {
   if (!cont) return;
   std::set<timerPinTag *>::iterator itr;
   for (itr = cont->getTagSet ().begin (); itr != cont->getTagSet ().end (); ++itr) {
     timerPinTag * tag = *itr;
-    if (tag->isDormant ())
-      continue;	    
     std::pair<std::set<timerPinTag *>::iterator, bool> ret = theTagSet.insert (tag);
     if (ret.second == true)
       theIterSize++;
@@ -876,12 +1125,14 @@ void timerPinTagContainer::Iterator::buildExpandedTagSet (timerPinTagContainer *
   }
 }
 
-timerSourceVertexIterator::timerSourceVertexIterator (diganaVertex v) {
+timerSourceVertexIterator::timerSourceVertexIterator (diganaVertex & v) {
   theTimingGraph = v.getParentGraph ();
-  vecPos = 0;
+  vecPos = -1;
+  int size = getPinProp (v).getPinInfo ()->getSourceVertexSet ().size ();
   std::set<int>::iterator it;
+  theSourceVertices = (int *) malloc (sizeof (int) * size);
   for (it = getPinProp (v).getPinInfo ()->getSourceVertexSet ().begin ();
        it != getPinProp (v).getPinInfo ()->getSourceVertexSet ().end (); ++it) {
-    theSourceVertices[vecPos++] = *it;
+    theSourceVertices[++vecPos] = *it;
   }
 }

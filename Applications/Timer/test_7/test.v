@@ -8,13 +8,17 @@ input  clk;
 output out;
   BUF_X1 b1 (.A(in[0]), .Z(w1));
   BUF_X1 b2 (.A(in[1]), .Z(w2));
-  AND2_X1 and1 (.A1(w1), .A2(w2a), .ZN(w3));
+  AND2_X1 and1 (.A1(w1), .A2(w2a), .ZN(w3o));
   BUF_X1 b3 (.A(w3), .Z(wd4));
   DFFRS_X1 dff1 (.D(wd4), .CK(wc2), .Q(wo));
   BUF_X1 b4 (.A(w3), .Z(w4));
   BUF_X1 b5 (.A(w4), .Z(w5));
   AND2_X1 and2 (.A1(w5), .A2(w2), .ZN(w2a));
   BUF_X1 b6 (.A(wo), .Z(out));
+  BUF_X1 b7 (.A(w3o), .Z(w3));
+  BUF_X1 b8 (.A(w3o), .Z(w3a));
+  DFFRS_X1 dff2 (.D(w3a), .CK(wc2), .Q());
+
 
   //Clock Path
   BUF_X1 c1 (.A(clk), .Z(wc1));

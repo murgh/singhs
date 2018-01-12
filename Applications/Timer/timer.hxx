@@ -13,7 +13,7 @@
 
 extern void add_clock (diganaGraph * circuit, char * name, int period, int nodeId, int isVirtual);
 
-void perform_timing_analysis (diganaGraph * graph);
+void perform_timing_analysis (diganaGraph * graph, int algo);
 
 typedef struct TARepObj {
   int from;
@@ -62,8 +62,8 @@ class TA_Timer {
 
 		diganaGraph * TA_create_timing_graph (diganaGraph *);
 
-		void getFanOutEndPointSet (diganaVertex tPin, std::set<int> & endSet);
-		void getFanInStartPointSet (diganaVertex tPin, std::set<int> & startSet);
+		void getFanOutEndPointSet (diganaVertex tPin, std::set<int> & endSet, bool markCone);
+		void getFanInStartPointSet (diganaVertex tPin, std::set<int> & startSet, bool markCone);
 
 		static timerPinInfo * getPinInfo (diganaVertex & tPin) {
 		  timerPinProperty P = tPin.get_property<timerPinProperty> ("Pin_Property");
@@ -97,6 +97,8 @@ class TA_Timer {
 
 		void clearRepConeMarking ();
 
+		bool getOtherPinForDPin (diganaVertex endDPin, diganaVertex & otherPin);
+
 	friend class Timer_Algo_1;
 	friend class Timer_Algo_2;
 
@@ -114,7 +116,9 @@ class TA_Timer {
 class Timer_Algo_1 : public TA_Timer {
 
 	public:
-		Timer_Algo_1 (diganaGraph * graph) : TA_Timer (graph) { }
+		Timer_Algo_1 (diganaGraph * graph) : TA_Timer (graph) {
+		  printf ("\n\n\t\t *** Performing Static Timing Analysis using DFS Based Enumeration *** \n\n");
+		}
 
 		virtual void TA_compute_slack ();
 		virtual void TA_print_circuit (diganaGraph *);
@@ -129,6 +133,15 @@ class Timer_Algo_1 : public TA_Timer {
 		virtual void TA_Report_To (TARepObj * obj, FILE * file);
 		virtual void TA_Report_Through (TARepObj * obj, FILE * file);
 		virtual void TA_Report_From_Through_To (TARepObj * obj, FILE * file);
+		void tracePathFrom (diganaVertex pin, std::list<int> & currPath, std::list<int *> & pathList, bool clockPath);
+		void traceFromSetPaths (std::set<int> & pinSet, std::list<int *> & pathList, bool clockPath);
+		void writeTimingPath (FILE * file, int * timingPath, std::string);
+		int TA_Report_End_Path (FILE * file, diganaVertex endPoint, bool do_marking = true);
+		int TA_Report_Data_Path (FILE * file, int * path, int & pathCount);
+		diganaVertex getEndPoint (int * path);
+		diganaVertex getStartPoint (int * path);
+		bool isValidFromToPath (int * path, diganaVertex & startPoint, diganaVertex & endPoint);
+
 
 	private:
 		std::map<timerPinInfo *, std::list<std::list<diganaVertex> * > * > theClockEndPointPathMap;
@@ -138,7 +151,9 @@ class Timer_Algo_1 : public TA_Timer {
 class Timer_Algo_2 : public TA_Timer {
 	
 	public:
-		Timer_Algo_2 (diganaGraph * graph) : TA_Timer (graph) { }
+		Timer_Algo_2 (diganaGraph * graph) : TA_Timer (graph) { 
+		  printf ("\n\n\t\t *** Performing Static Timing Analysis using End Tag Based Enumeration *** \n\n");
+		}
 
 		virtual void TA_compute_slack ();
 		virtual void TA_print_circuit (diganaGraph *);
@@ -167,23 +182,29 @@ class Timer_Algo_2 : public TA_Timer {
 		virtual void TA_Report_Through (TARepObj * obj, FILE * file);
 		virtual void TA_Report_From_Through_To (TARepObj * obj, FILE * file);
 		int getFanInStartTagSet (timerPinTag * tag, std::set<timerPinTag *> & startSet); 
+		void printTagPath (std::list <timerPinTag **> & tagPaths);
 };
 
 class timerSourceVertexIterator {
 
   public:
-	  timerSourceVertexIterator (diganaVertex v); 
+	  timerSourceVertexIterator (diganaVertex & v); 
+
+	  ~timerSourceVertexIterator () {
+	    vecPos = -1;
+	    free (theSourceVertices);
+	    theSourceVertices = NULL;
+	  }
 
 	  bool end () { return (vecPos == -1); }
 
 	  diganaVertex next () { 
-	    int id = theSourceVertices[vecPos];
-	    vecPos--;
+	    int id = theSourceVertices[vecPos--];
 	    return diganaVertex (id, theTimingGraph); 
 	  }
 
   private:
-	  std::vector<int> theSourceVertices;
+	  int * theSourceVertices;
 	  diganaGraph * theTimingGraph;
 	  int vecPos;
 };

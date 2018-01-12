@@ -71,16 +71,7 @@ class timerPinTagContainer {
 			//Later this can be cached : TODO
 			void buildExpandedTagSet (timerPinTagContainer * cont); 
 
-			Iterator (timerPinTagContainer * cont) {
-			  theIterSize = 0;
-			  theTagSet.clear ();
-			  buildExpandedTagSet (cont);	
-			  std::set<timerPinTag *>::iterator itr;
-			  for (itr = theTagSet.begin (); itr != theTagSet.end (); ++itr) {
-			    theTagList.push_back (*itr);
-			  }
-			  assert (theIterSize == theTagList.size ());
-			}
+			Iterator (timerPinTagContainer * cont); 
 
 			~Iterator () {
 			  theTagSet.clear ();
@@ -253,11 +244,32 @@ class timerPinTag {
 
 		timerPinTagContainer * get_tag_container () { return theTagContainer; }
 
+		static bool checkDormancyLoop (timerPinTag * tag1, timerPinTag * tag2) {
+		  //If one of the tags is dormant and other tag is not
+		  //If the non-dormant tag comes in the master list of the dormant tag
+		  //they cannot be in union
+		  timerPinTag * temp = NULL;
+		  if (tag1->isDormant () && !tag2->isDormant ()) {
+		    temp = tag1;
+		    while ( (temp = temp->theMasterTag) )
+		      if (temp == tag2)
+		  	return true;	      
+		  }
+		  if (tag2->isDormant () && !tag1->isDormant ()) {
+		    temp = tag2;
+		    while ( (temp = temp->theMasterTag) )
+		      if (temp == tag1)
+		  	return true;	      
+		  }
+		  return false;
+		}
+
 		static bool areTagsInUnion (timerPinTag * tag1, timerPinTag * tag2) {
 		  if (!tag1 || !tag2) return false;
 		  timerPinTag * tag1MasterTo = tag1;
 		  timerPinTag * tag2MasterTo = tag2;
 		  bool areInUnion = false;
+		  if (checkDormancyLoop (tag1, tag2)) return areInUnion;
 		  //Arrival and Required tags cannot be union
 		  if (tag1->theArrival != tag2->theArrival) return areInUnion;
 		  while (!areInUnion && (tag1MasterTo || tag2MasterTo)) {
