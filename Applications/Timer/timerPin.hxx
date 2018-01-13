@@ -3,6 +3,7 @@
 #include "timer.hxx"
 #include "timerDelay.hxx"
 #include "timerLibData.hxx"
+#include <map>
 
 #ifndef timerPin_H
 #define timerPin_H
@@ -360,6 +361,41 @@ class timerPinTag {
 		static int	theTagCount;
 };
 
+class timerPinTagTreeNode {
+  public:
+    timerPinTagTreeNode (timerPinTag * tag = NULL)
+    {
+       theTag = tag;
+       theHeight = 0;
+       theNextList.clear ();
+    }
+
+    timerPinTag * theTag;
+    int theHeight;
+    std::list<timerPinTagTreeNode *> theNextList;
+};
+
+class timerPinTagTree {
+  public:
+	  timerPinTagTree (timerPinTag * endTag)
+	  {
+	    theRoot = new timerPinTagTreeNode ();	
+	    buildTagTree (theRoot, endTag);
+	    propagateAndComputeWeight ();
+	    theTagTreeMap.clear ();
+	  }
+          
+	  timerPinTagTreeNode* insert (timerPinTagTreeNode * master, timerPinTag * tag);
+
+	  void buildTagTree (timerPinTagTreeNode * master, timerPinTag * endTag);
+
+	  void propagateAndComputeWeight ();
+
+  private:
+	  int theWeight;
+	  timerPinTagTreeNode * theRoot;
+	  std::map<timerPinTag *, timerPinTagTreeNode *> theTagTreeMap;
+};
 
 //The main timer pin info container class
 //contains all the relevant information to

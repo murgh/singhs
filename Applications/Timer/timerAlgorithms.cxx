@@ -1136,3 +1136,57 @@ timerSourceVertexIterator::timerSourceVertexIterator (diganaVertex & v) {
     theSourceVertices[++vecPos] = *it;
   }
 }
+
+//For End Tag Tree
+
+void timerPinTagTree::buildTagTree (timerPinTagTreeNode * master, timerPinTag * endTag)
+{
+  if (endTag == NULL) return;
+
+  if (endTag->get_tag_container () != NULL)
+  {
+    timerPinTag * sibTag;
+    timerPinTagContainer::Iterator itr (endTag->get_tag_container ());
+    while ( (sibTag = itr.next ()) ) {
+      if (!sibTag->isDormant ()) {
+        buildTagTree (insert (master, sibTag), sibTag->getMasterTag ());
+      }
+    }
+  } else {
+   buildTagTree (insert (master, endTag), endTag->getMasterTag ());
+  } 
+}
+
+timerPinTagTreeNode *
+timerPinTagTree::insert (timerPinTagTreeNode * master, timerPinTag * tag)
+{
+  timerPinTagTreeNode * tagNode = NULL;
+  std::map<timerPinTag *,timerPinTagTreeNode *>::iterator it;
+  it = theTagTreeMap.find (tag); 
+  if (it == theTagTreeMap.end()) {
+    tagNode = new timerPinTagTreeNode (tag); 
+    theTagTreeMap.insert (std::pair<timerPinTag *,timerPinTagTreeNode *> (tag, tagNode));
+  } else {
+    tagNode = it->second;
+  }
+  master->theNextList.push_back (tagNode);
+  return tagNode;
+}
+
+void timerPinTagTree::propagateAndComputeWeight ()
+{
+  std::list<timerPinTagTreeNode *> Queue;
+  Queue.push_back (theRoot);
+  while (Queue.size ())
+  {
+    timerPinTagTreeNode * front = Queue.front ();
+    int height = front->theHeight;
+    Queue.pop_front ();
+    std::list<timerPinTagTreeNode *>::iterator itr = front->theNextList.begin ();
+    for (; itr != front->theNextList.end (); ++itr)
+    {
+      Queue.push_back (*itr);
+      (*itr)->theHeight = height + 1;
+    }
+  }
+}
