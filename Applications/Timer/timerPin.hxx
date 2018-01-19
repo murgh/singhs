@@ -563,6 +563,10 @@ class timerPinInfo {
 		void setDFSSeen () { theDFSSeen = true; }
 		bool isDFSSeen () { return theDFSSeen; }
 
+		void clearDFSDone () { theDFSDone = false; }
+		void setDFSDone () { theDFSDone = true; }
+		bool isDFSDone () { return theDFSDone; }
+
 		void setReferencePin (diganaVertex ref) { theReferencePin = ref; }
 		diganaVertex gerReferencePin () { return theReferencePin; }
 
@@ -588,6 +592,10 @@ class timerPinInfo {
 		bool isInRepCone () { return theIsInReportCone; }
 		void clearRepConeMarking () { theIsInReportCone = false; }
 
+		void setInPath () { theIsInPath = true; }
+		bool isInPath () { return theIsInPath; }
+		void clearRepPathMarking () { theIsInPath = false; }
+
 	private:
 		std::string thePinName;
 		bool	    theIsClock;
@@ -599,10 +607,12 @@ class timerPinInfo {
 		timerPinTag * theOtherPinTag;
 		timerLibPin * theLibPin;
 		bool		theDFSSeen;
+		bool		theDFSDone;
 		diganaVertex		theReferencePin;
 		timerPinDelayContainer * theDelayCalcContainer;
 		std::set<int>	theSourceVertices;
 		bool		theIsInReportCone;
+		bool		theIsInPath;
 
 		void assert_Input_Delay (timerPinTag & ctag, timerClock * clock, timerTime value) {
 		  timerPinTag * cTagN = new timerPinTag (ctag); 
