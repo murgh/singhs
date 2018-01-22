@@ -280,25 +280,27 @@ sub create_nodes_of_graph {
     my $node_name = "";
     my $is_source;
     foreach my $cell_pin ($modcell->pins) {
-      my $net = $cell_pin->netname;
-      my $port_name = $cell_pin->portname;
-      my $port_dir = find_port_dir ($modcell->submod, $port_name);
-      $pin_type = find_pin_type ($liberty, $modcell->submod, $port_name);
-      if ($port_dir eq "in") {
-	      $is_source = 0;
-      } else {
+      foreach my $netk ($cell_pin->pinselects) {
+        my $net = $netk->netname;
+        my $port_name = $cell_pin->portname;
+        my $port_dir = find_port_dir ($modcell->submod, $port_name);
+        $pin_type = find_pin_type ($liberty, $modcell->submod, $port_name);
+        if ($port_dir eq "in") {
+  	      $is_source = 0;
+        } else {
 	      $is_source = 1;
-      }
-      my $node_name = $modcell->name . "/" . $port_name;
-      create_node_cmd ($circuit, 
-		       $is_IO,
-		       $pin_type,
-		       $node_name, 
-		       $port_dir);
+        }
+        my $node_name = $modcell->name . "/" . $port_name;
+        create_node_cmd ($circuit, 
+	  	         $is_IO,
+		         $pin_type,
+		         $node_name, 
+		         $port_dir);
 
-      pair_net_node ($is_source, 
-		     $net, 
-		     $node_name);
+        pair_net_node ($is_source, 
+		       $net, 
+		       $node_name);
+      }
     }
   }	
 }
@@ -497,7 +499,7 @@ sub pre_process_netlist_file {
 sub read_verilog_netlist {
   my $liberty = shift;
   my $verilog_file = shift;
-  my $nl = new Verilog::Netlist;
+  my $nl = new Verilog::Netlist (use_pinselects=>$false);
 
   my $file = pre_process_netlist_file ($verilog_file);
 
@@ -626,10 +628,11 @@ sub perform_timing {
   my $constr = shift;
   my $report = shift;
   my $algo = shift;
+  my $part = shift;
   if ($make_file == 0) { 
 	read_timing_data ($liberty, $netlist, $constr);
 	read_report ($report); 
-	timerDesignInfo::perform_timing_analysis ("top", $algo);
+	timerDesignInfo::perform_timing_analysis ("top", $algo, $part);
   } else {
 	open ($timer_test_case, ">timer_test.cxx"); 
 	write_timer_testcase ($liberty, $netlist, $constr);
@@ -646,6 +649,7 @@ sub parse_options {
   my $constr_index = -1;
   my $report_index = -1;
   my $algorithm_index = -1;
+  my $part_index = -1;
   foreach my $i (0 .. $#ARGV) {
     if ($ARGV[$i] eq "-lib") {
       $liberty_index = $i + 1;	
@@ -661,6 +665,9 @@ sub parse_options {
     }
     if ($ARGV[$i] eq "-algo") {
       $algorithm_index = $i + 1;	
+    }
+    if ($ARGV[$i] eq "-part") {
+      $part_index = $i + 1;	
     }
   }
   if ($liberty_index == -1 || $netlist_index == -1 ||
@@ -681,7 +688,11 @@ sub parse_options {
   if ($algorithm_index != -1) {
     $algo = $ARGV[$algorithm_index];
   }
-  perform_timing ($liberty, $netlist, $constr, $report, $algo);
+  my $part = -1;
+  if ($part_index != -1) {
+    $part = $ARGV[$part_index];
+  }
+  perform_timing ($liberty, $netlist, $constr, $report, $algo, $part);
             	
 }
 

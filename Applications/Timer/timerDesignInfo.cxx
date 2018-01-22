@@ -278,8 +278,8 @@ void addReportObject (int from, int through, int to) {
 
 //Timer Report Call
 
-void perform_timing_analysis (char * circuit, int algo) {
+void perform_timing_analysis (char * circuit, int algo, int part) {
 	printf ("Performing Timing Analysis\n");
 	diganaGraph * graph = get_circuit (circuit);
-	perform_timing_analysis (graph, algo);
+	perform_timing_analysis (graph, algo, part);
 }

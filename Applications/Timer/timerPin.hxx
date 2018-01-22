@@ -114,6 +114,7 @@ class timerPinTag {
 		  thePinTime = NULL;
 		  theRootId = theTagId;
 		  theIsDormant = false;
+		  theTagTreeId = -1;
 		}
 
 		timerPinTag (const timerPinTag & tag) {
@@ -342,6 +343,9 @@ class timerPinTag {
 		void setDormant () { theIsDormant = true; }
 		bool isDormant () { return theIsDormant; }
 
+		void setTreeId (int id) { theTagTreeId = id; }
+		int getTreeId () { return theTagTreeId; }
+
 	private:
 		//Not taking the polarity in consideration for now
 		//bool	     thePositivePolarity;
@@ -359,6 +363,7 @@ class timerPinTag {
 		timerPinTime  * thePinTime;//The pin time info
 		int		theMergeLevel;//Merge level		
 		static int	theTagCount;
+		int		theTagTreeId;
 };
 
 class timerPinTagTreeNode {
@@ -367,12 +372,12 @@ class timerPinTagTreeNode {
     {
        theTag = tag;
        theHeight = 0;
-       theNextList.clear ();
+       theNextSet.clear ();
     }
 
     timerPinTag * theTag;
     int theHeight;
-    std::list<timerPinTagTreeNode *> theNextList;
+    std::set<timerPinTagTreeNode *> theNextSet;
 };
 
 class timerPinTagTree {
@@ -391,6 +396,9 @@ class timerPinTagTree {
 
 	  void propagateAndComputeWeight ();
 
+	  void propagateTreeId (std::set<int> & idSet, int treeId);
+
+	  int getWeight () { return theWeight; }
   private:
 	  int theWeight;
 	  timerPinTagTreeNode * theRoot;
@@ -414,6 +422,7 @@ class timerPinInfo {
 			theLibPin = NULL;
 			theDelayCalcContainer = NULL;
 			theSourceVertices.clear ();
+			theTagTree = NULL;
 			clearRepConeMarking ();
 		}
 
@@ -432,6 +441,7 @@ class timerPinInfo {
 			theOtherPinTag = NULL;
 			theLibPin = NULL;
 			theDelayCalcContainer = NULL;
+			theTagTree = NULL;
 			theSourceVertices.clear ();
 			clearRepConeMarking ();
 		}
@@ -478,6 +488,8 @@ class timerPinInfo {
 						    ); 
 					   }
 
+		bool getIsLatchClock () { return (theIdentity == timerLatchClock); }
+		bool getIsLatchDataIn () { return (theIdentity == timerLatchData && theDirection == timerInput); }
 		bool getIsIOPort () const { return (theIdentity == timerIOPort); }
 		std::string getName () const { return thePinName;} 
 		timerPinDirection getDirection () const { return theDirection; }
@@ -596,6 +608,9 @@ class timerPinInfo {
 		bool isInPath () { return theIsInPath; }
 		void clearRepPathMarking () { theIsInPath = false; }
 
+		void initEndTagTree (timerPinTag * endTag) { theTagTree = new timerPinTagTree (endTag); } 
+		timerPinTagTree * getEndTagTree () { return theTagTree; }
+
 	private:
 		std::string thePinName;
 		bool	    theIsClock;
@@ -613,6 +628,7 @@ class timerPinInfo {
 		std::set<int>	theSourceVertices;
 		bool		theIsInReportCone;
 		bool		theIsInPath;
+		timerPinTagTree * theTagTree;
 
 		void assert_Input_Delay (timerPinTag & ctag, timerClock * clock, timerTime value) {
 		  timerPinTag * cTagN = new timerPinTag (ctag); 

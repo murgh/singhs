@@ -12,7 +12,7 @@
             process_mem_usage (V, R); \
             printf ("The %s VM(%f) RES(%f)\n", S, V, R);
 
-#define END "CoreOutputReg_reg_31_/D"
+#define END "PO_PERR_L_reg/D"
 
 void cleanTagPath (std::list <timerPinTag **> & list) {
   std::list <timerPinTag **>::iterator itr = list.begin ();
@@ -34,6 +34,8 @@ void cleanVtxPaths (std::list<int *> & list) {
   list.clear ();
 }
 
+clock_t init;
+#define STUBS(C) printf ("%d Clock = %f\n", C, ((float)(clock () - init))/CLOCKS_PER_SEC);
 int verbose = 0;
 struct sysinfo memInfo;
 long long globalMem = memInfo.totalram - memInfo.freeram;
@@ -41,10 +43,12 @@ std::map<std::string, timerClock *> timerConstraints::theClockMap;
 int timerPinTag::theTagCount = 0;
 int TA_Timer::theGlobalForwardMergedCount = 0;
 TARepObj * TA_Timer::RepObj = NULL;
-void perform_timing_analysis (diganaGraph * graph, int algo) {
+float totalTrace = 0.0, totalGetFanin = 0.0, totalWrite = 0.0, totalEnum = 0.0;
+void perform_timing_analysis (diganaGraph * graph, int algo, int part) {
 	double v1, v2, r1, r2 ;
-	clock_t start;
+	clock_t start, enums;
 	start = clock ();
+        init = clock ();
         process_mem_usage (v1, r1);
 	sysinfo (&memInfo);
 	TA_Timer * timer = NULL;
@@ -52,7 +56,7 @@ void perform_timing_analysis (diganaGraph * graph, int algo) {
 	if (algo == 2) timer = new Timer_Algo_2 (graph);
 	timer->TA_enumerate_clock_paths ();
 	timer->TA_enumerate_data_paths ();
-	timer->TA_Build_Required ();
+	timer->TA_Build_Required (part);
 	timer->TA_compute_slack ();
 	timer->TA_print_circuit (graph);
 	timer->TA_write_paths ();
@@ -60,6 +64,7 @@ void perform_timing_analysis (diganaGraph * graph, int algo) {
 	start = clock () - start;
 	float cl = ((float)start)/CLOCKS_PER_SEC;
 	printf ("*** Timing Analysis Done Time (%f sec) Virtual_MEM(%f) Residual_Mem(%f)***\n", cl, v2-v1, r2-r1);
+        //printf ("Fanin = %f Trace = %f Write = %f Enum = %f\n", totalGetFanin, totalTrace, totalWrite, totalEnum);
 }
 
 timerPinProperty getPinProp (diganaVertex & vertex) {
@@ -135,6 +140,7 @@ TA_Timer::getFanOutEndPointSet (diganaVertex tPin, std::set<int> & endSet, bool 
 
 void
 TA_Timer::getFanInStartPointSet (diganaVertex tPin, std::set<int> & startSet, bool markCone) {
+  clock_t start = clock ();
   std::set<int> thePinSet;
   std::set<int>::iterator pinSetItr;
   std::list<diganaVertex> thePinQueue;
@@ -147,17 +153,22 @@ TA_Timer::getFanInStartPointSet (diganaVertex tPin, std::set<int> & startSet, bo
     timerSourceVertexIterator ai (sink);
     while (!ai.end ()) {
       diganaVertex source = ai.next ();
-      pinSetItr = thePinSet.find (source.getVertexId ());
-      if (pinSetItr != thePinSet.end ())
-      	continue;	      
+      if (getPinInfo (sink)->getIsLatchDataIn () && getPinInfo (source)->getIsLatchClock ())
+	continue; 
+      //pinSetItr = thePinSet.find (source.getVertexId ());
+      //if (pinSetItr != thePinSet.end ())
+      	//continue;	      
       thePinQueue.push_back (source);   
-      thePinSet.insert (source.getVertexId ());
+      //thePinSet.insert (source.getVertexId ());
       no_source = false;
     }
     if (no_source)
       startSet.insert (sink.getVertexId ());
   } 
   thePinSet.clear ();
+  start = clock () - start;
+  float cl = ((float)start)/CLOCKS_PER_SEC;
+  totalGetFanin += cl;
 }
 
 //Given a verilog read, convert the graph into a timing graph
@@ -213,6 +224,8 @@ Timer_Algo_1::tracePathFrom (diganaVertex pin,
        getPinInfo (sink)->print ();
        if (!getPinInfo (sink)->isInRepCone () || getPinInfo (sink)->isInPath ())
 	     continue;
+       if (getPinInfo (pin)->getIsLatchClock () && getPinInfo (sink)->getIsLatchDataIn ())
+	 continue;
        currPath.push_back (sink.getVertexId ());
        getPinInfo (sink)->setInPath ();
        tracePathFrom (sink, currPath, pathList, isClockPath);
@@ -238,6 +251,7 @@ void
 Timer_Algo_1::traceFromSetPaths (std::set<int> & startSet, 
 				 std::list<int *> & pathList, 
 				 bool isClockPath) {
+  clock_t start = clock ();
   std::list<int> path;
   std::set<int>::iterator itr;
   for (itr = startSet.begin (); itr != startSet.end (); ++itr) {
@@ -246,6 +260,9 @@ Timer_Algo_1::traceFromSetPaths (std::set<int> & startSet,
     tracePathFrom (start, path, pathList, isClockPath);    
     path.clear ();
   }
+  start = clock () - start; 
+  float cl = ((float)start)/CLOCKS_PER_SEC;
+  totalTrace += cl;
 }
 
 void 
@@ -337,7 +354,7 @@ Timer_Algo_1::TA_enumerate_data_paths () {
 }
 
 void
-Timer_Algo_1::TA_Build_Required () {
+Timer_Algo_1::TA_Build_Required (int part) {
 }
 
 void
@@ -359,6 +376,7 @@ Timer_Algo_1::TA_write_paths () {
 
 void
 Timer_Algo_1::writeTimingPath (FILE * file, int * timingPath, std::string header) {
+  clock_t start = clock (); 
   fprintf (file, "%s", header.c_str ());
   bool theFirstNode = true;
   int i = 0;
@@ -367,6 +385,9 @@ Timer_Algo_1::writeTimingPath (FILE * file, int * timingPath, std::string header
     i++;
     getPinInfo (pin)->write_timing_info (file);
   }
+  start = clock () - start;
+  float cl = ((float)start)/CLOCKS_PER_SEC;
+  totalWrite += cl; 
 }
 
 int
@@ -728,16 +749,23 @@ Timer_Algo_2::TA_enumerate_data_paths () {
 }
 
 void
-Timer_Algo_2::TA_Build_Required () {
+Timer_Algo_2::TA_Build_Required (int part) {
   printf ("Build Required time At End Points ....\n");
   std::list<diganaVertex>::iterator itr;
   for (itr = theEndPointList.begin (); itr != theEndPointList.end (); ++itr) {
     diganaVertex endPoint = *itr; 
     timerPinInfo * pinInfo = getPinInfo (endPoint);
     timerPinTag * endTag = pinInfo->get_pin_tag ();
-      
+    if (part != -1) {	
+      pinInfo->initEndTagTree (endTag);
+      printf ("End Point %s(Weight=%d)\n", pinInfo->getName ().c_str (), pinInfo->getEndTagTree ()->getWeight ());   
+    }
   }  
-
+  printf ("Starting Uniquification ...\n");
+  if (part == 1) { 
+    Uniquify_end_tags ();
+    exit (0);
+  }
 }
 
 void
@@ -1117,6 +1145,31 @@ Timer_Algo_2::TA_Report_Paths (FILE * file) {
 
 }
 
+void
+Timer_Algo_2::Uniquify_end_tags ()
+{
+  int id;
+  std::set<int> otherIds;
+  std::set<int>::iterator otherIdItr;
+  int size = theEndPointList.size ();
+  UF theSet(size);
+  std::list<diganaVertex>::iterator itr;
+  for (id = 0, itr = theEndPointList.begin (); itr != theEndPointList.end (); ++itr, ++id) {
+    diganaVertex endPoint = *itr; 
+    timerPinInfo * pinInfo = getPinInfo (endPoint);
+    timerPinTag * endTag = pinInfo->get_pin_tag ();
+    endTag->setTreeId (id); 
+    getPinInfo (endPoint)->getEndTagTree ()->propagateTreeId (otherIds, id);
+    for (otherIdItr = otherIds.begin (); otherIdItr != otherIds.end (); ++otherIdItr)  
+    {
+      int oId = *otherIdItr;
+      theSet.merge (oId, id);	 
+    }
+    otherIds.clear ();
+  }
+  printf ("The number of partitions = %d\n", theSet.count());
+}
+
 //For the container iterator
 timerPinTagContainer::Iterator::Iterator (timerPinTagContainer * cont) {
   theIterSize = 0;
@@ -1189,7 +1242,7 @@ timerPinTagTree::insert (timerPinTagTreeNode * master, timerPinTag * tag)
   } else {
     tagNode = it->second;
   }
-  master->theNextList.push_back (tagNode);
+  master->theNextSet.insert (tagNode);
   return tagNode;
 }
 
@@ -1202,11 +1255,35 @@ void timerPinTagTree::propagateAndComputeWeight ()
     timerPinTagTreeNode * front = Queue.front ();
     int height = front->theHeight;
     Queue.pop_front ();
-    std::list<timerPinTagTreeNode *>::iterator itr = front->theNextList.begin ();
-    for (; itr != front->theNextList.end (); ++itr)
+    std::set<timerPinTagTreeNode *>::iterator itr = front->theNextSet.begin ();
+    for (; itr != front->theNextSet.end (); ++itr)
     {
       Queue.push_back (*itr);
       (*itr)->theHeight = height + 1;
+      theWeight += (*itr)->theHeight;
     }
   }
+}
+
+
+void timerPinTagTree::propagateTreeId (std::set<int> & idSet, int treeId)
+{
+  std::list<timerPinTagTreeNode *> Queue;
+  Queue.push_back (theRoot);
+  while (Queue.size ())
+  {
+    timerPinTagTreeNode * front = Queue.front ();
+    Queue.pop_front ();
+    std::set<timerPinTagTreeNode *>::iterator itr = front->theNextSet.begin ();
+    for (; itr != front->theNextSet.end (); ++itr)
+    {
+      Queue.push_back (*itr);
+      if ((*itr)->theTag->getTreeId () == -1)
+        (*itr)->theTag->setTreeId (treeId);
+      else
+	if ((*itr)->theTag->isDataPath ())
+	  idSet.insert ((*itr)->theTag->getTreeId ());		
+    }
+  }
+  
 }

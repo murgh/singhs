@@ -1,0 +1,3 @@
+createClock clock1 10 clk
+inputDelay 1 in
+outputDelay 3 out

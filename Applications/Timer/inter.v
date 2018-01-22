@@ -1,552 +1,544 @@
-module INV_X1 ();
+module in01s01 ();
   output o;
   input a;
 endmodule
 
-module INV_X2 ();
+module in01s02 ();
   output o;
   input a;
 endmodule
 
-module INV_X3 ();
+module in01s03 ();
   output o;
   input a;
 endmodule
 
-module INV_X4 ();
+module in01s04 ();
   output o;
   input a;
 endmodule
 
-module INV_X6 ();
+module in01s06 ();
   output o;
   input a;
 endmodule
 
-module INV_X8 ();
+module in01s08 ();
   output o;
   input a;
 endmodule
 
-module INV_X10 ();
+module in01s10 ();
   output o;
   input a;
 endmodule
 
-module INV_X20 ();
+module in01s20 ();
   output o;
   input a;
 endmodule
 
-module INV_X40 ();
+module in01s40 ();
   output o;
   input a;
 endmodule
 
-module INV_X80 ();
+module in01s80 ();
   output o;
   input a;
 endmodule
 
-module INV_Y1 ();
+module in01m01 ();
   output o;
   input a;
 endmodule
 
-module INV_Y2 ();
+module in01m02 ();
   output o;
   input a;
 endmodule
 
-module INV_Y3 ();
+module in01m03 ();
   output o;
   input a;
 endmodule
 
-module INV_Y4 ();
+module in01m04 ();
   output o;
   input a;
 endmodule
 
-module INV_Y6 ();
+module in01m06 ();
   output o;
   input a;
 endmodule
 
-module INV_Y8 ();
+module in01m08 ();
   output o;
   input a;
 endmodule
 
-module INV_Y10 ();
+module in01m10 ();
   output o;
   input a;
 endmodule
 
-module INV_Y20 ();
+module in01m20 ();
   output o;
   input a;
 endmodule
 
-module INV_Y40 ();
+module in01m40 ();
   output o;
   input a;
 endmodule
 
-module INV_Y80 ();
+module in01m80 ();
   output o;
   input a;
 endmodule
 
-module INV_Z1 ();
+module in01f01 ();
   output o;
   input a;
 endmodule
 
-module INV_Z2 ();
+module in01f02 ();
   output o;
   input a;
 endmodule
 
-module INV_Z3 ();
+module in01f03 ();
   output o;
   input a;
 endmodule
 
-module INV_Z4 ();
+module in01f04 ();
   output o;
   input a;
 endmodule
 
-module INV_Z6 ();
+module in01f06 ();
   output o;
   input a;
 endmodule
 
-module INV_Z8 ();
+module in01f08 ();
   output o;
   input a;
 endmodule
 
-module INV_Z10 ();
+module in01f10 ();
   output o;
   input a;
 endmodule
 
-module INV_Z20 ();
+module in01f20 ();
   output o;
   input a;
 endmodule
 
-module INV_Z40 ();
+module in01f40 ();
   output o;
   input a;
 endmodule
 
-module INV_Z80 ();
+module in01f80 ();
   output o;
   input a;
 endmodule
 
-module NAND2_X1 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NAND2_X2 ();
+module na02s01 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_X3 ();
+module na02s02 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_X4 ();
+module na02s03 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_X6 ();
+module na02s04 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_X8 ();
+module na02s06 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_X10 ();
+module na02s08 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_X20 ();
+module na02s10 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_X40 ();
+module na02s20 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_X80 ();
+module na02s40 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Y01 ();
+module na02s80 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Y02 ();
+module na02m01 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Y03 ();
+module na02m02 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Y04 ();
+module na02m03 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Y06 ();
+module na02m04 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Y08 ();
+module na02m06 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Y10 ();
+module na02m08 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Y20 ();
+module na02m10 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Y40 ();
+module na02m20 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Y80 ();
+module na02m40 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Z01 ();
+module na02m80 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Z02 ();
+module na02f01 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Z03 ();
+module na02f02 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Z04 ();
+module na02f03 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Z06 ();
+module na02f04 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Z08 ();
+module na02f06 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Z10 ();
+module na02f08 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Z20 ();
+module na02f10 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Z40 ();
+module na02f20 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND2_Z80 ();
+module na02f40 ();
   output o;
   input a;
   input b;
 endmodule
 
-module NAND3_X1 ();
+module na02f80 ();
   output o;
   input a;
   input b;
-  input c;
 endmodule
 
-module NAND3_X2 ();
+module na03s01 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_X3 ();
+module na03s02 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_X4 ();
+module na03s03 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_X6 ();
+module na03s04 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_X8 ();
+module na03s06 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_X10 ();
+module na03s08 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_X20 ();
+module na03s10 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_X40 ();
+module na03s20 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_X80 ();
+module na03s40 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Y1 ();
+module na03s80 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Y2 ();
+module na03m01 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Y3 ();
+module na03m02 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Y4 ();
+module na03m03 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Y6 ();
+module na03m04 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Y8 ();
+module na03m06 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Y10 ();
+module na03m08 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Y20 ();
+module na03m10 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Y40 ();
+module na03m20 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Y80 ();
+module na03m40 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Z1 ();
+module na03m80 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Z2 ();
+module na03f01 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Z3 ();
+module na03f02 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Z4 ();
+module na03f03 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Z6 ();
+module na03f04 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Z8 ();
+module na03f06 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Z10 ();
+module na03f08 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Z20 ();
+module na03f10 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Z40 ();
+module na03f20 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND3_Z80 ();
+module na03f40 ();
   output o;
   input a;
   input b;
   input c;
 endmodule
 
-module NAND4_X1 ();
+module na03f80 ();
   output o;
   input a;
   input b;
   input c;
-  input d;
 endmodule
 
-module NAND4_X2 ();
+module na04s01 ();
   output o;
   input a;
   input b;
@@ -554,7 +546,7 @@ module NAND4_X2 ();
   input d;
 endmodule
 
-module NAND4_X3 ();
+module na04s02 ();
   output o;
   input a;
   input b;
@@ -562,7 +554,7 @@ module NAND4_X3 ();
   input d;
 endmodule
 
-module NAND4_X4 ();
+module na04s03 ();
   output o;
   input a;
   input b;
@@ -570,7 +562,7 @@ module NAND4_X4 ();
   input d;
 endmodule
 
-module NAND4_X6 ();
+module na04s04 ();
   output o;
   input a;
   input b;
@@ -578,7 +570,7 @@ module NAND4_X6 ();
   input d;
 endmodule
 
-module NAND4_X8 ();
+module na04s06 ();
   output o;
   input a;
   input b;
@@ -586,7 +578,7 @@ module NAND4_X8 ();
   input d;
 endmodule
 
-module NAND4_X10 ();
+module na04s08 ();
   output o;
   input a;
   input b;
@@ -594,7 +586,7 @@ module NAND4_X10 ();
   input d;
 endmodule
 
-module NAND4_X20 ();
+module na04s10 ();
   output o;
   input a;
   input b;
@@ -602,7 +594,7 @@ module NAND4_X20 ();
   input d;
 endmodule
 
-module NAND4_X40 ();
+module na04s20 ();
   output o;
   input a;
   input b;
@@ -610,7 +602,7 @@ module NAND4_X40 ();
   input d;
 endmodule
 
-module NAND4_X80 ();
+module na04s40 ();
   output o;
   input a;
   input b;
@@ -618,7 +610,7 @@ module NAND4_X80 ();
   input d;
 endmodule
 
-module NAND4_Y1 ();
+module na04s80 ();
   output o;
   input a;
   input b;
@@ -626,7 +618,7 @@ module NAND4_Y1 ();
   input d;
 endmodule
 
-module NAND4_Y2 ();
+module na04m01 ();
   output o;
   input a;
   input b;
@@ -634,7 +626,7 @@ module NAND4_Y2 ();
   input d;
 endmodule
 
-module NAND4_Y3 ();
+module na04m02 ();
   output o;
   input a;
   input b;
@@ -642,7 +634,7 @@ module NAND4_Y3 ();
   input d;
 endmodule
 
-module NAND4_Y4 ();
+module na04m03 ();
   output o;
   input a;
   input b;
@@ -650,7 +642,7 @@ module NAND4_Y4 ();
   input d;
 endmodule
 
-module NAND4_Y6 ();
+module na04m04 ();
   output o;
   input a;
   input b;
@@ -658,7 +650,7 @@ module NAND4_Y6 ();
   input d;
 endmodule
 
-module NAND4_Y8 ();
+module na04m06 ();
   output o;
   input a;
   input b;
@@ -666,7 +658,7 @@ module NAND4_Y8 ();
   input d;
 endmodule
 
-module NAND4_Y10 ();
+module na04m08 ();
   output o;
   input a;
   input b;
@@ -674,7 +666,7 @@ module NAND4_Y10 ();
   input d;
 endmodule
 
-module NAND4_Y20 ();
+module na04m10 ();
   output o;
   input a;
   input b;
@@ -682,7 +674,7 @@ module NAND4_Y20 ();
   input d;
 endmodule
 
-module NAND4_Y40 ();
+module na04m20 ();
   output o;
   input a;
   input b;
@@ -690,7 +682,7 @@ module NAND4_Y40 ();
   input d;
 endmodule
 
-module NAND4_Y80 ();
+module na04m40 ();
   output o;
   input a;
   input b;
@@ -698,7 +690,7 @@ module NAND4_Y80 ();
   input d;
 endmodule
 
-module NAND4_Z1 ();
+module na04m80 ();
   output o;
   input a;
   input b;
@@ -706,7 +698,7 @@ module NAND4_Z1 ();
   input d;
 endmodule
 
-module NAND4_Z2 ();
+module na04f01 ();
   output o;
   input a;
   input b;
@@ -714,7 +706,7 @@ module NAND4_Z2 ();
   input d;
 endmodule
 
-module NAND4_Z3 ();
+module na04f02 ();
   output o;
   input a;
   input b;
@@ -722,7 +714,7 @@ module NAND4_Z3 ();
   input d;
 endmodule
 
-module NAND4_Z4 ();
+module na04f03 ();
   output o;
   input a;
   input b;
@@ -730,7 +722,7 @@ module NAND4_Z4 ();
   input d;
 endmodule
 
-module NAND4_Z6 ();
+module na04f04 ();
   output o;
   input a;
   input b;
@@ -738,7 +730,7 @@ module NAND4_Z6 ();
   input d;
 endmodule
 
-module NAND4_Z8 ();
+module na04f06 ();
   output o;
   input a;
   input b;
@@ -746,7 +738,7 @@ module NAND4_Z8 ();
   input d;
 endmodule
 
-module NAND4_Z10 ();
+module na04f08 ();
   output o;
   input a;
   input b;
@@ -754,7 +746,7 @@ module NAND4_Z10 ();
   input d;
 endmodule
 
-module NAND4_Z20 ();
+module na04f10 ();
   output o;
   input a;
   input b;
@@ -762,7 +754,7 @@ module NAND4_Z20 ();
   input d;
 endmodule
 
-module NAND4_Z40 ();
+module na04f20 ();
   output o;
   input a;
   input b;
@@ -770,7 +762,7 @@ module NAND4_Z40 ();
   input d;
 endmodule
 
-module NAND4_Z80 ();
+module na04f40 ();
   output o;
   input a;
   input b;
@@ -778,397 +770,7 @@ module NAND4_Z80 ();
   input d;
 endmodule
 
-module NOR2_X1 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_X2 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_X3 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_X4 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_X6 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_X8 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_X10 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_X20 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_X40 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_X80 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Y1 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Y2 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Y3 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Y4 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Y6 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Y8 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Y10 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Y20 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Y40 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Y80 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Z1 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Z2 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Z3 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Z4 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Z6 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Z8 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Z10 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Z20 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Z40 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR2_Z80 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module NOR3_X1 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_X2 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_X3 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_X4 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_X6 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_X8 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_X10 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_X20 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_X40 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_X80 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Y1 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Y2 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Y3 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Y4 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Y6 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Y8 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Y10 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Y20 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Y40 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Y80 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Z1 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Z2 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Z3 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Z4 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Z6 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Z8 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Z10 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Z20 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Z40 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR3_Z80 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module NOR4_X1 ();
+module na04f80 ();
   output o;
   input a;
   input b;
@@ -1176,7 +778,397 @@ module NOR4_X1 ();
   input d;
 endmodule
 
-module NOR4_X2 ();
+module no02s01 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02s02 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02s03 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02s04 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02s06 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02s08 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02s10 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02s20 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02s40 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02s80 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02m01 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02m02 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02m03 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02m04 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02m06 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02m08 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02m10 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02m20 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02m40 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02m80 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02f01 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02f02 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02f03 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02f04 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02f06 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02f08 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02f10 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02f20 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02f40 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no02f80 ();
+  output o;
+  input a;
+  input b;
+endmodule
+
+module no03s01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03s02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03s03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03s04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03s06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03s08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03s10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03s20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03s40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03s80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03m01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03m02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03m03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03m04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03m06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03m08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03m10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03m20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03m40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03m80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03f01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03f02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03f03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03f04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03f06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03f08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03f10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03f20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03f40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no03f80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module no04s01 ();
   output o;
   input a;
   input b;
@@ -1184,7 +1176,7 @@ module NOR4_X2 ();
   input d;
 endmodule
 
-module NOR4_X3 ();
+module no04s02 ();
   output o;
   input a;
   input b;
@@ -1192,7 +1184,7 @@ module NOR4_X3 ();
   input d;
 endmodule
 
-module NOR4_X4 ();
+module no04s03 ();
   output o;
   input a;
   input b;
@@ -1200,7 +1192,7 @@ module NOR4_X4 ();
   input d;
 endmodule
 
-module NOR4_X6 ();
+module no04s04 ();
   output o;
   input a;
   input b;
@@ -1208,7 +1200,7 @@ module NOR4_X6 ();
   input d;
 endmodule
 
-module NOR4_X8 ();
+module no04s06 ();
   output o;
   input a;
   input b;
@@ -1216,7 +1208,7 @@ module NOR4_X8 ();
   input d;
 endmodule
 
-module NOR4_X10 ();
+module no04s08 ();
   output o;
   input a;
   input b;
@@ -1224,7 +1216,7 @@ module NOR4_X10 ();
   input d;
 endmodule
 
-module NOR4_X20 ();
+module no04s10 ();
   output o;
   input a;
   input b;
@@ -1232,7 +1224,7 @@ module NOR4_X20 ();
   input d;
 endmodule
 
-module NOR4_X40 ();
+module no04s20 ();
   output o;
   input a;
   input b;
@@ -1240,7 +1232,7 @@ module NOR4_X40 ();
   input d;
 endmodule
 
-module NOR4_X80 ();
+module no04s40 ();
   output o;
   input a;
   input b;
@@ -1248,7 +1240,7 @@ module NOR4_X80 ();
   input d;
 endmodule
 
-module NOR4_Y1 ();
+module no04s80 ();
   output o;
   input a;
   input b;
@@ -1256,7 +1248,7 @@ module NOR4_Y1 ();
   input d;
 endmodule
 
-module NOR4_Y2 ();
+module no04m01 ();
   output o;
   input a;
   input b;
@@ -1264,7 +1256,7 @@ module NOR4_Y2 ();
   input d;
 endmodule
 
-module NOR4_Y3 ();
+module no04m02 ();
   output o;
   input a;
   input b;
@@ -1272,7 +1264,7 @@ module NOR4_Y3 ();
   input d;
 endmodule
 
-module NOR4_Y4 ();
+module no04m03 ();
   output o;
   input a;
   input b;
@@ -1280,7 +1272,7 @@ module NOR4_Y4 ();
   input d;
 endmodule
 
-module NOR4_Y6 ();
+module no04m04 ();
   output o;
   input a;
   input b;
@@ -1288,7 +1280,7 @@ module NOR4_Y6 ();
   input d;
 endmodule
 
-module NOR4_Y8 ();
+module no04m06 ();
   output o;
   input a;
   input b;
@@ -1296,7 +1288,7 @@ module NOR4_Y8 ();
   input d;
 endmodule
 
-module NOR4_Y10 ();
+module no04m08 ();
   output o;
   input a;
   input b;
@@ -1304,7 +1296,7 @@ module NOR4_Y10 ();
   input d;
 endmodule
 
-module NOR4_Y20 ();
+module no04m10 ();
   output o;
   input a;
   input b;
@@ -1312,7 +1304,7 @@ module NOR4_Y20 ();
   input d;
 endmodule
 
-module NOR4_Y40 ();
+module no04m20 ();
   output o;
   input a;
   input b;
@@ -1320,7 +1312,7 @@ module NOR4_Y40 ();
   input d;
 endmodule
 
-module NOR4_Y80 ();
+module no04m40 ();
   output o;
   input a;
   input b;
@@ -1328,7 +1320,7 @@ module NOR4_Y80 ();
   input d;
 endmodule
 
-module NOR4_Z1 ();
+module no04m80 ();
   output o;
   input a;
   input b;
@@ -1336,7 +1328,7 @@ module NOR4_Z1 ();
   input d;
 endmodule
 
-module NOR4_Z2 ();
+module no04f01 ();
   output o;
   input a;
   input b;
@@ -1344,7 +1336,7 @@ module NOR4_Z2 ();
   input d;
 endmodule
 
-module NOR4_Z3 ();
+module no04f02 ();
   output o;
   input a;
   input b;
@@ -1352,7 +1344,7 @@ module NOR4_Z3 ();
   input d;
 endmodule
 
-module NOR4_Z4 ();
+module no04f03 ();
   output o;
   input a;
   input b;
@@ -1360,7 +1352,7 @@ module NOR4_Z4 ();
   input d;
 endmodule
 
-module NOR4_Z6 ();
+module no04f04 ();
   output o;
   input a;
   input b;
@@ -1368,7 +1360,7 @@ module NOR4_Z6 ();
   input d;
 endmodule
 
-module NOR4_Z8 ();
+module no04f06 ();
   output o;
   input a;
   input b;
@@ -1376,7 +1368,7 @@ module NOR4_Z8 ();
   input d;
 endmodule
 
-module NOR4_Z10 ();
+module no04f08 ();
   output o;
   input a;
   input b;
@@ -1384,7 +1376,7 @@ module NOR4_Z10 ();
   input d;
 endmodule
 
-module NOR4_Z20 ();
+module no04f10 ();
   output o;
   input a;
   input b;
@@ -1392,7 +1384,7 @@ module NOR4_Z20 ();
   input d;
 endmodule
 
-module NOR4_Z40 ();
+module no04f20 ();
   output o;
   input a;
   input b;
@@ -1400,7 +1392,7 @@ module NOR4_Z40 ();
   input d;
 endmodule
 
-module NOR4_Z80 ();
+module no04f40 ();
   output o;
   input a;
   input b;
@@ -1408,167 +1400,935 @@ module NOR4_Z80 ();
   input d;
 endmodule
 
-module DFF_X80 ();
-  output q;
+module no04f80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao12s01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12s02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12s03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12s04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12s06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12s08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12s10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12s20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12s40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12s80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12m01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12m02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12m03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12m04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12m06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12m08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12m10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12m20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12m40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12m80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12f01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12f02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12f03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12f04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12f06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12f08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12f10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12f20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12f40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao12f80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module ao22s01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22s02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22s03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22s04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22s06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22s08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22s10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22s20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22s40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22s80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22m01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22m02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22m03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22m04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22m06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22m08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22m10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22m20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22m40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22m80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22f01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22f02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22f03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22f04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22f06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22f08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22f10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22f20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22f40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ao22f80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa12s01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12s02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12s03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12s04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12s06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12s08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12s10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12s20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12s40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12s80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12m01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12m02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12m03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12m04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12m06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12m08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12m10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12m20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12m40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12m80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12f01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12f02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12f03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12f04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12f06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12f08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12f10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12f20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12f40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa12f80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+endmodule
+
+module oa22s01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22s02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22s03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22s04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22s06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22s08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22s10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22s20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22s40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22s80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22m01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22m02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22m03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22m04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22m06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22m08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22m10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22m20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22m40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22m80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22f01 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22f02 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22f03 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22f04 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22f06 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22f08 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22f10 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22f20 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22f40 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module oa22f80 ();
+  output o;
+  input a;
+  input b;
+  input c;
+  input d;
+endmodule
+
+module ms00f10 ();
   input ck;
   input d;
-endmodule
-
-module BUF_X1 ();
-  output o;
-  input a;
-endmodule
-
-module BUF_X2 ();
-  output o;
-  input a;
-endmodule
-
-module BUF_X3 ();
-  output o;
-  input a;
-endmodule
-
-module BUF_X4 ();
-  output o;
-  input a;
-endmodule
-
-module BUF_X6 ();
-  output o;
-  input a;
-endmodule
-
-module BUF_X8 ();
-  output o;
-  input a;
-endmodule
-
-module BUF_X10 ();
-  output o;
-  input a;
-endmodule
-
-module BUF_X20 ();
-  output o;
-  input a;
-endmodule
-
-module BUF_X40 ();
-  output o;
-  input a;
-endmodule
-
-module BUF_X80 ();
-  output o;
-  input a;
-endmodule
-
-module DFF_X160 ();
   output q;
+endmodule
+
+module ms00f20 ();
   input ck;
   input d;
-endmodule
-
-module DFFN_X80 ();
   output q;
-  input ckn;
-  input d;
 endmodule
 
-module DFFN_X160 ();
+module ms00f40 ();
+  input ck;
+  input d;
   output q;
-  input ckn;
+endmodule
+
+module ms00f80 ();
+  output o;
+  input ck;
   input d;
-endmodule
-
-module OR2_X1 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module OR3_X1 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module OR4_X1 ();
-  output o;
-  input a;
-  input b;
-  input c;
-  input d;
-endmodule
-
-module AND2_X1 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module AND3_X1 ();
-  output o;
-  input a;
-  input b;
-  input c;
-endmodule
-
-module AND4_X1 ();
-  output o;
-  input a;
-  input b;
-  input c;
-  input d;
-endmodule
-
-module XOR2_X1 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module XNOR2_X1 ();
-  output o;
-  input a;
-  input b;
-endmodule
-
-module fflopd ();
-  input D;
-  input CK;
-  output Q;
-endmodule
-
-module fflopd_2 ();
-  input D;
-  input CK;
-  output Q;
-endmodule
-
-module fflopd_3 ();
-  input D;
-  input CK;
-  output Q;
-endmodule
-
-module fflopd_ckn ();
-  input D;
-  input CKN;
-  output Q;
-endmodule
-
-module fflopd_ckn_2 ();
-  input D;
-  input CKN;
-  output Q;
-endmodule
-
-module fflopd_ckn_3 ();
-  input D;
-  input CKN;
-  output Q;
 endmodule
 

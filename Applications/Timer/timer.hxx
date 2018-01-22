@@ -13,7 +13,7 @@
 
 extern void add_clock (diganaGraph * circuit, char * name, int period, int nodeId, int isVirtual);
 
-void perform_timing_analysis (diganaGraph * graph, int algo);
+void perform_timing_analysis (diganaGraph * graph, int algo, int part);
 
 typedef struct TARepObj {
   int from;
@@ -54,7 +54,7 @@ class TA_Timer {
 		virtual void TA_write_paths () { };
 		virtual void TA_enumerate_clock_paths () { };
 		virtual void TA_enumerate_data_paths () { };
-		virtual void TA_Build_Required () { };
+		virtual void TA_Build_Required (int) { };
 		virtual void TA_Report_Paths (FILE * file) { };
 		virtual void TA_Report_To (TARepObj * obj, FILE * file) { }
 		virtual void TA_Report_Through (TARepObj * obj, FILE * file) { }
@@ -125,7 +125,7 @@ class Timer_Algo_1 : public TA_Timer {
 		virtual void TA_write_paths ();
 		virtual void TA_enumerate_clock_paths ();
 		virtual void TA_enumerate_data_paths ();
-		virtual void TA_Build_Required ();
+		virtual void TA_Build_Required (int);
 		void performDFSAndPropagatePinTags (diganaVertex startPoint, bool isClock);
 		void processClockEndPoint (diganaVertex endPoint, std::list<diganaVertex> & timingPoints);
 		void processDataEndPoint (diganaVertex endPoint, std::list<diganaVertex> & timingPoints);
@@ -160,7 +160,7 @@ class Timer_Algo_2 : public TA_Timer {
 		virtual void TA_write_paths ();
 		virtual void TA_enumerate_clock_paths ();
 		virtual void TA_enumerate_data_paths ();
-		virtual void TA_Build_Required ();
+		virtual void TA_Build_Required (int);
 
 		bool checkAndPerformTagSplitting (diganaVertex & timerPin, bool);
 		void performBFSAndPropagatePinTags (diganaVertex pin, bool);
@@ -183,6 +183,7 @@ class Timer_Algo_2 : public TA_Timer {
 		virtual void TA_Report_From_Through_To (TARepObj * obj, FILE * file);
 		int getFanInStartTagSet (timerPinTag * tag, std::set<timerPinTag *> & startSet); 
 		void printTagPath (std::list <timerPinTag **> & tagPaths);
+		void Uniquify_end_tags ();
 };
 
 class timerSourceVertexIterator {
