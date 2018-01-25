@@ -64,8 +64,8 @@ class timerConstraints {
 	  std::map<std::string, timerClock *>::iterator it = theClockMap.find(clockName);
 	  if (it != theClockMap.end ()) {
 	    clock = it->second;  
-	    printf ("WARNING : Clock %s is already defined on pin/port %s\n", 
-		     clock->getName ().c_str (), clock->getSourceName ().c_str ());	
+	    //printf ("WARNING : Clock %s is already defined on pin/port %s\n", 
+		     //clock->getName ().c_str (), clock->getSourceName ().c_str ());	
 	    return clock;
 	  } 
 	  return clock;

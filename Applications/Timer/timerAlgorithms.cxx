@@ -34,8 +34,9 @@ void cleanVtxPaths (std::list<int *> & list) {
   list.clear ();
 }
 
-clock_t init;
-#define STUBS(C) printf ("%d Clock = %f\n", C, ((float)(clock () - init))/CLOCKS_PER_SEC);
+clock_t global_clock_init;
+#define STUBS(S) printf ("%s Clock = %f\n", S, ((float)(clock () - global_clock_init))/CLOCKS_PER_SEC);
+
 int verbose = 0;
 struct sysinfo memInfo;
 long long globalMem = memInfo.totalram - memInfo.freeram;
@@ -48,7 +49,7 @@ void perform_timing_analysis (diganaGraph * graph, int algo, int part) {
 	double v1, v2, r1, r2 ;
 	clock_t start, enums;
 	start = clock ();
-        init = clock ();
+        global_clock_init = clock ();
         process_mem_usage (v1, r1);
 	sysinfo (&memInfo);
 	TA_Timer * timer = NULL;
@@ -59,6 +60,7 @@ void perform_timing_analysis (diganaGraph * graph, int algo, int part) {
 	timer->TA_Build_Required (part);
 	timer->TA_compute_slack ();
 	timer->TA_print_circuit (graph);
+	STUBS ("Pre-Write COST");
 	timer->TA_write_paths ();
         process_mem_usage (v2, r2);
 	start = clock () - start;
@@ -466,6 +468,12 @@ Timer_Algo_1::TA_Report_Paths (FILE * file) {
     TARepObj * t = RepObj;
     do {
       fprintf (file, "\n");
+
+      if (t->printTime == 1) {
+	STUBS("Command COST");
+	continue;	
+      }
+
       if (t->from == -1 && t->through == -1 && t->to != -1) {
 	//To	
 	TA_Report_To (t, file);	
@@ -828,6 +836,12 @@ Timer_Algo_2::TA_write_paths () {
     TARepObj * t = RepObj;
     do {
       fprintf (file, "\n");
+
+      if (t->printTime == 1) {
+	STUBS("Command COST");
+	continue;	
+      }
+
       if (t->from == -1 && t->through == -1 && t->to != -1) {
 	//To	
 	TA_Report_To (t, file);	

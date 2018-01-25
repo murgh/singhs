@@ -1606,7 +1606,7 @@ SWIGEXPORT void SWIG_init (CV *cv, CPerlObj *);
 
         void add_IO_delay (diganaGraph * circuit, float value, int source, int input); 
 
-        void addReportObject (int from, int through, int to);
+        void addReportObject (int from, int through, int to, int time);
 
 
 SWIGINTERN swig_type_info*
@@ -3135,17 +3135,20 @@ XS(_wrap_addReportObject) {
     int arg1 ;
     int arg2 ;
     int arg3 ;
+    int arg4 ;
     int val1 ;
     int ecode1 = 0 ;
     int val2 ;
     int ecode2 = 0 ;
     int val3 ;
     int ecode3 = 0 ;
+    int val4 ;
+    int ecode4 = 0 ;
     int argvi = 0;
     dXSARGS;
     
-    if ((items < 3) || (items > 3)) {
-      SWIG_croak("Usage: addReportObject(from,through,to);");
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: addReportObject(from,through,to,time);");
     }
     ecode1 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
     if (!SWIG_IsOK(ecode1)) {
@@ -3162,13 +3165,20 @@ XS(_wrap_addReportObject) {
       SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "addReportObject" "', argument " "3"" of type '" "int""'");
     } 
     arg3 = (int)(val3);
-    addReportObject(arg1,arg2,arg3);
+    ecode4 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "addReportObject" "', argument " "4"" of type '" "int""'");
+    } 
+    arg4 = (int)(val4);
+    addReportObject(arg1,arg2,arg3,arg4);
     ST(argvi) = sv_newmortal();
+    
     
     
     
     XSRETURN(argvi);
   fail:
+    
     
     
     

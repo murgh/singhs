@@ -58,7 +58,7 @@
 
         void add_IO_delay (diganaGraph * circuit, float value, int source, int input); 
 
-        void addReportObject (int from, int through, int to);
+        void addReportObject (int from, int through, int to, int time);
 %}
 
         void create_node (char * circuit_name,
@@ -112,4 +112,4 @@
 
         void add_IO_delay (diganaGraph * circuit, float value, int nodeId, int input);
 
-        void addReportObject (int from, int through, int to);
+        void addReportObject (int from, int through, int to, int time);

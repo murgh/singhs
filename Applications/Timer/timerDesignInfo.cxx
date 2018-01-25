@@ -10,6 +10,8 @@
 
 std::list<timerLibData *> theLibraryInfo;
 
+int edge_count = 0;
+
 char pin_type [6][30] = {
   "timerIOPort\0",
   "timerComboPin\0",
@@ -65,8 +67,8 @@ void add_clock (diganaGraph * circuit, char * name, int period, int nodeId, int 
 	  timerPinProperty P = V.get_property<timerPinProperty> ("Pin_Property"); 
 	  timerPinInfo * pinInfo = P.getPinInfo ();
 	  if (!pinInfo->getIsIOPort ()) {
-	    printf ("WARNING : The clock source %s is not a primary port, no clock created\n", 
-			  pinInfo->getName ().c_str ());
+	    //printf ("WARNING : The clock source %s is not a primary port, no clock created\n", 
+			  //pinInfo->getName ().c_str ());
 	    return;
 	  }
           pinInfo->setIsClock ();
@@ -94,7 +96,7 @@ void add_IO_delay (diganaGraph * circuit, float value, int nodeId, int input) {
 	timerClock * clock;
 	if ( !(clock = timerConstraints::is_clock_in_clock_map (std::string ("**"))) ) {
 
-	  clock = new timerClock (std::string ("**"), 10, true);//Default virtual clock	
+	  clock = new timerClock (std::string ("**"), 10, true);//Default virtual clock
 	  timerConstraints::add_clock_in_clock_map (clock);
 	}
 	pinInfo->setIsData ();
@@ -148,7 +150,6 @@ void add_pin_direction_io (diganaGraph * circuit,
 }
 
 void add_timing_arc (diganaGraph * circuit, int source, int sink, timerLibArc * arc) {
-        static int count = 0;
 	circuit->add_edge (source, sink);
 	diganaEdge E = diganaEdge (source, sink, circuit);        	
 	timerArcInfo * arcInfo = new timerArcInfo (arc);
@@ -160,9 +161,9 @@ void add_timing_arc (diganaGraph * circuit, int source, int sink, timerLibArc * 
 	srcP.getPinInfo ()->setLibPin (arc->getSource ());
 	sinkP.getPinInfo ()->setLibPin (arc->getSink ());
 	sinkP.getPinInfo ()->addSourceVertex (source);
-	count++;
-	if (count % 1000 == 0)
-		printf ("Created %d Edges\n", count);
+	edge_count++;
+	//if (count % 1000 == 0)
+		//printf ("Created %d Edges\n", count);
 }
 
 void add_timing_arc (diganaGraph * circuit, int source, int sink) {
@@ -267,11 +268,12 @@ void add_timing_sense (timerLibArc * arc, char * timing_sense) {
 		arc->setUnateness (timerNonUnate);
 }
 
-void addReportObject (int from, int through, int to) {
+void addReportObject (int from, int through, int to, int printTime) {
 	TARepObj * obj = new TARepObj;
 	obj->from = from;
 	obj->through = through;
 	obj->to = to;
+	obj->printTime = printTime;
 	obj->next = NULL;
 	TA_Timer::addRepObj (obj);
 }
@@ -279,7 +281,7 @@ void addReportObject (int from, int through, int to) {
 //Timer Report Call
 
 void perform_timing_analysis (char * circuit, int algo, int part) {
-	printf ("Performing Timing Analysis\n");
+	printf ("Performing Timing Analysis on %d edges\n", edge_count);
 	diganaGraph * graph = get_circuit (circuit);
 	perform_timing_analysis (graph, algo, part);
 }

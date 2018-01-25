@@ -19,6 +19,7 @@ typedef struct TARepObj {
   int from;
   int through;  
   int to;
+  int printTime;
 
   TARepObj * next;
 
@@ -78,11 +79,13 @@ class TA_Timer {
 		static void setGlobalForwardMergedCount (int val); 
 
 		static void addRepObj (TARepObj * r) {
-			if (!RepObj)
+			static TARepObj * last = NULL;
+			if (!RepObj) {
 				RepObj = r;
-			else {
-				r->next = RepObj;
-				RepObj = r;
+				last = r;
+			} else {
+				last->next = r;
+				last = r;
 			}
 		}
 

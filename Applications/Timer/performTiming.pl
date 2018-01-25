@@ -589,6 +589,7 @@ sub read_report {
 	my $from = -1;
 	my $through = -1;
 	my $to = -1;
+	my $time = 0;
 	foreach my $token (@tokens) {
 	  if ($token eq "From") {
 	    $from = -2;
@@ -614,8 +615,11 @@ sub read_report {
 	    $to = get_node_id($token); 
 	    next;
           }
+	  if ($token eq "TIME") {
+	    $time = 1;	
+	    next;
 	}		
-	timerDesignInfo::addReportObject ($from, $through, $to);
+	timerDesignInfo::addReportObject ($from, $through, $to, $time);
      }
      close $fh;
   }
