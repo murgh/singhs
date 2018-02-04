@@ -57,10 +57,14 @@ void perform_timing_analysis (diganaGraph * graph, int algo, int part) {
 	if (algo == 2) timer = new Timer_Algo_2 (graph);
 	timer->TA_enumerate_clock_paths ();
 	timer->TA_enumerate_data_paths ();
+        process_mem_usage (v2, r2);
+	//printf ("*** Pre-Write Virtual_MEM(%f) Residual_Mem(%f)***\n", v2-v1, r2-r1);
+	return;
 	timer->TA_Build_Required (part);
 	timer->TA_compute_slack ();
 	timer->TA_print_circuit (graph);
 	STUBS ("Pre-Write COST");
+	return;
 	timer->TA_write_paths ();
         process_mem_usage (v2, r2);
 	start = clock () - start;
@@ -269,6 +273,7 @@ Timer_Algo_1::traceFromSetPaths (std::set<int> & startSet,
 
 void 
 Timer_Algo_1::processClockEndPoint (diganaVertex endPoint, std::list<diganaVertex> & pinList) {
+/*
   std::map<timerPinInfo *, std::list<std::list<diganaVertex> * > * >::iterator itr;
   itr = theClockEndPointPathMap.find (getPinInfo (endPoint));
   std::list<std::list<diganaVertex> * > * pathList;  
@@ -285,6 +290,7 @@ Timer_Algo_1::processClockEndPoint (diganaVertex endPoint, std::list<diganaVerte
     new_path->push_back (pin);
   }
   pathList->push_back (new_path);
+*/
   diganaGraphIterator::adjacency_iterator ai , aietr;
   ai.attach (endPoint.getVertexId (), endPoint.getParentGraph ());
   for (; ai != aietr; ++ai) {
@@ -328,6 +334,7 @@ Timer_Algo_1::performDFSAndPropagatePinTags (diganaVertex startPoint, bool isClo
       thePinStack.pop_back ();
     }
   }
+  thePinStack.clear ();
 }
 
 void

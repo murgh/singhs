@@ -1,1 +1,44 @@
-perl performTiming.pl -lib test_$1/test.lib -netlist test_$1/test.v -constr test_$1/file.constr -report test_$1/report_10 -algo $2 
+export a=des_perf_ispd_eval
+perl performTiming.pl -lib test_$a/test.lib -netlist test_$a/test.v -constr test_$a/file.constr -algo 2 |& tee 2.log
+perl performTiming.pl -lib test_$a/test.lib -netlist test_$a/test.v -constr test_$a/file.constr -algo 1 |& tee 1.log
+grep "End Performing STA" 1.log |& tee 1.pr
+grep "End Performing STA" 2.log |& tee 2.pr
+echo $a >> report
+more 1.pr >> report
+more 2.pr >> report
+
+export a=vga_lcd_eval
+perl performTiming.pl -lib test_$a/test.lib -netlist test_$a/test.v -constr test_$a/file.constr -algo 2 |& tee 2.log
+perl performTiming.pl -lib test_$a/test.lib -netlist test_$a/test.v -constr test_$a/file.constr -algo 1 |& tee 1.log
+grep "End Performing STA" 1.log |& tee 1.pr
+grep "End Performing STA" 2.log |& tee 2.pr
+echo $a >> report
+more 1.pr >> report
+more 2.pr >> report
+
+export a=edit_dist_ispd2
+perl performTiming.pl -lib test_$a/test.lib -netlist test_$a/test.v -constr test_$a/file.constr -algo 2 |& tee 2.log
+perl performTiming.pl -lib test_$a/test.lib -netlist test_$a/test.v -constr test_$a/file.constr -algo 1 |& tee 1.log
+grep "End Performing STA" 1.log |& tee 1.pr
+grep "End Performing STA" 2.log |& tee 2.pr
+echo $a >> report
+more 1.pr >> report
+more 2.pr >> report
+
+export a=mgc_edit_dist_iccad_eval
+perl performTiming.pl -lib test_$a/test.lib -netlist test_$a/test.v -constr test_$a/file.constr -algo 2 |& tee 2.log
+perl performTiming.pl -lib test_$a/test.lib -netlist test_$a/test.v -constr test_$a/file.constr -algo 1 |& tee 1.log
+grep "End Performing STA" 1.log |& tee 1.pr
+grep "End Performing STA" 2.log |& tee 2.pr
+echo $a >> report
+more 1.pr >> report
+more 2.pr >> report
+
+export a=mgc_matrix_mult_iccad_eval
+perl performTiming.pl -lib test_$a/test.lib -netlist test_$a/test.v -constr test_$a/file.constr -algo 2 |& tee 2.log
+perl performTiming.pl -lib test_$a/test.lib -netlist test_$a/test.v -constr test_$a/file.constr -algo 1 |& tee 1.log
+grep "End Performing STA" 1.log |& tee 1.pr
+grep "End Performing STA" 2.log |& tee 2.pr
+echo $a >> report
+more 1.pr >> report
+more 2.pr >> report

@@ -1,0 +1,15 @@
+tau2015_crc32d16N
+1 
+*** Pre-Write Virtual_MEM(0.000000) Residual_Mem(0.000000)***
+2 
+*** Pre-Write Virtual_MEM(132.000000) Residual_Mem(264.000000)***
+tau2015_cordic_core_eval
+1 
+*** Pre-Write Virtual_MEM(0.000000) Residual_Mem(264.000000)***
+2 
+*** Pre-Write Virtual_MEM(528.000000) Residual_Mem(792.000000)***
+tau2015_softusb_navre_eval
+1 
+*** Pre-Write Virtual_MEM(0.000000) Residual_Mem(0.000000)***
+2 
+*** Pre-Write Virtual_MEM(1188.000000) Residual_Mem(1320.000000)***

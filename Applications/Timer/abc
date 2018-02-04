@@ -1,0 +1,3 @@
+export a=tau2015_crc32d16N
+perl performTiming.pl -lib test_$a/test.lib -netlist test_$a/test.v -constr test_$a/file.constr -algo 2
+perl performTiming.pl -lib test_$a/test.lib -netlist test_$a/test.v -constr test_$a/file.constr -algo 1

@@ -2,6 +2,7 @@
 use Liberty::Parser;
 use Verilog::Netlist;
 use timerDesignInfo;
+use Memory::Usage;
 
 my %node_name_to_id_hash = ();
 my %net_sink_hash = ();
@@ -634,10 +635,15 @@ sub perform_timing {
   my $report = shift;
   my $algo = shift;
   my $part = shift;
+  my $mu = Memory::Usage->new();
   if ($make_file == 0) { 
+	
+	$mu->record('Performing STA');
 	read_timing_data ($liberty, $netlist, $constr);
 	read_report ($report); 
 	timerDesignInfo::perform_timing_analysis ("top", $algo, $part);
+	$mu->record("End Performing STA $algo");
+	$mu->dump();
   } else {
 	open ($timer_test_case, ">timer_test.cxx"); 
 	write_timer_testcase ($liberty, $netlist, $constr);
