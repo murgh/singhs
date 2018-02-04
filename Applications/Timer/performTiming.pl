@@ -618,6 +618,7 @@ sub read_report {
 	  if ($token eq "TIME") {
 	    $time = 1;	
 	    next;
+	  }
 	}		
 	timerDesignInfo::addReportObject ($from, $through, $to, $time);
      }

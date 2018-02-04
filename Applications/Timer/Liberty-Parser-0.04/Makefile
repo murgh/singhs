@@ -38,7 +38,7 @@ FULL_AR = /usr/bin/ar
 LD = x86_64-linux-gnu-gcc
 LDDLFLAGS = -shared -L/usr/local/lib -fstack-protector-strong
 LDFLAGS =  -fstack-protector-strong -L/usr/local/lib
-LIBC = libc-2.21.so
+LIBC = libc-2.23.so
 LIB_EXT = .a
 OBJ_EXT = .o
 OSNAME = linux
@@ -476,7 +476,7 @@ realclean_subdirs :
 # Delete temporary files (via clean) and also delete dist files
 realclean purge ::  clean realclean_subdirs
 	- $(RM_F) \
-	  $(MAKEFILE_OLD) $(FIRST_MAKEFILE) 
+	  $(FIRST_MAKEFILE) $(MAKEFILE_OLD) 
 	- $(RM_RF) \
 	  $(DISTVNAME) 
 

@@ -1,1 +1,1 @@
-perl performTiming.pl -lib test_$1/test.lib -netlist test_$1/test.v -constr test_$1/file.constr -report test_$1/report_$2 -algo $3 
+perl performTiming.pl -lib test_$1/test.lib -netlist test_$1/test.v -constr test_$1/file.constr -report test_$1/report_10 -algo $2 
